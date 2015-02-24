@@ -1,0 +1,87 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.muslimmarry"
+    android:versionCode="1"
+    android:versionName="1.0" >
+    
+    <permission
+        android:name="com.example.muslimmarry.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+    
+    <uses-permission android:name="com.example.muslimmarry.permission.MAPS_RECEIVE" />
+    
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="21" />
+    
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+	<uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+ 
+    <!-- Required to show current location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	
+    <!-- Required OpenGL ES 2.0. for Maps V2 -->
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme"
+        android:largeHeap="true" >
+        <activity android:name=".StartPage"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Register"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" ></activity>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait" ></activity>
+        <activity android:name=".Option"
+            android:screenOrientation="portrait" >
+            <intent-filter >
+                <data android:scheme="oauth" android:host="t4jsample"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+             	<category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Login"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" ></activity>
+        <activity android:name=".WhereAreYou"
+            android:screenOrientation="portrait" ></activity>
+        <activity android:name=".HowAboutAPhoto"
+            android:screenOrientation="portrait" ></activity>
+        <activity android:name=".PayWall"
+            android:screenOrientation="portrait" ></activity>
+        <activity android:name=".LocateActivity"
+            android:screenOrientation="portrait" ></activity>
+        <activity android:name=".LookingGood"
+            android:screenOrientation="portrait" ></activity>
+        <activity android:name=".PhotoCustomization"
+            android:screenOrientation="portrait" ></activity>
+        <meta-data 
+	       android:name="com.google.android.gms.version" 
+	       android:value="@integer/google_play_services_version" />
+        
+        <!-- Goolge API Key -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDRlTRujxdZ3_97t7bBkB8rLVPEjYgRyhw" />
+        
+    </application>
+
+</manifest>

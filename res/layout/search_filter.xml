@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff" >
+    
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#52bbdb" >
+        
+        <ImageView
+	        android:id="@+id/back"
+	        android:layout_width="45dp"
+	        android:layout_height="40dp"
+	        android:paddingLeft="15dp"
+	        android:paddingRight="15dp"
+	        android:paddingBottom="5dp"
+	        android:paddingTop="5dp"
+	        android:src="@drawable/back"
+	        android:contentDescription="@string/image_desc"
+	        android:layout_centerVertical="true" />
+        
+        <TextView
+            android:id="@+id/title"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SEARCH FILTER"
+            android:textColor="#ffffff"
+            android:textSize="34sp" />
+        
+        <ImageView
+            android:id="@+id/option"
+            android:layout_width="47dp"
+            android:layout_height="44dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/option_icon"
+            android:contentDescription="@string/image_desc"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+        
+    </RelativeLayout>
+    
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/header"
+        android:scrollbars="none" >
+        
+        <RelativeLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:paddingTop="30dp"
+	        android:paddingBottom="10dp"
+	        android:paddingLeft="15dp"
+	        android:paddingRight="15dp" >
+	        
+	        <TextView
+	            android:id="@+id/title1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="SEARCHABLE"
+	            android:textSize="14sp"
+	            android:textColor="#101010" />
+	        
+	        <TextView
+	            android:id="@+id/title2"
+	            android:layout_alignBaseline="@id/title1"
+	            android:layout_toRightOf="@id/title1"
+	            android:layout_marginLeft="5dp"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="(PREMIUM)"
+	            android:textSize="12sp"
+	            android:textColor="#787878" />
+	        
+	        <Switch
+		        android:id="@+id/mySwitch"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentRight="true"
+		        android:layout_alignBaseline="@id/title1"
+		        android:checked="true" />
+	        
+	        <TextView
+	            android:id="@+id/title3"
+	            android:layout_below="@id/title1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Turn off to not be shown to anyone in Search. You can still see and chat with your friends and matches."
+	            android:textColor="#9a9a9a"
+	            android:textSize="12sp"
+	            android:layout_marginTop="5dp" />
+	        
+	        <TextView
+	            android:id="@+id/titshow"
+	            android:layout_below="@id/title3"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="SHOW"
+	            android:textSize="14sp"
+	            android:textColor="#101010"
+	            android:layout_marginTop="10dp" />
+	        
+	        <RadioGroup
+	            android:id="@+id/radioSex"
+	            android:layout_below="@id/titshow"
+	            android:layout_marginTop="10dp"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal" >
+	            
+	            <RadioButton
+	                android:id="@+id/radioMale"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="MEN"
+	                android:checked="true"
+	                android:textColor="#9a9a9a"
+	                android:textSize="12sp"
+	                android:layout_marginRight="80dp" />
+	            
+	            <RadioButton
+	                android:id="@+id/radioFemale"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="WOMEN"
+	                android:textColor="#9a9a9a"
+	                android:textSize="12sp" />
+	            
+	        </RadioGroup>
+	        
+	        <LinearLayout
+	            android:id="@+id/age_group"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@id/radioSex"
+	            android:orientation="vertical"
+	            android:layout_marginTop="10dp" >
+	            
+	            <TextView
+		            android:id="@+id/titage"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="AGE"
+		            android:textSize="14sp"
+		            android:textColor="#101010" />
+	            
+	            <RelativeLayout
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_marginTop="10dp" >
+	                
+	                <TextView
+	                    android:id="@+id/minAge"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:text="18"
+	                    android:textColor="#9a9a9a"
+	                    android:textSize="12sp"
+	                    android:layout_marginLeft="9dp" />
+	                
+	                <TextView
+	                    android:id="@+id/maxAge"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:text="65"
+	                    android:textColor="#9a9a9a"
+	                    android:textSize="12sp"
+	                    android:layout_marginRight="10dp"
+	                    android:layout_alignParentRight="true" />
+	                
+	            </RelativeLayout>
+	            
+	        </LinearLayout>
+	        
+	        <LinearLayout
+	            android:id="@+id/distance_group"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@id/age_group"
+	            android:orientation="vertical"
+	            android:layout_marginTop="20dp" >
+	            
+	            <TextView
+		            android:id="@+id/titDistance"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="DISTANCE (KM)"
+		            android:textSize="14sp"
+		            android:textColor="#101010" />
+	            
+	            <RelativeLayout
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_marginTop="10dp" >
+	                
+	                <TextView
+	                    android:id="@+id/minDistance"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:text="1"
+	                    android:textColor="#9a9a9a"
+	                    android:textSize="12sp"
+	                    android:layout_marginLeft="9dp" />
+	                
+	                <TextView
+	                    android:id="@+id/maxDistance"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:text="161"
+	                    android:textColor="#9a9a9a"
+	                    android:textSize="12sp"
+	                    android:layout_marginRight="10dp"
+	                    android:layout_alignParentRight="true" />
+	                
+	            </RelativeLayout>
+	            
+	        </LinearLayout>
+	        
+	        <LinearLayout
+	            android:id="@+id/speak_group"
+	            android:layout_below="@id/distance_group"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical"
+	            android:layout_marginTop="20dp" >
+	            
+	            <TextView
+		            android:id="@+id/titspeak"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="SPEAKS"
+		            android:textSize="14sp"
+		            android:textColor="#101010" />
+	            
+	            <LinearLayout
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal"
+	                android:layout_marginTop="10dp" >
+	                
+	                <EditText
+	                    android:id="@+id/speak"
+	                    android:layout_width="242dp"
+	                    android:layout_height="50dp"
+	                    android:background="@drawable/my_bg_with_border_blue"
+				        android:textColor="#31a3bd"
+				        android:textSize="20sp"
+				        android:paddingLeft="20dp"
+				        android:singleLine="true"
+				        android:inputType="textNoSuggestions"
+				        android:focusable="false" />
+	                
+	                <ImageView
+	                    android:id="@+id/addSpeak"
+	                    android:layout_width="20dp"
+	                    android:layout_height="20dp"
+	                    android:src="@drawable/add_icon"
+	                    android:contentDescription="@string/image_desc"
+						android:layout_marginTop="12dp"
+						android:layout_marginLeft="12dp" />
+	                
+	                <!-- <ImageView
+	                    android:layout_width="20dp"
+	                    android:layout_height="20dp"
+	                    android:src="@drawable/remove_icon"
+	                    android:contentDescription="@string/image_desc"
+	                    android:layout_marginTop="12dp"
+	                    android:layout_marginLeft="12dp" /> -->
+	                
+	            </LinearLayout>
+	            
+	            <ListView
+	                android:id="@+id/listSpeak"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:scrollbars="none"
+	                android:divider="@android:color/transparent"
+	                android:dividerHeight="10dp"
+	                android:layout_marginTop="10dp" ></ListView>
+	            
+	        </LinearLayout>
+	        
+	        <LinearLayout
+	            android:id="@+id/job_group"
+	            android:layout_below="@id/speak_group"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="vertical"
+	            android:layout_marginTop="20dp" >
+	            
+	            <RelativeLayout
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content" >
+	                
+	                <TextView
+			            android:id="@+id/titJob"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:text="OCCUPATION"
+			            android:textSize="14sp"
+			            android:textColor="#101010" />
+	                
+	                <TextView
+	                    android:layout_toRightOf="@id/titJob"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:text=" (PREMIUM)"
+	                    android:textSize="12sp"
+	                    android:textColor="#787878"
+	                    android:layout_marginTop="2dp" />
+	                
+	            </RelativeLayout>
+	            
+	            <LinearLayout
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:orientation="horizontal"
+	                android:layout_marginTop="10dp" >
+	                
+	                <EditText
+	                    android:id="@+id/job"
+	                    android:layout_width="242dp"
+	                    android:layout_height="50dp"
+	                    android:background="@drawable/my_bg_with_border_blue"
+				        android:textColor="#31a3bd"
+				        android:textSize="20sp"
+				        android:paddingLeft="20dp"
+				        android:singleLine="true"
+				        android:inputType="textNoSuggestions"
+				        android:focusable="false" />
+	                
+	                <ImageView
+	                    android:id="@+id/addJob"
+	                    android:layout_width="20dp"
+	                    android:layout_height="20dp"
+	                    android:src="@drawable/add_icon"
+	                    android:contentDescription="@string/image_desc"
+						android:layout_marginTop="12dp"
+						android:layout_marginLeft="12dp" />
+	                
+	                <!-- <ImageView
+	                    android:layout_width="20dp"
+	                    android:layout_height="20dp"
+	                    android:src="@drawable/remove_icon"
+	                    android:contentDescription="@string/image_desc"
+	                    android:layout_marginTop="12dp"
+	                    android:layout_marginLeft="12dp" /> -->
+	                
+	            </LinearLayout>
+	            <ListView
+	                android:id="@+id/listJob"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:scrollbars="none"
+	                android:divider="@android:color/transparent"
+	                android:dividerHeight="10dp"
+	                android:layout_marginTop="10dp" ></ListView>
+	            
+	        </LinearLayout>
+	        
+	        <LinearLayout
+	            android:id="@+id/height_group"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@id/job_group"
+	            android:orientation="vertical"
+	            android:layout_marginTop="20dp" >
+	            
+	            <TextView
+		            android:id="@+id/titHeight"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="HEIGHT (M)"
+		            android:textSize="14sp"
+		            android:textColor="#101010" />
+	            
+	            <RelativeLayout
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_marginTop="10dp" >
+	                
+	                <TextView
+	                    android:id="@+id/minHeight"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:text="1.30"
+	                    android:textColor="#9a9a9a"
+	                    android:textSize="12sp"
+	                    android:layout_marginLeft="8dp" />
+	                
+	                <TextView
+	                    android:id="@+id/maxHeight"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:text="2.30"
+	                    android:textColor="#9a9a9a"
+	                    android:textSize="12sp"
+	                    android:layout_marginRight="10dp"
+	                    android:layout_alignParentRight="true" />
+	                
+	            </RelativeLayout>
+	            
+	        </LinearLayout>
+	        
+	        <Button
+	            android:id="@+id/show"
+	            android:layout_below="@id/height_group"
+	            android:layout_width="fill_parent"
+	            android:layout_height="50dp"
+	            android:background="@drawable/my_btn_blue"
+	            android:gravity="center"
+	            android:text="SHOW ME MATCHES"
+	            android:textColor="#ffffff"
+        		android:textSize="34dp"
+        		android:layout_centerHorizontal="true"
+        		android:layout_marginTop="20dp"
+        		android:layout_marginBottom="20dp" />
+	        
+	    </RelativeLayout>
+        
+    </ScrollView>
+
+</RelativeLayout>

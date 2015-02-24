@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/muslim_bg" >
+    
+	<ImageView
+        android:id="@+id/back"
+        android:layout_width="55dp"
+        android:layout_height="50dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:src="@drawable/back"
+        android:contentDescription="@string/image_desc" />
+    
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WHAT ARE YOU"
+        android:textColor="#ffffff"
+        android:textSize="38sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp" />
+    
+    <TextView
+        android:id="@+id/title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" WAITING FOR?"
+        android:textColor="#ffffff"
+        android:textSize="38sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="-30dp" />
+    
+    <ImageView
+        android:layout_width="111dp"
+        android:layout_height="101dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/star_icon"
+        android:contentDescription="@string/image_desc" />
+    
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp" >
+        
+        <ImageView
+            android:layout_width="4dp"
+            android:layout_height="4dp"
+            android:src="@drawable/dot_icon"
+            android:contentDescription="@string/image_desc"
+            android:layout_marginTop="9dp" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chat online with other members."
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:layout_marginLeft="5dp" />
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp" >
+        
+        <ImageView
+            android:layout_width="4dp"
+            android:layout_height="4dp"
+            android:src="@drawable/dot_icon"
+            android:contentDescription="@string/image_desc"
+            android:layout_marginTop="9dp" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exchange messages freely"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:layout_marginLeft="5dp" />
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp" >
+        
+        <ImageView
+            android:layout_width="4dp"
+            android:layout_height="4dp"
+            android:src="@drawable/dot_icon"
+            android:contentDescription="@string/image_desc"
+            android:layout_marginTop="9dp" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="See the users who have looked at your profile."
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:layout_marginLeft="5dp" />
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp" >
+        
+        <ImageView
+            android:layout_width="4dp"
+            android:layout_height="4dp"
+            android:src="@drawable/dot_icon"
+            android:contentDescription="@string/image_desc"
+            android:layout_marginTop="9dp" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="and many more"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:layout_marginLeft="5dp" />
+        
+    </LinearLayout>
+    
+    <EditText
+        android:id="@+id/plan"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:background="@drawable/my_bg_with_border_white"
+        android:text="Select Plan"
+        android:textSize="22sp"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:inputType="textNoSuggestions"
+        android:singleLine="true"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center_horizontal"
+        android:focusable="false" />
+    
+    <Button
+        android:id="@+id/upgrade"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:background="@drawable/my_btn_white"
+        android:text="UPGRADE NOW!"
+        android:textColor="#55bede"
+        android:textSize="34dp"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>
