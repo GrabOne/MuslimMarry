@@ -161,7 +161,7 @@ public class TwitterLogin {
 
     }
     /*
-     * Twitter login
+     * Send twitter user information to server
      */
     private class TTLogin extends AsyncTask<String, String, Void>{
     	@Override
@@ -197,7 +197,7 @@ public class TwitterLogin {
 			    Log.d("obj", jObj.toString());
 			    
 			    HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost("http://104.131.76.17/muslim_marry/public/api/v1/login-social");
+				HttpPost httppost = new HttpPost("http://muslimmarry.campcoders.com/api/v1/login-social");
 				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httppost.setHeader("Accept", "application/json");
 				httppost.setHeader("Content-type", "application/json;charset=UTF-8");

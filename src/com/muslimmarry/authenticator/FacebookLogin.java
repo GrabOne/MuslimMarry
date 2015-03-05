@@ -148,7 +148,7 @@ public class FacebookLogin {
 		});
 	}
 	/*
-	 * Facebook login
+	 * Send facebook user information to server
 	 */
 	public class FbLogin extends AsyncTask<String, String, Void>{
 		@Override
@@ -210,7 +210,7 @@ public class FacebookLogin {
 //			    Log.d("obj", jObj.toString());
 			    
 			    HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost("http://104.131.76.17/muslim_marry/public/api/v1/login-social");
+				HttpPost httppost = new HttpPost("http://muslimmarry.campcoders.com/api/v1/login-social");
 				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httppost.setHeader("Accept", "application/json");
 				httppost.setHeader("Content-type", "application/json;charset=UTF-8");
