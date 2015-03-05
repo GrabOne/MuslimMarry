@@ -6,7 +6,7 @@
     android:focusableInTouchMode="true" >
     
     <fragment
-        android:name="com.example.muslimmarry.SearchFilter"
+        android:name="com.muslimmary.fragments.SearchFilterFragment"
         android:id="@+id/frag"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

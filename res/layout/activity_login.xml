@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/muslim_bg"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true" >
+    
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="none" >
+        
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+            
+            <ImageView
+		        android:id="@+id/back"
+		        android:layout_width="55dp"
+		        android:layout_height="50dp"
+		        android:paddingLeft="20dp"
+		        android:paddingRight="20dp"
+		        android:paddingBottom="10dp"
+		        android:paddingTop="10dp"
+		        android:src="@drawable/back"
+		        android:contentDescription="@string/image_desc" />
+		    
+		    <ImageView
+		        android:id="@+id/logo"
+		        android:layout_width="230dp"
+		        android:layout_height="82dp"
+		        android:src="@drawable/muslim_logo"
+		        android:contentDescription="@string/image_desc"
+		        android:layout_centerHorizontal="true"
+		        android:layout_marginTop="80dp" />
+		    
+		    <EditText
+		        android:id="@+id/uname"
+		        android:layout_below="@id/logo"
+		        android:layout_width="260dp"
+		        android:layout_height="50dp"
+		        android:background="@drawable/my_bg_with_border_white"
+		        android:hint="username"
+		        android:inputType="text"
+		        android:textColor="#ffffff"
+		        android:textColorHint="#ffffff"
+		        android:gravity="center"
+		        android:textSize="20sp"
+		        android:layout_centerHorizontal="true"
+		        android:padding="10dp"
+		        android:layout_marginTop="120dp" />
+		    
+		    <EditText
+		        android:id="@+id/pword"
+		        android:layout_below="@id/uname"
+		        android:layout_width="260dp"
+		        android:layout_height="50dp"
+		        android:background="@drawable/my_bg_with_border_white"
+		        android:hint="password"
+		        android:inputType="textPassword"
+		        android:textColor="#ffffff"
+		        android:textColorHint="#ffffff"
+		        android:gravity="center"
+		        android:textSize="20sp"
+		        android:layout_centerHorizontal="true"
+		        android:padding="10dp"
+		        android:layout_marginTop="10dp" />
+		    
+		    <Button
+		        android:id="@+id/btnLogin"
+		        android:layout_below="@id/pword"
+		        android:layout_width="260dp"
+		        android:layout_height="50dp"
+		        android:background="@drawable/my_btn_white"
+		        android:text="LOGIN"
+		        android:textColor="#48b5d4"
+		        android:textSize="34sp"
+		        android:gravity="center"
+		        android:layout_centerHorizontal="true"
+		        android:layout_marginTop="10dp" />
+		    
+		    <TextView
+		        android:id="@+id/txt"
+		        android:layout_below="@id/btnLogin"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:text="forgot your password?"
+		        android:textSize="12sp"
+		        android:textColor="#ffffff"
+		        android:layout_marginTop="5dp" />
+            
+        </RelativeLayout>
+        
+    </ScrollView>
+	
+</RelativeLayout>

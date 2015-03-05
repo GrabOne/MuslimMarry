@@ -37,42 +37,44 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:largeHeap="true" >
-        <activity android:name=".StartPage"
+        <activity android:name="com.muslimmarry.activities.SplashPage"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register"
+        <activity android:name="com.muslimmarry.activities.MainActivity"
+            android:screenOrientation="portrait" ></activity>
+         <activity android:name="com.muslimmarry.activities.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" ></activity>
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait" ></activity>
-        <activity android:name=".Option"
-            android:screenOrientation="portrait" >
-            <intent-filter >
+        <activity android:name="com.muslimmarry.activities.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" ></activity>
+         <activity android:name="com.muslimmarry.activities.LoginOrRegisterActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" >
+             <intent-filter >
                 <data android:scheme="oauth" android:host="t4jsample"/>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
              	<category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
-        </activity>
-        <activity android:name=".Login"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" ></activity>
-        <activity android:name=".WhereAreYou"
+         </activity>
+         <activity android:name="com.muslimmarry.activities.PhotoOptionActivity"
             android:screenOrientation="portrait" ></activity>
-        <activity android:name=".HowAboutAPhoto"
+         <activity android:name="com.muslimmarry.activities.PhotoCustomizationActivity"
             android:screenOrientation="portrait" ></activity>
-        <activity android:name=".PayWall"
+         <activity android:name="com.muslimmarry.activities.PhotoConfirmationActivity"
             android:screenOrientation="portrait" ></activity>
-        <activity android:name=".LocateActivity"
+         <activity android:name="com.muslimmarry.activities.LocationActivity"
             android:screenOrientation="portrait" ></activity>
-        <activity android:name=".LookingGood"
+         <activity android:name="com.muslimmarry.activities.ManuallyLocateActivity"
             android:screenOrientation="portrait" ></activity>
-        <activity android:name=".PhotoCustomization"
+         <activity android:name="com.muslimmarry.activities.PayWallActivity"
             android:screenOrientation="portrait" ></activity>
+         
         <meta-data 
 	       android:name="com.google.android.gms.version" 
 	       android:value="@integer/google_play_services_version" />

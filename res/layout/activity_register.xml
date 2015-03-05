@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/muslim_bg"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true" >
+    
+	<ScrollView
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:scrollbars="none"
+	    android:fillViewport="true" >
+	    
+	    <RelativeLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+	        
+	        <ImageView
+		        android:id="@+id/back"
+		        android:layout_width="55dp"
+		        android:layout_height="50dp"
+		        android:paddingLeft="20dp"
+		        android:paddingRight="20dp"
+		        android:paddingBottom="10dp"
+		        android:paddingTop="10dp"
+		        android:src="@drawable/back"
+		        android:contentDescription="@string/image_desc" />
+		    
+		    <ImageView
+		        android:id="@+id/logo"
+		        android:layout_width="230dp"
+		        android:layout_height="82dp"
+		        android:src="@drawable/muslim_logo"
+		        android:contentDescription="@string/image_desc"
+		        android:layout_centerHorizontal="true"
+		        android:layout_marginTop="80dp" />
+		    
+		    <EditText
+		        android:id="@+id/uname"
+		        android:layout_below="@id/logo"
+		        android:layout_width="260dp"
+		        android:layout_height="50dp"
+		        android:background="@drawable/my_bg_with_border_white"
+		        android:hint="username"
+		        android:textColor="#ffffff"
+		        android:textColorHint="#ffffff"
+		        android:gravity="center"
+		        android:textSize="20sp"
+		        android:layout_centerHorizontal="true"
+		        android:padding="10dp"
+		        android:layout_marginTop="50dp"
+		        android:singleLine="true" />
+		    
+		    <EditText
+		        android:id="@+id/mail"
+		        android:layout_below="@id/uname"
+		        android:layout_width="260dp"
+		        android:layout_height="50dp"
+		        android:background="@drawable/my_bg_with_border_white"
+		        android:hint="email"
+		        android:textColor="#ffffff"
+		        android:textColorHint="#ffffff"
+		        android:gravity="center"
+		        android:textSize="20sp"
+		        android:layout_centerHorizontal="true"
+		        android:padding="10dp"
+		        android:layout_marginTop="10dp"
+		        android:singleLine="true" />
+		    
+		    <EditText
+		        android:id="@+id/age"
+		        android:layout_below="@id/mail"
+		        android:layout_width="260dp"
+		        android:layout_height="50dp"
+		        android:background="@drawable/my_bg_with_border_white"
+		        android:hint="age"
+		        android:textColor="#ffffff"
+		        android:textColorHint="#ffffff"
+		        android:gravity="center"
+		        android:textSize="20sp"
+		        android:layout_centerHorizontal="true"
+		        android:padding="10dp"
+		        android:layout_marginTop="10dp"
+		        android:inputType="number" />
+		    
+		    <!-- <EditText
+		        android:id="@+id/dateofbirth"
+		        android:layout_below="@id/age"
+		        android:layout_width="260dp"
+		        android:layout_height="50dp"
+		        android:background="@drawable/my_bg_with_border_white"
+		        android:hint="Date of birth"
+		        android:textColor="#ffffff"
+		        android:textColorHint="#ffffff"
+		        android:gravity="center"
+		        android:textSize="20sp"
+		        android:layout_centerHorizontal="true"
+		        android:padding="10dp"
+		        android:layout_marginTop="10dp"
+		        android:focusable="false" /> -->
+		    
+		    <EditText
+		        android:id="@+id/gender"
+		        android:layout_below="@id/age"
+		        android:layout_width="260dp"
+		        android:layout_height="50dp"
+		        android:background="@drawable/my_bg_with_border_white"
+		        android:hint="gender"
+		        android:textColor="#ffffff"
+		        android:textColorHint="#ffffff"
+		        android:gravity="center"
+		        android:textSize="20sp"
+		        android:layout_centerHorizontal="true"
+		        android:padding="10dp"
+		        android:layout_marginTop="10dp"
+		        android:singleLine="true"
+		        android:inputType="textNoSuggestions"
+		        android:focusable="false" />
+		    
+		    <EditText
+		        android:id="@+id/pword"
+		        android:layout_below="@id/gender"
+		        android:layout_width="260dp"
+		        android:layout_height="50dp"
+		        android:background="@drawable/my_bg_with_border_white"
+		        android:hint="Password"
+		        android:textColor="#ffffff"
+		        android:textColorHint="#ffffff"
+		        android:gravity="center"
+		        android:textSize="20sp"
+		        android:layout_centerHorizontal="true"
+		        android:padding="10dp"
+		        android:layout_marginTop="10dp"
+		        android:singleLine="true"
+		        android:inputType="textPassword" />
+		    
+		    <EditText
+		        android:id="@+id/cfpword"
+		        android:layout_below="@id/pword"
+		        android:layout_width="260dp"
+		        android:layout_height="50dp"
+		        android:background="@drawable/my_bg_with_border_white"
+		        android:hint="Password Confirm"
+		        android:textColor="#ffffff"
+		        android:textColorHint="#ffffff"
+		        android:gravity="center"
+		        android:textSize="20sp"
+		        android:layout_centerHorizontal="true"
+		        android:padding="10dp"
+		        android:layout_marginTop="10dp"
+		        android:singleLine="true"
+		        android:inputType="textPassword" />
+		    
+		    <RelativeLayout
+		        android:layout_below="@id/cfpword"
+		        android:layout_width="260dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_marginTop="10dp"
+		        android:layout_marginBottom="20dp" >
+		        
+		        <Button
+			        android:id="@+id/btnNext"
+			        android:layout_width="131dp"
+			        android:layout_height="50dp"
+			        android:background="@drawable/my_btn_white"
+			        android:text="NEXT"
+			        android:textColor="#48b5d4"
+			        android:textSize="34sp"
+			        android:gravity="center"
+			        android:layout_alignParentRight="true" />
+		        
+		        <TextView
+		            android:layout_toLeftOf="@id/btnNext"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="STEP 1/3"
+		            android:textColor="#ffffff"
+		            android:textSize="13sp"
+		            android:layout_marginRight="30dp"
+		            android:layout_centerVertical="true" />
+		        
+		    </RelativeLayout>
+	        
+	    </RelativeLayout>
+	    
+	</ScrollView>
+
+</RelativeLayout>

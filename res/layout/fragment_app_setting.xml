@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff" >
+    
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#52bbdb" >
+        
+        <ImageView
+	        android:id="@+id/back"
+	        android:layout_width="45dp"
+	        android:layout_height="40dp"
+	        android:paddingLeft="15dp"
+	        android:paddingRight="15dp"
+	        android:paddingBottom="5dp"
+	        android:paddingTop="5dp"
+	        android:src="@drawable/back"
+	        android:contentDescription="@string/image_desc"
+	        android:layout_centerVertical="true" />
+        
+        <TextView
+            android:id="@+id/title"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="APP SETTINGS"
+            android:textColor="#ffffff"
+            android:textSize="34sp" />
+        
+        <ImageView
+            android:id="@+id/option"
+            android:layout_width="47dp"
+            android:layout_height="44dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/option_icon"
+            android:contentDescription="@string/image_desc"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+    </RelativeLayout>
+    
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header" >
+        
+        <!-- Start bottom view -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            
+            <RelativeLayout
+		        android:id="@+id/logout"
+		        android:layout_width="fill_parent"
+		        android:layout_height="50dp"
+		        android:paddingLeft="20dp"
+		        android:paddingRight="20dp" >
+		        
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="LOGOUT"
+		            android:textColor="#1c1c1c"
+		            android:textSize="15sp"
+		            android:layout_centerVertical="true" />
+		        
+		        <ImageView
+			        android:layout_alignParentRight="true"
+			        android:layout_centerVertical="true"
+			        android:layout_width="10dp"
+			        android:layout_height="20dp"
+			        android:background="@drawable/arrow_right_2"
+			        android:contentDescription="@string/image_desc"
+			        android:layout_marginRight="5dp" />
+		        
+		    </RelativeLayout>
+		    <View
+		        android:layout_below="@id/logout"
+		        android:layout_width="fill_parent"
+		        android:layout_height="1dp"
+		        android:background="#aaaaaa" />
+		    
+		    <ImageView
+		        android:id="@+id/logo"
+		        android:layout_centerInParent="true"
+		        android:layout_width="180dp"
+		        android:layout_height="63dp"
+		        android:src="@drawable/logo_muslim_02"
+		        android:contentDescription="@string/image_desc"
+		        android:layout_marginRight="20dp" />
+		    
+		    <TextView
+		        android:layout_below="@id/logo"
+		        android:layout_centerHorizontal="true"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Version 1.1.1 (android)"
+		        android:textColor="#666666"
+		        android:textSize="14sp" />
+		    
+		    <RelativeLayout
+		        android:id="@+id/del_acc"
+		        android:layout_width="fill_parent"
+		        android:layout_height="50dp"
+		        android:layout_alignParentBottom="true" >
+		        
+		        <View
+		            android:layout_width="fill_parent"
+		            android:layout_height="1dp"
+		            android:background="#aaaaaa" />
+		        
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="DELETE ACCOUNT"
+		            android:textColor="#1c1c1c"
+		            android:textSize="15sp"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="20dp" />
+		        
+		        <ImageView
+			        android:layout_alignParentRight="true"
+			        android:layout_centerVertical="true"
+			        android:layout_width="10dp"
+			        android:layout_height="20dp"
+			        android:background="@drawable/arrow_right_2"
+			        android:contentDescription="@string/image_desc"
+			        android:layout_marginRight="20dp" />
+		        
+		    </RelativeLayout>
+            
+        </RelativeLayout>
+        <!-- End bottom view -->
+        
+        <!-- Start surface view -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#ffffff" >
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NOTIFICATIONS"
+                android:textSize="13sp"
+                android:textColor="#ffffff"
+                android:background="#6fcbe7"
+                android:padding="10dp" />
+            
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp" >
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Matches"
+                    android:textSize="13sp"
+                    android:textColor="#1c1c1c"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp" />
+                
+                <CheckBox
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:button="@drawable/checkbox_customize"
+		            android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:checked="true" />
+                
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#aaaaaa" />
+            
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp" >
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Messages"
+                    android:textSize="13sp"
+                    android:textColor="#1c1c1c"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp" />
+                
+                <CheckBox
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:button="@drawable/checkbox_customize"
+		            android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp" />
+                
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#aaaaaa" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp" >
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Favorites"
+                    android:textSize="13sp"
+                    android:textColor="#1c1c1c"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp" />
+                
+                <CheckBox
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:button="@drawable/checkbox_customize"
+		            android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp" />
+                
+            </RelativeLayout>
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DISTANCE IN"
+                android:textSize="13sp"
+                android:textColor="#ffffff"
+                android:background="#6fcbe7"
+                android:padding="10dp" />
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:orientation="horizontal" >
+                
+                <RadioGroup
+                    android:id="@+id/radioDistanceIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" >
+                    
+                    <RadioButton
+                        android:id="@+id/radioMi"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:button="@drawable/checkbox_customize"
+	                    android:layout_marginTop="20dp"
+	                    android:layout_marginLeft="100dp"
+	                    android:text="Mi"
+	                    android:textSize="13sp"
+	                    android:textColor="#1c1c1c"
+	                    android:paddingLeft="5dp" />
+	                
+	                <RadioButton
+	                    android:id="@+id/radioKm"
+			            android:layout_width="wrap_content"
+			            android:layout_height="wrap_content"
+			            android:button="@drawable/checkbox_customize"
+	                    android:layout_marginTop="20dp"
+	                    android:layout_marginLeft="50dp"
+	                    android:text="Km"
+	                    android:textSize="13sp"
+	                    android:textColor="#1c1c1c"
+	                    android:paddingLeft="5dp" />
+                    
+                </RadioGroup>
+                
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#aaaaaa" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp" >
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PRIVACY POLICY"
+                    android:textSize="13sp"
+                    android:textColor="#1c1c1c"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp" />
+                
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/arrow_right_2"
+                    android:contentDescription="@string/image_desc"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp" />
+                
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#aaaaaa" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp" >
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TERMS OF USE"
+                    android:textSize="13sp"
+                    android:textColor="#1c1c1c"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp" />
+                
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/arrow_right_2"
+                    android:contentDescription="@string/image_desc"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp" />
+                
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#aaaaaa" />
+            
+        </LinearLayout>
+        <!-- End surface view -->
+    </com.daimajia.swipe.SwipeLayout>
+
+</RelativeLayout>
