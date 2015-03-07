@@ -45,6 +45,7 @@ import android.widget.TextView;
 
 import com.devsmart.android.ui.HorizontalListView;
 import com.example.muslimmarry.R;
+import com.muslimmarry.helpers.helpers;
 
 public class PhotoCustomizationActivity extends Activity {
 	
@@ -270,7 +271,7 @@ public class PhotoCustomizationActivity extends Activity {
             bm.compress(getFormat(filePath), 75, bos);
             byte[] data = bos.toByteArray();
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost postRequest = new HttpPost("http://muslimmarry.campcoders.com/api/v1/upload-avatar");
+            HttpPost postRequest = new HttpPost(helpers.url+"api/v1/upload-avatar");
             ByteArrayBody bab = new ByteArrayBody(data, getNameFromPath(filePath));
             MultipartEntity reqEntity = new MultipartEntity(
                     HttpMultipartMode.BROWSER_COMPATIBLE);

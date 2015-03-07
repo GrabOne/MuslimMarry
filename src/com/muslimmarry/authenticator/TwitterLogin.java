@@ -197,7 +197,7 @@ public class TwitterLogin {
 			    Log.d("obj", jObj.toString());
 			    
 			    HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost("http://muslimmarry.campcoders.com/api/v1/login-social");
+				HttpPost httppost = new HttpPost(helpers.url+"api/v1/login-social");
 				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httppost.setHeader("Accept", "application/json");
 				httppost.setHeader("Content-type", "application/json;charset=UTF-8");

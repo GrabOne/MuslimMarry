@@ -366,7 +366,7 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 				
 				Log.d("obj", jObj.toString());
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost("http://muslimmarry.campcoders.com/api/v1/signup");
+				HttpPost httppost = new HttpPost(helpers.url+"api/v1/signup");
 				StringEntity se = new StringEntity(jObj.toString());
 				httppost.setEntity(se);
 				httppost.setHeader("Accept", "application/json");

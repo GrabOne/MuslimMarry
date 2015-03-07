@@ -355,7 +355,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 				
 				//Log.d("myTag", jObj.toString());
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPut httpput = new HttpPut("http://muslimmarry.campcoders.com/api/v1/edit-normal-account");
+				HttpPut httpput = new HttpPut(helpers.url+"api/v1/edit-normal-account");
 				httpput.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httpput.setHeader("Accept", "application/json");
 				httpput.setHeader("Content-type", "application/json;charset=UTF-8");
@@ -453,7 +453,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 				
 				//Log.d("myTag", jObj.toString());
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPut httpput = new HttpPut("http://muslimmarry.campcoders.com/api/v1/edit-social-account");
+				HttpPut httpput = new HttpPut(helpers.url+"api/v1/edit-social-account");
 				httpput.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httpput.setHeader("Accept", "application/json");
 				httpput.setHeader("Content-type", "application/json;charset=UTF-8");
@@ -609,7 +609,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
             bm.compress(getFormat(filePath), 75, bos);
             byte[] data = bos.toByteArray();
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost postRequest = new HttpPost("http://muslimmarry.campcoders.com/api/v1/upload-avatar");
+            HttpPost postRequest = new HttpPost(helpers.url+"api/v1/upload-avatar");
             ByteArrayBody bab = new ByteArrayBody(data, getNameFromPath(filePath));
             MultipartEntity reqEntity = new MultipartEntity(
                     HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -655,7 +655,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 				jObj.put("avatar", params[0]);
 				
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPut httpput = new HttpPut("http://muslimmarry.campcoders.com/api/v1/change-avatar");
+				HttpPut httpput = new HttpPut(helpers.url+"api/v1/change-avatar");
 				StringEntity se = new StringEntity(jObj.toString());
 				httpput.setEntity(se);
 				httpput.setHeader("Accept", "application/json");

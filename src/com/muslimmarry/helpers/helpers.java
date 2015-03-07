@@ -13,6 +13,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 public class helpers {
+	
+	public static String url = "http://muslimmarry.campcoders.com/";
+	
 	public static String convertInputStreamToString(InputStream inputStream) throws IOException{
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
         String line = "";

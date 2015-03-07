@@ -263,7 +263,7 @@ public class RegisterActivity extends Activity {
 				Log.d("myTag", jObj.toString());
 				
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost("http://muslimmarry.campcoders.com/api/v1/check-username-and-email-exist");
+				HttpPost httppost = new HttpPost(helpers.url+"api/v1/check-username-and-email-exist");
 				StringEntity se = new StringEntity(jObj.toString());
 				httppost.setEntity(se);
 				httppost.setHeader("Accept", "application/json");

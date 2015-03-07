@@ -117,7 +117,7 @@ public class LoginActivity extends Activity {
 				jObj.put("password", pword.getText().toString());
 				
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost("http://muslimmarry.campcoders.com/api/v1/login");
+				HttpPost httppost = new HttpPost(helpers.url+"api/v1/login");
 				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httppost.setHeader("Accept", "application/json");
 				httppost.setHeader("Content-type", "application/json;charset=UTF-8");

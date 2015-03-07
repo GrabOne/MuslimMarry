@@ -495,7 +495,7 @@ public class SearchFilterFragment extends Fragment {
 				Log.d("obj", jObj.toString());
 				
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost("http://muslimmarry.campcoders.com/api/v1/search");
+				HttpPost httppost = new HttpPost(helpers.url+"api/v1/search");
 				StringEntity se = new StringEntity(jObj.toString());
 				httppost.setEntity(se);
 				httppost.setHeader("Accept", "application/json");
@@ -589,7 +589,7 @@ public class SearchFilterFragment extends Fragment {
 		protected Void doInBackground(String... arg0) {
 			// TODO Auto-generated method stub
 			ServiceHandler sh = new ServiceHandler();
-			String jsonStr = sh.makeServiceCall("http://muslimmarry.campcoders.com/api/v1/language", ServiceHandler.GET);
+			String jsonStr = sh.makeServiceCall(helpers.url+"api/v1/language", ServiceHandler.GET);
 			if(jsonStr != null){
 				speaksLst.clear();
 				try{

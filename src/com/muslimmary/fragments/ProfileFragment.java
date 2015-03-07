@@ -275,7 +275,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 				jObj.put("type", Integer.parseInt(params[0]));
 				
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost("http://muslimmarry.campcoders.com/api/v1/block-user");
+				HttpPost httppost = new HttpPost(helpers.url+"api/v1/block-user");
 				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httppost.setHeader("Accept", "application/json");
 				httppost.setHeader("Content-type", "application/json;charset=UTF-8");
@@ -333,7 +333,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 				jObj.put("user_report_id", _user_id_block);
 				
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost("http://muslimmarry.campcoders.com/api/v1/report-user");
+				HttpPost httppost = new HttpPost(helpers.url+"api/v1/report-user");
 				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httppost.setHeader("Accept", "application/json");
 				httppost.setHeader("Content-type", "application/json;charset=UTF-8");
