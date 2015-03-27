@@ -45,10 +45,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -63,6 +61,7 @@ import android.widget.Toast;
 
 import com.example.muslimmarry.R;
 import com.muslimmarry.activities.MainActivity;
+import com.muslimmarry.helpers.ImageManager;
 import com.muslimmarry.helpers.TransparentProgressDialog;
 import com.muslimmarry.helpers.helpers;
 import com.muslimmarry.sharedpref.prefUser;
@@ -70,8 +69,6 @@ import com.squareup.picasso.Picasso;
 
 public class EditProfileFragment extends Fragment implements OnClickListener {
 	
-	ImageView back;
-	ImageView option;
 	RelativeLayout name_group;
 	View line1;
 	ImageView large_img;
@@ -143,9 +140,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_edit_profile, container, false);
-		TextView title = (TextView)rootView.findViewById(R.id.title);
-		option = (ImageView)rootView.findViewById(R.id.option);
-		back = (ImageView)rootView.findViewById(R.id.back);
+		helpers.setTouch(rootView);
 		name_group = (RelativeLayout)rootView.findViewById(R.id.name_group);
 		line1 = (View)rootView.findViewById(R.id.line1);
 		large_img = (ImageView)rootView.findViewById(R.id.large_img);
@@ -163,18 +158,9 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 		birthday = (EditText)rootView.findViewById(R.id.birthday);
 		done = (Button)rootView.findViewById(R.id.done);
 		TextView tvshare = (TextView)rootView.findViewById(R.id.tvshare);
-		rootView.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return true;
-			}
-		});
-
+		
 		((MainActivity)getActivity()).setBgGroupOriginal();
-		((MainActivity)getActivity()).setFontTypeButton(done);
-		((MainActivity)getActivity()).setFontTypeText(title);
+		new helpers(getActivity()).setFontTypeButton(done);
 		
 		// create pref object
 		pref = getActivity().getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -246,44 +232,6 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 			}
 		});
 		
-		back.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-				switch (arg1.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					back.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					back.setBackgroundColor(Color.TRANSPARENT);
-					((MainActivity)getActivity()).hideKeyboard();
-					getFragmentManager().popBackStack();
-					break;
-				default:
-					break;
-				}
-				return true;
-			}
-		});
-		option.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					option.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					option.setBackgroundColor(Color.TRANSPARENT);
-					((MainActivity)getActivity()).showRightMenu();
-				default:
-					break;
-				}
-				return true;
-			}
-		});
 		tvshare.setOnClickListener(this);
 		
 		arrow_dategr.setOnClickListener(this);
@@ -559,15 +507,16 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 			String picturePath = cursor.getString(columnIndex);
 			cursor.close();
-			Log.d("choose path", picturePath);
-			avatar.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+			Bitmap bm = BitmapFactory.decodeFile(picturePath);
+			avatar.setImageBitmap(ImageManager.scaleBitmap(bm, 480, 480));
 			new UploadImg().execute(picturePath);
 		}else if (requestCode == CAMERA_REQUEST) {  
 			Intent returnIntent = new Intent();
     		returnIntent.putExtra("Path", mCurrentPhotoPath);
     		getActivity().setResult(getActivity().RESULT_OK, returnIntent);
     		Log.d("capture path", mCurrentPhotoPath);
-    		avatar.setImageBitmap(BitmapFactory.decodeFile(mCurrentPhotoPath));
+    		Bitmap bm = BitmapFactory.decodeFile(mCurrentPhotoPath);
+			avatar.setImageBitmap(ImageManager.scaleBitmap(bm, 480, 480));
     		new UploadImg().execute(mCurrentPhotoPath);
         }
 	}
@@ -781,5 +730,13 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 		});
 		dialog = alertDialog.create();
 		dialog.show();
+	}
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		((MainActivity)getActivity()).setElementTopNav(true, true, false, false);
+		((MainActivity)getActivity()).setTitle("edit profile");
+		((MainActivity)getActivity()).showTopNav(true);
 	}
 }

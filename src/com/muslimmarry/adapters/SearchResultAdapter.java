@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.muslimmarry.R;
 import com.muslimmarry.activities.MainActivity;
-import com.muslimmarry.item.SearchResultItem;
+import com.muslimmarry.model.SearchResultItem;
 import com.squareup.picasso.Picasso;
 
 public class SearchResultAdapter extends ArrayAdapter<SearchResultItem> {
@@ -38,7 +38,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResultItem> {
 		ViewHolder viewHolder = null;
 		if(rowView == null){
 			LayoutInflater inflate = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			rowView = inflate.inflate(R.layout.list_item_search_result, null);
+			rowView = inflate.inflate(R.layout.row_search_result, null);
 			viewHolder = new ViewHolder();
 			viewHolder.bottom_bar = (ViewGroup)rowView.findViewById(R.id.bottom_bar);
 			viewHolder.avatar = (ImageView)rowView.findViewById(R.id.avatar);

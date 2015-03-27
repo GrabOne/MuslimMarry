@@ -15,15 +15,12 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -48,17 +45,15 @@ import com.muslimmarry.helpers.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.muslimmarry.helpers.ServiceHandler;
 import com.muslimmarry.helpers.TransparentProgressDialog;
 import com.muslimmarry.helpers.helpers;
-import com.muslimmarry.item.GetDialogItem;
-import com.muslimmarry.item.JobItem;
-import com.muslimmarry.item.SpeakItem;
+import com.muslimmarry.model.GetDialogItem;
+import com.muslimmarry.model.JobItem;
+import com.muslimmarry.model.SpeakItem;
 import com.muslimmarry.sharedpref.DistanceIn;
 import com.muslimmarry.sharedpref.prefUser;
 
 public class SearchFilterFragment extends Fragment {
 	
 	View rootView;
-	ImageView back;
-	ImageView option;
 	EditText speak;
 	ImageView addSpeak;
 	EditText job;
@@ -121,9 +116,7 @@ public class SearchFilterFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		rootView = inflater.inflate(R.layout.fragment_search_filter, container, false);
-		TextView title = (TextView)rootView.findViewById(R.id.title);
-		back = (ImageView)rootView.findViewById(R.id.back);
-		option = (ImageView)rootView.findViewById(R.id.option);
+		helpers.setTouch(rootView);
 		speak = (EditText)rootView.findViewById(R.id.speak);
 		addSpeak = (ImageView)rootView.findViewById(R.id.addSpeak);
 		job = (EditText)rootView.findViewById(R.id.job);
@@ -140,14 +133,6 @@ public class SearchFilterFragment extends Fragment {
 		show = (Button)rootView.findViewById(R.id.show);
 		listSpeak = (ListView)rootView.findViewById(R.id.listSpeak);
 		listJob = (ListView)rootView.findViewById(R.id.listJob);
-		rootView.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return true;
-			}
-		});
 		
 		new FetchSpeaks().execute();
 		
@@ -189,46 +174,7 @@ public class SearchFilterFragment extends Fragment {
 				}
 			}
 		});
-		((MainActivity)getActivity()).setFontTypeText(title);
-		((MainActivity)getActivity()).setFontTypeButton(show);
-		back.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-				switch (arg1.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					back.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					back.setBackgroundColor(Color.TRANSPARENT);
-					((MainActivity)getActivity()).setBgGroupOriginal();
-					getFragmentManager().popBackStack();
-					break;
-				default:
-					break;
-				}
-				return true;
-			}
-		});
-		option.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					option.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					option.setBackgroundColor(Color.TRANSPARENT);
-					((MainActivity)getActivity()).showRightMenu();
-				default:
-					break;
-				}
-				return true;
-			}
-		});
+		new helpers(getActivity()).setFontTypeButton(show);
 		
 		// speak
 		speak.setOnClickListener(new OnClickListener() {
@@ -354,7 +300,7 @@ public class SearchFilterFragment extends Fragment {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
-			View rowView = LayoutInflater.from(getActivity()).inflate(R.layout.list_item_my_listview, null);
+			View rowView = LayoutInflater.from(getActivity()).inflate(R.layout.row_my_listview, null);
 			TextView txt = (TextView)rowView.findViewById(R.id.txt);
 			ImageView remove = (ImageView)rowView.findViewById(R.id.remove);
 			SpeakItem item = dataSpeaks.get(position);
@@ -400,7 +346,7 @@ public class SearchFilterFragment extends Fragment {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
-			View rowView = LayoutInflater.from(getActivity()).inflate(R.layout.list_item_my_listview, null);
+			View rowView = LayoutInflater.from(getActivity()).inflate(R.layout.row_my_listview, null);
 			TextView txt = (TextView)rowView.findViewById(R.id.txt);
 			ImageView remove = (ImageView)rowView.findViewById(R.id.remove);
 			JobItem item = dataJobs.get(position);
@@ -615,5 +561,13 @@ public class SearchFilterFragment extends Fragment {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 		}
+	}
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		((MainActivity)getActivity()).setElementTopNav(true, true, false, false);
+		((MainActivity)getActivity()).setTitle("search filters");
+		((MainActivity)getActivity()).showTopNav(true);
 	}
 }

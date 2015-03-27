@@ -6,28 +6,24 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Fragment;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.muslimmarry.R;
 import com.muslimmarry.activities.MainActivity;
 import com.muslimmarry.adapters.SearchResultAdapter;
-import com.muslimmarry.helpers.Notify;
-import com.muslimmarry.item.SearchResultItem;
+import com.muslimmarry.helpers.helpers;
+import com.muslimmarry.model.SearchResultItem;
 
 public class SearchResultFragment extends Fragment {
 	
-	ImageView option;
-	
+	TextView notify;
 	GridView mGrid;
 	ArrayList<SearchResultItem> mlst = new ArrayList<SearchResultItem>();
 	SearchResultAdapter adapter;
@@ -37,16 +33,10 @@ public class SearchResultFragment extends Fragment {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_search_result, container, false);
+		helpers.setTouch(rootView);
 		mGrid = (GridView)rootView.findViewById(R.id.mGrid);
-		option = (ImageView)rootView.findViewById(R.id.option);
-		rootView.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return true;
-			}
-		});
+		notify = (TextView)rootView.findViewById(R.id.notify);
+		
 		// get json object from search filter
 		try{
 			JSONObject jObj = new JSONObject(getArguments().getString("arrList"));
@@ -65,36 +55,18 @@ public class SearchResultFragment extends Fragment {
 					mlst.add(new SearchResultItem(data.getString("_id"),data.getString("nickname"), username, data.getString("occupation"), data.getString("age"), data.getString("avatar"),
 							data.getString("birthday"), data.getString("email"), data.getString("height"), languageArr.toString(), data.getString("promocode"), locate.getString("country"),
 							locate.getString("city"), coordinates.getString("lat"), coordinates.getString("lng"), data.getDouble("distance"), false));
-					adapter = new SearchResultAdapter(getActivity(), R.layout.list_item_search_result, mlst);
+					adapter = new SearchResultAdapter(getActivity(), R.layout.row_search_result, mlst);
 					mGrid.setAdapter(adapter);
+					notify.setVisibility(View.GONE);
 				}
 			}else{
-				Notify.show(getActivity(), "No result matches!");
+				notify.setVisibility(View.VISIBLE);
 			}
 		}catch(NullPointerException e){
 			e.printStackTrace();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
-		option.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					option.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					option.setBackgroundColor(Color.TRANSPARENT);
-					((MainActivity)getActivity()).showRightMenu();
-				default:
-					break;
-				}
-				return true;
-			}
-		});
 		
 		mGrid.setOnItemClickListener(new OnItemClickListener() {
 
@@ -113,5 +85,12 @@ public class SearchResultFragment extends Fragment {
 		});
 		
 		return rootView;
+	}
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		((MainActivity)getActivity()).setElementTopNav(true, false, false, true);
+		((MainActivity)getActivity()).showTopNav(true);
 	}
 }

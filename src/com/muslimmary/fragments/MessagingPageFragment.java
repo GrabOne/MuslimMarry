@@ -6,10 +6,8 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +19,8 @@ import android.widget.TextView;
 import com.example.muslimmarry.R;
 import com.muslimmarry.activities.MainActivity;
 import com.muslimmarry.adapters.MessagingPageAdapter;
-import com.muslimmarry.item.MessageItem;
+import com.muslimmarry.helpers.helpers;
+import com.muslimmarry.model.MessageItem;
 import com.muslimmarry.sharedpref.prefUser;
 import com.squareup.picasso.Picasso;
 
@@ -43,26 +42,20 @@ public class MessagingPageFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		View rootView = inflater.inflate(R.layout.fragment_messaging_page, container, false);		
+		View rootView = inflater.inflate(R.layout.fragment_messaging_page, container, false);
+		helpers.setTouch(rootView);
 		TextView name = (TextView)rootView.findViewById(R.id.name);
 		large_img = (ImageView)rootView.findViewById(R.id.large_img);
 		message_content = (ViewGroup)rootView.findViewById(R.id.message_content);
 		etmessage = (EditText)rootView.findViewById(R.id.etmessage);
 		btnSend = (Button)rootView.findViewById(R.id.btnSend);
         lvMsg = (ListView) rootView.findViewById(R.id.listMessage);
-        adapter = new MessagingPageAdapter(getActivity(), R.layout.list_item_chat_message);
+        adapter = new MessagingPageAdapter(getActivity(), R.layout.row_chat_message);
         lvMsg.setAdapter(adapter);
 		ImageView back = (ImageView)rootView.findViewById(R.id.back);
-		rootView.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return true;
-			}
-		});
+		
 		((MainActivity)getActivity()).setBgGroupOriginal();
-		((MainActivity)getActivity()).setFontTypeText(name);
+		new helpers(getActivity()).setFontTypeText(name);
 		
 		// create user object
 		user = new prefUser(getActivity());
@@ -116,5 +109,11 @@ public class MessagingPageFragment extends Fragment {
     private void addItems(boolean left, String txt) {
         adapter.add(new MessageItem(false, txt));
         adapter.add(new MessageItem(true, txt));
+    }
+    @Override
+    public void onResume() {
+    	// TODO Auto-generated method stub
+    	super.onResume();
+    	((MainActivity)getActivity()).showTopNav(false);
     }
 }

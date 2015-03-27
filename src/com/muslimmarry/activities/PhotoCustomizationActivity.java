@@ -45,6 +45,7 @@ import android.widget.TextView;
 
 import com.devsmart.android.ui.HorizontalListView;
 import com.example.muslimmarry.R;
+import com.muslimmarry.helpers.ImageManager;
 import com.muslimmarry.helpers.helpers;
 
 public class PhotoCustomizationActivity extends Activity {
@@ -162,7 +163,7 @@ public class PhotoCustomizationActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
-			View rowView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_photo_customization, null);
+			View rowView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_photo_customization, null);
 			ImageView icon = (ImageView)rowView.findViewById(R.id.icon);
 			icon.setImageResource(dataObjects[position]);
 			return rowView;
@@ -219,15 +220,16 @@ public class PhotoCustomizationActivity extends Activity {
 			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 			picturePath = cursor.getString(columnIndex);
 			cursor.close();
-			Log.d("choose path", picturePath);
-			photo_customize.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+			Bitmap bm = BitmapFactory.decodeFile(picturePath);
+			photo_customize.setImageBitmap(ImageManager.scaleBitmap(bm, 900, 900));
 			new UploadImg().execute(picturePath);
 		}else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {  
 			Intent returnIntent = new Intent();
     		returnIntent.putExtra("Path", picturePath);
     		setResult(RESULT_OK, returnIntent);
     		Log.d("capture path", picturePath);
-    		photo_customize.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+    		Bitmap bm = BitmapFactory.decodeFile(picturePath);
+			photo_customize.setImageBitmap(ImageManager.scaleBitmap(bm, 480, 480));
     		new UploadImg().execute(picturePath);
         }
 	};

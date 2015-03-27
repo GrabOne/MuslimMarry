@@ -33,7 +33,8 @@
         android:src="@drawable/avatar"
         android:contentDescription="@string/image_desc"
         android:layout_marginTop="30dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop" />
     
     <Button
         android:id="@+id/btn"

@@ -2,6 +2,7 @@ package com.muslimmarry.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.muslimmarry.R;
+import com.muslimmarry.helpers.ImageManager;
 
 public class PhotoConfirmationActivity extends Activity {
 	
@@ -59,7 +61,9 @@ public class PhotoConfirmationActivity extends Activity {
 		}
 		
 		try{
-			photo.setImageBitmap(BitmapFactory.decodeFile(getIntent().getExtras().getString("picturePath")));
+//			photo.setImageBitmap(BitmapFactory.decodeFile(getIntent().getExtras().getString("picturePath")));
+			Bitmap bm = BitmapFactory.decodeFile(getIntent().getExtras().getString("picturePath"));
+			photo.setImageBitmap(ImageManager.scaleBitmap(bm, 900, 900));
 		}catch(NullPointerException e){}
 		
 		back.setOnTouchListener(new OnTouchListener() {

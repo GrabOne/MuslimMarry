@@ -5,9 +5,69 @@
     android:background="#ffffff"
     android:focusableInTouchMode="true" >
     
+    <RelativeLayout
+        android:id="@+id/top_nav"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#52bbdb" >
+        
+        <ImageView
+	        android:id="@+id/back"
+	        android:layout_width="45dp"
+	        android:layout_height="40dp"
+	        android:paddingLeft="15dp"
+	        android:paddingRight="15dp"
+	        android:paddingBottom="5dp"
+	        android:paddingTop="5dp"
+	        android:src="@drawable/back"
+	        android:contentDescription="@string/image_desc"
+	        android:layout_centerVertical="true" />
+        
+        <TextView
+            android:id="@+id/title"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="34sp" />
+        
+        <ImageView
+            android:id="@+id/muslim_icon"
+            android:layout_centerInParent="true"
+            android:layout_width="86dp"
+            android:layout_height="30dp"
+            android:src="@drawable/muslim_logo"
+            android:contentDescription="@string/image_desc"
+            android:visibility="gone" />
+        
+        <ImageView
+            android:id="@+id/gift_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/gift_receive_title_icon"
+            android:contentDescription="@string/image_desc"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+        
+        <ImageView
+            android:id="@+id/option"
+            android:layout_width="47dp"
+            android:layout_height="44dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/option_icon"
+            android:contentDescription="@string/image_desc"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+        
+    </RelativeLayout>
+    
     <fragment
         android:name="com.muslimmary.fragments.SearchFilterFragment"
         android:id="@+id/frag"
+        android:layout_below="@id/top_nav"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginBottom="50dp" />

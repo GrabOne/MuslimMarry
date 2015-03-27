@@ -5,28 +5,21 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.example.muslimmarry.R;
 import com.muslimmarry.activities.MainActivity;
+import com.muslimmarry.helpers.helpers;
 import com.muslimmarry.sharedpref.DistanceIn;
 
 public class AppSettingFragment extends Fragment {
-	
-	ImageView back;
-	ImageView option;
 	
 	DistanceIn mi;
 	
@@ -35,62 +28,14 @@ public class AppSettingFragment extends Fragment {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_app_setting, container, false);
-		TextView title = (TextView)rootView.findViewById(R.id.title);
-		back = (ImageView)rootView.findViewById(R.id.back);
-		option = (ImageView)rootView.findViewById(R.id.option);
+		helpers.setTouch(rootView);
 		SwipeLayout swipe = (SwipeLayout)rootView.findViewById(R.id.swipe);
 		ViewGroup del_acc = (ViewGroup)rootView.findViewById(R.id.del_acc);
 		RadioGroup radioDistanceIn = (RadioGroup)rootView.findViewById(R.id.radioDistanceIn);
-		rootView.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return true;
-			}
-		});
 		
 		swipe.setDragEdge(SwipeLayout.DragEdge.Bottom);
-		((MainActivity)getActivity()).setBgGroupOriginal();
-		((MainActivity)getActivity()).setFontTypeText(title);
 		
-		back.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-				switch (arg1.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					back.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					back.setBackgroundColor(Color.TRANSPARENT);
-					getFragmentManager().popBackStack();
-					break;
-				default:
-					break;
-				}
-				return true;
-			}
-		});
-		option.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					option.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					option.setBackgroundColor(Color.TRANSPARENT);
-					((MainActivity)getActivity()).showRightMenu();
-				default:
-					break;
-				}
-				return true;
-			}
-		});
+		((MainActivity)getActivity()).setBgGroupOriginal();
 		
 		mi = new DistanceIn(getActivity());
 		if(mi.isCheckMi()){
@@ -150,5 +95,13 @@ public class AppSettingFragment extends Fragment {
 			}
 		});
 		return rootView;
+	}
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		((MainActivity)getActivity()).setElementTopNav(true, true, false, false);
+		((MainActivity)getActivity()).setTitle("app settings");
+		((MainActivity)getActivity()).showTopNav(true);
 	}
 }

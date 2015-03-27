@@ -5,17 +5,15 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.muslimmarry.R;
 import com.muslimmarry.activities.MainActivity;
+import com.muslimmarry.helpers.helpers;
 
 public class GiftReceivePageFragment extends Fragment {
 	
@@ -32,6 +30,7 @@ public class GiftReceivePageFragment extends Fragment {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_gift_receive_page, container, false);
+		helpers.setTouch(rootView);
 		profile_detail = (ViewGroup)rootView.findViewById(R.id.profile_detail);
 		iv = (ImageView)rootView.findViewById(R.id.iv);
 		iv.setTag(R.drawable.ic_heart_unselected);
@@ -42,33 +41,7 @@ public class GiftReceivePageFragment extends Fragment {
 		report_spam = (ImageView)rootView.findViewById(R.id.report_spam);
 		more = (ImageView)rootView.findViewById(R.id.more);
 		more.setTag(R.drawable.arrow_up);
-		Button option = (Button)rootView.findViewById(R.id.option);
-		ImageView back = (ImageView)rootView.findViewById(R.id.back);
-		rootView.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return true;
-			}
-		});
-		back.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				((MainActivity)getActivity()).hideKeyboard();
-				getFragmentManager().popBackStack();
-			}
-		});
-		option.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				((MainActivity)getActivity()).showRightMenu();
-			}
-		});
+		
 		((MainActivity)getActivity()).setBgGroupOriginal();
 		more.setOnClickListener(new OnClickListener() {
 			
@@ -173,9 +146,16 @@ public class GiftReceivePageFragment extends Fragment {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				report_spam.setImageResource(R.drawable.spam_actived);
-				Toast.makeText(getActivity(), "sent report to admin!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getActivity(), "Sent report to admin!", Toast.LENGTH_SHORT).show();
 			}
 		});
 		return rootView;
+	}
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		((MainActivity)getActivity()).setElementTopNav(true, false, true, false);
+		((MainActivity)getActivity()).showTopNav(true);
 	}
 }

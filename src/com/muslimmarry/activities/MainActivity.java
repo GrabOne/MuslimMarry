@@ -12,15 +12,16 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
@@ -33,6 +34,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.muslimmarry.R;
@@ -41,7 +43,8 @@ import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.muslimmarry.adapters.NavDrawerAdapter;
 import com.muslimmarry.adapters.SendGiftAdapter;
 import com.muslimmarry.helpers.TransparentProgressDialog;
-import com.muslimmarry.item.SendGiftItem;
+import com.muslimmarry.helpers.helpers;
+import com.muslimmarry.model.SendGiftItem;
 import com.muslimmarry.sharedpref.prefUser;
 import com.muslimmary.fragments.AccountSettingFragment;
 import com.muslimmary.fragments.AppSettingFragment;
@@ -56,8 +59,14 @@ import com.muslimmary.fragments.SearchFilterFragment.SendDataToSearchResult;
 import com.muslimmary.fragments.SearchResultFragment;
 import com.squareup.picasso.Picasso;
 
-public class MainActivity extends Activity implements SendDataToSearchResult {
+public class MainActivity extends Activity implements SendDataToSearchResult, OnTouchListener {
 	
+	RelativeLayout top_nav;
+	ImageView back;
+	ImageView option;
+	TextView title;
+	ImageView muslim_icon;
+	ImageView gift_icon;
 	Fragment fragment = null;
 	SlidingMenu menu;
 	ListView navList;
@@ -92,8 +101,18 @@ public class MainActivity extends Activity implements SendDataToSearchResult {
 		bell = (ViewGroup)findViewById(R.id.bell);
 		find_user = (ViewGroup)findViewById(R.id.find_user);
 		message = (ViewGroup)findViewById(R.id.message);
+		back = (ImageView)findViewById(R.id.back);
+		option = (ImageView)findViewById(R.id.option);
+		title = (TextView)findViewById(R.id.title);
+		muslim_icon = (ImageView)findViewById(R.id.muslim_icon);
+		gift_icon = (ImageView)findViewById(R.id.gift_icon);
+		top_nav = (RelativeLayout)findViewById(R.id.top_nav);
 		
+		new helpers(MainActivity.this).setFontTypeText(title);
 		setBgGroupFindUser();
+		
+		back.setOnTouchListener(this);
+		option.setOnTouchListener(this);
 		
 		// redirect to payment option
 		try{
@@ -135,6 +154,12 @@ public class MainActivity extends Activity implements SendDataToSearchResult {
 		if(user_info.get(prefUser.KEY_AVATAR).length() > 0){
 			Picasso.with(this).load(user_info.get(prefUser.KEY_AVATAR)).fit().centerCrop().into(large_img);
 		}
+	}
+	/**
+	 * Set title
+	 */
+	public void setTitle(String str){
+		title.setText(str.toUpperCase());
 	}
 	/**
 	 * Slide menu item click listener
@@ -181,7 +206,6 @@ public class MainActivity extends Activity implements SendDataToSearchResult {
 		default:
 			break;
 		}
-
 		if (fragment != null) {
 			// update selected item and title, then close the menu
 			navList.setItemChecked(position, true);
@@ -236,7 +260,7 @@ public class MainActivity extends Activity implements SendDataToSearchResult {
 		View layout = getLayoutInflater().inflate(R.layout.layout_send_gift, null);
 		ImageView close = (ImageView)layout.findViewById(R.id.close);
 		Button sendgift = (Button)layout.findViewById(R.id.sendgift);
-		setFontTypeButton(sendgift);
+		new helpers(MainActivity.this).setFontTypeButton(sendgift);
 		close.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -289,7 +313,7 @@ public class MainActivity extends Activity implements SendDataToSearchResult {
 		mlst.add(new SendGiftItem(R.drawable.gift_box_07,  false));
 		mlst.add(new SendGiftItem(R.drawable.gift_box_08,  false));
 		mlst.add(new SendGiftItem(R.drawable.gift_box_09,  false));
-		adapter = new SendGiftAdapter(getApplicationContext(), R.layout.list_item_gift, mlst);
+		adapter = new SendGiftAdapter(getApplicationContext(), R.layout.row_item_gift, mlst);
 		mGrid.setAdapter(adapter);
 		
 		dim.setVisibility(View.VISIBLE);
@@ -369,6 +393,45 @@ public class MainActivity extends Activity implements SendDataToSearchResult {
         popup.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
         popup.showAsDropDown(anchorView);
 	}
+	/*
+	 * Show/hide top nav
+	 */
+	public void showTopNav(boolean flag){
+		if(flag == true){
+			top_nav.setVisibility(View.VISIBLE);
+		}else{
+			top_nav.setVisibility(View.GONE);
+		}
+	}
+	
+	/*
+	 * Show/hide element of top nav
+	 */
+	public void setElementTopNav(boolean _back, boolean _title, boolean _gift_icon, boolean _muslim_icon){
+		if(_back == true){
+			back.setVisibility(View.VISIBLE);
+		}else{
+			back.setVisibility(View.GONE);
+		}
+		
+		if(_title == true){
+			title.setVisibility(View.VISIBLE);
+		}else{
+			title.setVisibility(View.GONE);
+		}
+		
+		if(_gift_icon == true){
+			gift_icon.setVisibility(View.VISIBLE);
+		}else{
+			gift_icon.setVisibility(View.GONE);
+		}
+		
+		if(_muslim_icon == true){
+			muslim_icon.setVisibility(View.VISIBLE);
+		}else{
+			muslim_icon.setVisibility(View.GONE);
+		}
+	}
 	
 	public void setBgGroupBell(){
 		bell.setBackgroundColor(Color.parseColor("#399bb7"));
@@ -438,20 +501,6 @@ public class MainActivity extends Activity implements SendDataToSearchResult {
     	day = Integer.parseInt(birthday.substring(8, 10));
     }
     
-    public void backActivity(){
-    	finish();
-    }
-    public void setFontTypeText(TextView tv){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		tv.setTypeface(face);
-	}
-	
-	public void setFontTypeButton(Button btn){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		btn.setTypeface(face);
-	}
 	@Override
 	public void SendArrList(String arrList) {
 		// TODO Auto-generated method stub
@@ -484,5 +533,40 @@ public class MainActivity extends Activity implements SendDataToSearchResult {
 	    FragmentTransaction fragmentTransaction = fm.beginTransaction();
 	    fragmentTransaction.replace(R.id.frag, fr);
 	    fragmentTransaction.addToBackStack(null).commit();
+	}
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		if(v.getId() == R.id.back){
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				back.setBackgroundColor(Color.parseColor("#2e9dbc"));
+				break;
+			case MotionEvent.ACTION_UP:
+				back.setBackgroundColor(Color.TRANSPARENT);
+				hideKeyboard();
+				if(title.getText().toString().equalsIgnoreCase("settings")){
+					finish();
+				}else{
+					getFragmentManager().popBackStack();
+				}
+				break;
+			default:
+				break;
+			}
+		}else if(v.getId() == R.id.option){
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				option.setBackgroundColor(Color.parseColor("#2e9dbc"));
+				break;
+			case MotionEvent.ACTION_UP:
+				option.setBackgroundColor(Color.TRANSPARENT);
+				showRightMenu();
+				break;
+			default:
+				break;
+			}
+		}
+		return true;
 	}
 }

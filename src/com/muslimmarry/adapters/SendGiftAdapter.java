@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import com.example.muslimmarry.R;
-import com.muslimmarry.item.SendGiftItem;
+import com.muslimmarry.model.SendGiftItem;
 
 
 public class SendGiftAdapter extends ArrayAdapter<SendGiftItem> {
@@ -33,7 +33,7 @@ public class SendGiftAdapter extends ArrayAdapter<SendGiftItem> {
 		ViewHolder viewHolder = null;
 		if(rowView == null){
 			LayoutInflater inflate = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			rowView = inflate.inflate(R.layout.list_item_gift, null);
+			rowView = inflate.inflate(R.layout.row_item_gift, null);
 			viewHolder = new ViewHolder();
 			viewHolder.gift_box = (ImageView)rowView.findViewById(R.id.gift_box);
 			viewHolder.check = (ImageView)rowView.findViewById(R.id.check);

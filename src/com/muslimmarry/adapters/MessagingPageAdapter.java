@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.muslimmarry.R;
-import com.muslimmarry.item.MessageItem;
+import com.muslimmarry.model.MessageItem;
 
 public class MessagingPageAdapter extends ArrayAdapter<MessageItem> {
 
@@ -45,7 +45,7 @@ public class MessagingPageAdapter extends ArrayAdapter<MessageItem> {
 		View row = convertView;
 		if (row == null) {
 			LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			row = inflater.inflate(R.layout.list_item_chat_message, parent, false);
+			row = inflater.inflate(R.layout.row_chat_message, parent, false);
 		}
 
 		wrapper = (LinearLayout) row.findViewById(R.id.wrapper);

@@ -45,7 +45,7 @@ public class NavDrawerAdapter extends BaseAdapter {
 		ViewHolder viewHolder;
 		if(convertView == null){
 			inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.list_item_nav_drawer, null);
+			convertView = inflater.inflate(R.layout.row_nav_drawer, null);
 			viewHolder = new ViewHolder();
 			viewHolder.txt = (TextView)convertView.findViewById(R.id.txt);
 			convertView.setTag(viewHolder);

@@ -20,10 +20,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -78,6 +76,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+		helpers.setTouch(rootView);
 		box_profile = (ViewGroup)rootView.findViewById(R.id.box_profile);
 		profile_detail = (ViewGroup)rootView.findViewById(R.id.profile_detail);
 		iv = (ImageView)rootView.findViewById(R.id.iv);
@@ -98,14 +97,6 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 		height = (TextView)rootView.findViewById(R.id.height);
 		occupation = (TextView)rootView.findViewById(R.id.occupation);
 		llLanguage = (LinearLayout)rootView.findViewById(R.id.llLanguage);
-		rootView.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return true;
-			}
-		});
 		
 		// create user object
 		user = new prefUser(getActivity());
@@ -151,6 +142,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 		}
 		
 		((MainActivity)getActivity()).setBgGroupOriginal();
+		
 		back.setOnClickListener(this);
 		more.setOnClickListener(this);
 		option.setOnClickListener(this);
@@ -368,5 +360,11 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 				e.printStackTrace();
 			}
 		}
+	}
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		((MainActivity)getActivity()).showTopNav(false);
 	}
 }

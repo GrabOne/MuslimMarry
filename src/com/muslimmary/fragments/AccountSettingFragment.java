@@ -13,21 +13,17 @@ import org.json.JSONObject;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muslimmarry.R;
@@ -38,8 +34,6 @@ import com.muslimmarry.sharedpref.prefUser;
 
 public class AccountSettingFragment extends Fragment implements OnClickListener {
 	
-	ImageView back;
-	ImageView option;
 	RelativeLayout row2;
 	RelativeLayout row3;
 	RelativeLayout row4;
@@ -77,9 +71,7 @@ public class AccountSettingFragment extends Fragment implements OnClickListener 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_account_setting, container, false);
-		TextView title = (TextView)rootView.findViewById(R.id.title);
-		option = (ImageView)rootView.findViewById(R.id.option);
-		back = (ImageView)rootView.findViewById(R.id.back);
+		helpers.setTouch(rootView);
 		row2 = (RelativeLayout)rootView.findViewById(R.id.row2);
 		row3 = (RelativeLayout)rootView.findViewById(R.id.row3);
 		row4 = (RelativeLayout)rootView.findViewById(R.id.row4);
@@ -95,56 +87,9 @@ public class AccountSettingFragment extends Fragment implements OnClickListener 
 		ic_pword = (ImageView)rootView.findViewById(R.id.ic_pword);
 		ic_pc = (ImageView)rootView.findViewById(R.id.ic_pc);
 		done = (Button)rootView.findViewById(R.id.done);
-		rootView.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				return true;
-			}
-		});
-		((MainActivity)getActivity()).setBgGroupOriginal();
-		((MainActivity)getActivity()).setFontTypeText(title);
-		((MainActivity)getActivity()).setFontTypeButton(done);
 		
-		back.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-				switch (arg1.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					back.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					back.setBackgroundColor(Color.TRANSPARENT);
-					((MainActivity)getActivity()).hideKeyboard();
-					getFragmentManager().popBackStack();
-					break;
-				default:
-					break;
-				}
-				return true;
-			}
-		});
-		option.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					option.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					option.setBackgroundColor(Color.TRANSPARENT);
-					((MainActivity)getActivity()).showRightMenu();
-				default:
-					break;
-				}
-				return true;
-			}
-		});
+		((MainActivity)getActivity()).setBgGroupOriginal();
+		new helpers(getActivity()).setFontTypeButton(done);
 		
 		// create pref object
 		pref = getActivity().getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -354,5 +299,13 @@ public class AccountSettingFragment extends Fragment implements OnClickListener 
 		default:
 			break;
 		}
+	}
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		((MainActivity)getActivity()).setElementTopNav(true, true, false, false);
+		((MainActivity)getActivity()).setTitle("account");
+		((MainActivity)getActivity()).showTopNav(true);
 	}
 }

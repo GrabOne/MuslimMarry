@@ -6,25 +6,26 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true" >
     
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="55dp"
+        android:layout_height="50dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:src="@drawable/back"
+        android:contentDescription="@string/image_desc" />
+    
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:scrollbars="none" >
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_below="@id/back" >
         
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
-            
-            <ImageView
-		        android:id="@+id/back"
-		        android:layout_width="55dp"
-		        android:layout_height="50dp"
-		        android:paddingLeft="20dp"
-		        android:paddingRight="20dp"
-		        android:paddingBottom="10dp"
-		        android:paddingTop="10dp"
-		        android:src="@drawable/back"
-		        android:contentDescription="@string/image_desc" />
 		    
 		    <ImageView
 		        android:id="@+id/logo"

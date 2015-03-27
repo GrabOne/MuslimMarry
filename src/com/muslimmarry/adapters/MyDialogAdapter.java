@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.muslimmarry.R;
-import com.muslimmarry.item.GetDialogItem;
+import com.muslimmarry.model.GetDialogItem;
 
 public class MyDialogAdapter extends BaseAdapter {
 	
@@ -48,7 +48,7 @@ public class MyDialogAdapter extends BaseAdapter {
 		ViewHolder viewHolder;
 		if(convertView == null){
 			inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.list_item_my_dialog, null);
+			convertView = inflater.inflate(R.layout.row_my_dialog, null);
 			viewHolder = new ViewHolder();
 			viewHolder.txt = (TextView)convertView.findViewById(R.id.txt);
 			convertView.setTag(viewHolder);

@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.muslimmarry.R;
-import com.muslimmarry.item.DashBoardMessageItem;
+import com.muslimmarry.model.DashBoardMessageItem;
 
 public class DashBoardMessageAdapter extends ArrayAdapter<DashBoardMessageItem> {
 	
@@ -35,7 +35,7 @@ public class DashBoardMessageAdapter extends ArrayAdapter<DashBoardMessageItem> 
 		ViewHolder viewHolder = null;
 		if(rowView == null){
 			LayoutInflater inflate = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			rowView = inflate.inflate(R.layout.list_item_dashboard_message, null);
+			rowView = inflate.inflate(R.layout.row_dashboard_message, null);
 			viewHolder = new ViewHolder();
 			viewHolder.avatar = (ImageView)rowView.findViewById(R.id.avatar);
 			viewHolder.name = (TextView)rowView.findViewById(R.id.name);
