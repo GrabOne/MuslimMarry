@@ -57,8 +57,7 @@
 		            android:layout_height="wrap_content"
 		            android:paddingTop="5dp"
 		            android:paddingBottom="5dp"
-		            android:paddingLeft="20dp"
-		            android:paddingRight="20dp" >
+		            android:paddingLeft="20dp" >
 		            
 		            <ImageView
 		                android:id="@+id/ivon"
@@ -66,7 +65,8 @@
 		                android:layout_height="20dp"
 		                android:src="@drawable/ic_online"
 		                android:contentDescription="@string/image_desc"
-		                android:layout_marginTop="7dp" />
+		                android:layout_marginTop="7dp"
+		                android:layout_centerVertical="true" />
 		            
 		            <TextView
 		                android:id="@+id/name"
@@ -76,7 +76,8 @@
 		                android:text="Manahil Kaba"
 		                android:textColor="#101010"
 		                android:textSize="24sp"
-		                android:layout_marginLeft="10dp" />
+		                android:layout_marginLeft="10dp"
+		                android:layout_centerVertical="true" />
 		            
 		            <ImageView
 		                android:id="@+id/more"
@@ -85,6 +86,7 @@
 		                android:src="@drawable/arrow_up"
 		                android:layout_alignParentRight="true"
 		                android:padding="15dp"
+		                android:layout_marginRight="5dp"
 		                android:contentDescription="@string/image_desc" />
 		            
 		            <RelativeLayout

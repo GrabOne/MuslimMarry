@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wrapper"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 
-    <LinearLayout
-        android:id="@+id/wrapper"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
+    <RelativeLayout
+        android:id="@+id/frame"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:padding="5dp" >
         <TextView
-            android:id="@+id/comment"
+	        android:id="@+id/comment"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center"
+	        android:textSize="16sp"
+	        android:textColor="#383737" />
+        
+        <ImageView
+            android:id="@+id/time_ic"
+            android:layout_below="@id/comment"
+            android:layout_width="20dp"
+            android:layout_height="12dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/cmt_time_icon"
+            android:contentDescription="@string/image_desc"
+            android:layout_marginTop="2dp" />
+        
+        <TextView
+            android:id="@+id/time"
+            android:layout_below="@id/comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dip"
-            android:background="@drawable/bubble_yellow"
-            android:paddingLeft="10dip"
-            android:textSize="16sp"
-            android:text=""
-            android:textColor="@android:color/primary_text_light" />
-    </LinearLayout>
-
-</LinearLayout>
+            android:text="18:34"
+            android:textSize="12sp"
+            android:textColor="#706b6b"
+            android:layout_toLeftOf="@id/time_ic"
+            android:layout_marginRight="2dp" />
+    </RelativeLayout>
+    
+</RelativeLayout>

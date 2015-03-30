@@ -12,16 +12,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.muslimmarry.R;
 import com.muslimmarry.model.MessageItem;
 
 public class MessagingPageAdapter extends ArrayAdapter<MessageItem> {
-
+	
+	private RelativeLayout frame;
 	private TextView comment;
 	private List<MessageItem> comments = new ArrayList<MessageItem>();
-	private LinearLayout wrapper;
+	private RelativeLayout wrapper;
 
 	@Override
 	public void add(MessageItem object) {
@@ -48,15 +50,16 @@ public class MessagingPageAdapter extends ArrayAdapter<MessageItem> {
 			row = inflater.inflate(R.layout.row_chat_message, parent, false);
 		}
 
-		wrapper = (LinearLayout) row.findViewById(R.id.wrapper);
+		wrapper = (RelativeLayout)row.findViewById(R.id.wrapper);
 
 		MessageItem coment = getItem(position);
 
+		frame = (RelativeLayout)row.findViewById(R.id.frame);
 		comment = (TextView) row.findViewById(R.id.comment);
 
 		comment.setText(coment.comment);
 
-		comment.setBackgroundResource(coment.left ? R.drawable.bubble_yellow : R.drawable.bubble_green);
+		frame.setBackgroundResource(coment.left ? R.drawable.bubble_yellow : R.drawable.bubble_green);
 		wrapper.setGravity(coment.left ? Gravity.LEFT : Gravity.RIGHT);
 
 		return row;

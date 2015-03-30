@@ -109,10 +109,10 @@ public class PaymentOptionFragment extends Fragment {
 		((MainActivity)getActivity()).setTitle("settings");
 		((MainActivity)getActivity()).showTopNav(true);
 	}
-	@Override
-	public void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		((MainActivity)getActivity()).setTitle("search filters");
-	}
+//	@Override
+//	public void onDetach() {
+//		// TODO Auto-generated method stub
+//		super.onDetach();
+//		((MainActivity)getActivity()).setTitle("search filters");
+//	}
 }
