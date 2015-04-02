@@ -19,7 +19,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -79,7 +78,7 @@ public class RegisterActivity extends Activity {
 		//dateofbirth = (EditText)findViewById(R.id.dateofbirth);
 		pword = (EditText)findViewById(R.id.pword);
 		cfpword = (EditText)findViewById(R.id.cfpword);
-		setFontTypeButton(btnNext);
+		new helpers(getApplicationContext()).setFontTypeButton(btnNext);
 //		dateofbirth.setOnClickListener(new OnClickListener() {
 //			
 //			@Override
@@ -216,12 +215,7 @@ public class RegisterActivity extends Activity {
 //			dateofbirth.setText(year + "-" + _month + "-" + _day);
 		}
 	};
-	
-	public void setFontTypeButton(Button btn){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		btn.setTypeface(face);
-	}
+
 	/*
 	 * validating email
 	 */

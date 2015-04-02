@@ -40,7 +40,6 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResultItem> {
 			LayoutInflater inflate = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			rowView = inflate.inflate(R.layout.row_search_result, null);
 			viewHolder = new ViewHolder();
-			viewHolder.bottom_bar = (ViewGroup)rowView.findViewById(R.id.bottom_bar);
 			viewHolder.avatar = (ImageView)rowView.findViewById(R.id.avatar);
 			viewHolder.info_bg = (ImageView)rowView.findViewById(R.id.info_bg);
 			viewHolder.heart = (ImageView)rowView.findViewById(R.id.heart);
@@ -54,7 +53,6 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResultItem> {
 			viewHolder = (ViewHolder)convertView.getTag();
 		}
 		SearchResultItem item = mlst.get(position);
-		viewHolder.bottom_bar.setBackgroundResource(R.drawable.info_bg);
 		if(item.getAvatar().length() > 0){
 			Picasso.with(mContext).load(item.getAvatar()).fit().centerInside().into(viewHolder.avatar);
 		}
@@ -66,14 +64,12 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResultItem> {
 		
 		if(item.getClick() == true){
 			viewHolder.info_bg.setVisibility(View.VISIBLE);
-			viewHolder.bottom_bar.setBackgroundResource(0);
 			viewHolder.heart.setVisibility(View.VISIBLE);
 			viewHolder.play.setVisibility(View.VISIBLE);
 			viewHolder.heart.setImageResource(R.drawable.heart_icon);
 			viewHolder.play.setImageResource(R.drawable.play_icon);
 		}else{
 			viewHolder.info_bg.setVisibility(View.GONE);
-			viewHolder.bottom_bar.setBackgroundResource(R.drawable.info_bg);
 			viewHolder.heart.setVisibility(View.GONE);
 			viewHolder.play.setVisibility(View.GONE);
 		}
@@ -98,7 +94,6 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResultItem> {
 	}
 	
 	static class ViewHolder{
-		ViewGroup bottom_bar;
 		ImageView avatar;
 		ImageView info_bg;
 		ImageView heart;

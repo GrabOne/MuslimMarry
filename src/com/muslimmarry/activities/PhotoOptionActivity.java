@@ -3,7 +3,6 @@ package com.muslimmarry.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.muslimmarry.R;
+import com.muslimmarry.helpers.helpers;
 
 public class PhotoOptionActivity extends Activity implements OnClickListener {
 	
@@ -45,10 +45,11 @@ public class PhotoOptionActivity extends Activity implements OnClickListener {
 		upload = (Button)findViewById(R.id.upload);
 		take = (Button)findViewById(R.id.take);
 		notnow = (TextView)findViewById(R.id.notnow);
-		setFontTypeText(title2);
-		setFontTypeText(title);
-		setFontTypeButton(take);
-		setFontTypeButton(upload);
+
+		new helpers(getApplicationContext()).setFontTypeText(title);
+		new helpers(getApplicationContext()).setFontTypeText(title2);
+		new helpers(getApplicationContext()).setFontTypeButton(take);
+		new helpers(getApplicationContext()).setFontTypeButton(upload);
 		
 		back.setOnTouchListener(new OnTouchListener() {
 			
@@ -86,22 +87,13 @@ public class PhotoOptionActivity extends Activity implements OnClickListener {
 		take.setOnClickListener(this);
 		notnow.setOnClickListener(this);
 	}
-	public void setFontTypeText(TextView tv){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		tv.setTypeface(face);
-	}
-	public void setFontTypeButton(Button btn){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		btn.setTypeface(face);
-	}
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.upload:
-			Intent i = new Intent(PhotoOptionActivity.this, PhotoCustomizationActivity.class);
+			Intent uploadIntent = new Intent(PhotoOptionActivity.this, PhotoCustomizationActivity.class);
 			Bundle bundle = new Bundle();
 			bundle.putString("uname", _uname);
 			bundle.putString("email", _email);
@@ -111,11 +103,11 @@ public class PhotoOptionActivity extends Activity implements OnClickListener {
 			bundle.putString("country", country);
 			bundle.putString("city", city);
 			bundle.putString("flag", "upload photo");
-			i.putExtras(bundle);
-			startActivity(i);
+			uploadIntent.putExtras(bundle);
+			startActivity(uploadIntent);
 			break;
 		case R.id.take:
-			Intent i2 = new Intent(PhotoOptionActivity.this, PhotoCustomizationActivity.class);
+			Intent takeIntent = new Intent(PhotoOptionActivity.this, PhotoCustomizationActivity.class);
 			Bundle bundle2 = new Bundle();
 			bundle2.putString("uname", _uname);
 			bundle2.putString("email", _email);
@@ -125,11 +117,11 @@ public class PhotoOptionActivity extends Activity implements OnClickListener {
 			bundle2.putString("country", country);
 			bundle2.putString("city", city);
 			bundle2.putString("flag", "take photo");
-			i2.putExtras(bundle2);
-			startActivity(i2);
+			takeIntent.putExtras(bundle2);
+			startActivity(takeIntent);
 			break;
 		case R.id.notnow:
-			Intent i3 = new Intent(PhotoOptionActivity.this, ManuallyLocateActivity.class);
+			Intent notnowIntent = new Intent(PhotoOptionActivity.this, ManuallyLocateActivity.class);
 			Bundle bundle3 = new Bundle();
 			bundle3.putString("uname", _uname);
 			bundle3.putString("email", _email);
@@ -139,8 +131,8 @@ public class PhotoOptionActivity extends Activity implements OnClickListener {
 			bundle3.putString("avatar", "");
 			bundle3.putString("country", country);
 			bundle3.putString("city", city);
-			i3.putExtras(bundle3);
-			startActivity(i3);
+			notnowIntent.putExtras(bundle3);
+			startActivity(notnowIntent);
 			break;
 		default:
 			break;

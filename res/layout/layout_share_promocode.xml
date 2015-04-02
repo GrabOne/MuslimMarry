@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:text="when a friend uses your promo code you both receive __ €!"
+        android:text="When a friend uses your promo code you both receive __ €!"
         android:textSize="14sp"
         android:textColor="#2e2e2e"
         android:layout_marginTop="15dp"

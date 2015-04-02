@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+	<RelativeLayout
+	    android:id="@+id/top"
+	    android:layout_width="fill_parent"
+	    android:layout_height="300dp"
+	    android:background="#58c4e8" >
+	    
+	    <ImageView
+	        android:id="@+id/back"
+	        android:layout_width="55dp"
+	        android:layout_height="50dp"
+	        android:paddingLeft="20dp"
+	        android:paddingRight="20dp"
+	        android:paddingBottom="10dp"
+	        android:paddingTop="10dp"
+	        android:src="@drawable/back"
+	        android:contentDescription="@string/image_desc" />
+	    
+	    <TextView
+	        android:id="@+id/title"
+	        android:layout_below="@id/back"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="OOPS!"
+	        android:textColor="#ffffff"
+	        android:textSize="60sp"
+	        android:layout_centerHorizontal="true" />
+	    
+	    <TextView
+	        android:layout_below="@id/title"
+	        android:layout_width="280dp"
+	        android:layout_height="wrap_content"
+	        android:text="GPS is taking longer than usual. Please make sure Wifi and GPS is turned on in your settings or choose your location on the map"
+	        android:gravity="center_horizontal"
+	        android:layout_centerHorizontal="true"
+	        android:textSize="18sp"
+	        android:textColor="#ffffff" />
+	    
+	    <Button
+	        android:layout_width="60dp"
+	        android:layout_height="40dp"
+	        android:text="DONE"
+	        android:textSize="14sp"
+	        android:textColor="#ffffff"
+	        android:background="@android:color/transparent"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginRight="20dp" />
+	    
+	</RelativeLayout>
+	
+	<fragment
+        android:id="@+id/map"
+        android:layout_below="@id/top"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+	
+</RelativeLayout>

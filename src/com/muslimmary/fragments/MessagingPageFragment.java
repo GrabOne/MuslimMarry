@@ -1,5 +1,6 @@
 package com.muslimmary.fragments;
 
+import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import android.app.Fragment;
@@ -17,6 +18,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.muslimmarry.R;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.muslimmarry.activities.MainActivity;
 import com.muslimmarry.adapters.MessagingPageAdapter;
 import com.muslimmarry.helpers.helpers;
@@ -25,7 +28,7 @@ import com.muslimmarry.sharedpref.prefUser;
 import com.squareup.picasso.Picasso;
 
 
-public class MessagingPageFragment extends Fragment {
+public class MessagingPageFragment extends Fragment implements OnClickListener {
 	
 	private MessagingPageAdapter adapter;
 	
@@ -37,6 +40,8 @@ public class MessagingPageFragment extends Fragment {
     ImageView large_img;
     
     prefUser user;
+    String userid = "";
+    String token = "";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,26 +58,20 @@ public class MessagingPageFragment extends Fragment {
         adapter = new MessagingPageAdapter(getActivity(), R.layout.row_chat_message);
         lvMsg.setAdapter(adapter);
 		ImageView back = (ImageView)rootView.findViewById(R.id.back);
-		
+		back.setOnClickListener(this);
+		btnSend.setOnClickListener(this);
 		((MainActivity)getActivity()).setBgGroupOriginal();
 		new helpers(getActivity()).setFontTypeText(name);
 		
 		// create user object
 		user = new prefUser(getActivity());
 		HashMap<String, String> user_info = user.getUserDetail();
+		userid = user_info.get(prefUser.KEY_USERID);
+		token = user_info.get(prefUser.KEY_TOKEN);
 		if(user_info.get(prefUser.KEY_AVATAR).length() > 0){
 			Picasso.with(getActivity()).load(user_info.get(prefUser.KEY_AVATAR)).fit().centerCrop().into(large_img);
 		}
 		
-		back.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				((MainActivity)getActivity()).hideKeyboard();
-				getFragmentManager().popBackStack();
-			}
-		});
 		etmessage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -83,19 +82,6 @@ public class MessagingPageFragment extends Fragment {
 	            }
             }
         });
-		btnSend.setOnClickListener(new OnClickListener() {
-			
-	        @Override
-	        public void onClick(View arg0) {
-	            // TODO Auto-generated method stub
-	            if (etmessage.getText().toString().length() > 0) {
-	
-	                // Them Item vao khung chat. Xac dinh left de hien thi doan chat cua tung nguoi
-	                addItems(true, etmessage.getText().toString());
-	                etmessage.setText("");
-	            }
-	        }
-	    });
 		
 		return rootView;
 	}
@@ -116,4 +102,30 @@ public class MessagingPageFragment extends Fragment {
     	super.onResume();
     	((MainActivity)getActivity()).showTopNav(false);
     }
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.back:
+			((MainActivity)getActivity()).hideKeyboard();
+			getFragmentManager().popBackStack();
+			break;
+		case R.id.btnSend:
+			if (etmessage.getText().toString().length() > 0) {
+				
+                // Them Item vao khung chat. Xac dinh left de hien thi doan chat cua tung nguoi
+                addItems(true, etmessage.getText().toString());
+                etmessage.setText("");
+                
+                try{
+                	Socket socket = IO.socket("http://campcoders.com:7777/chat?user_id="+ userid +"&token=" + token);
+                	socket.connect();
+                }catch(URISyntaxException e){
+                	e.printStackTrace();
+                }
+            }
+		default:
+			break;
+		}
+	}
 }

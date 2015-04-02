@@ -3,13 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
-    <ImageView
-        android:id="@+id/photo_customize"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/image_desc" />
-    
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="fill_parent"
@@ -55,62 +48,30 @@
         
     </RelativeLayout>
     
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
-        
-        <RelativeLayout
-            android:id="@+id/rl1"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:background="#80e3e3e3" >
-            
-            <Button
-                android:layout_width="13dp"
-                android:layout_height="25dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/arrow_left"
-                android:layout_marginLeft="20dp" />
-            
-            <com.devsmart.android.ui.HorizontalListView
-	            android:id="@+id/mList"
-	            android:layout_width="290dp"
-	            android:layout_height="40dp"
-	            android:layout_centerHorizontal="true"
-	            android:scrollbars="none"
-	             >
-			</com.devsmart.android.ui.HorizontalListView>
-			
-            <Button
-                android:layout_width="13dp"
-                android:layout_height="25dp"
-                android:layout_centerVertical="true"
-                android:background="@drawable/arrow_right_2"
-                android:layout_marginRight="20dp"
-                android:layout_alignParentRight="true" />
-            
-        </RelativeLayout>
-        
-        <RelativeLayout
-            android:layout_below="@id/rl1"
-	        android:layout_width="fill_parent"
-	        android:layout_height="70dp"
-	        android:background="#8048b5d4" >
-	        
-	        <Button
-	            android:id="@+id/btn"
-	            android:layout_width="250dp"
-	            android:layout_height="50dp"
-	            android:text="USE THIS PHOTO"
-	            android:textColor="#48b5d4"
-	            android:textSize="34dp"
-	            android:gravity="center"
-	            android:background="@drawable/my_btn_white"
-	            android:layout_centerInParent="true" />
-	        
-	    </RelativeLayout>
-        
-    </RelativeLayout>
+    <ImageView
+        android:id="@+id/photo_customize"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:contentDescription="@string/image_desc"
+        android:layout_centerInParent="true" />
+	
+	<RelativeLayout
+	 android:layout_width="fill_parent"
+	 android:layout_height="70dp"
+	 android:background="#8048b5d4"
+	 android:layout_alignParentBottom="true" >
+	 
+	 <Button
+	     android:id="@+id/btn"
+	     android:layout_width="250dp"
+	     android:layout_height="50dp"
+	     android:text="USE THIS PHOTO"
+	     android:textColor="#48b5d4"
+	     android:textSize="34dp"
+	     android:gravity="center"
+	     android:background="@drawable/my_btn_white"
+	     android:layout_centerInParent="true" />
+	    
+	</RelativeLayout>
 
 </RelativeLayout>

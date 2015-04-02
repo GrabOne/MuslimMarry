@@ -1,51 +1,31 @@
 package com.muslimmarry.activities;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.ByteArrayBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONObject;
+import java.util.Random;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.devsmart.android.ui.HorizontalListView;
 import com.example.muslimmarry.R;
-import com.muslimmarry.helpers.ImageManager;
+import com.muslimmarry.helpers.UploadImage;
 import com.muslimmarry.helpers.helpers;
 
 public class PhotoCustomizationActivity extends Activity {
@@ -53,12 +33,10 @@ public class PhotoCustomizationActivity extends Activity {
 	ImageView back;
 	ImageView photo_customize;
 	private static int RESULT_LOAD_IMAGE = 1;
-	private static final int CAMERA_REQUEST = 1888;
+	private static final int CAMERA_REQUEST = 2;
+    final int CROP_PIC = 3;
+	private Uri picUri;
 	String picturePath = "";
-	
-	HorizontalListView mList;
-	int[] dataObjects = new int[]{ R.drawable.photo_customize_icon_01, R.drawable.photo_customize_icon_02,
-			R.drawable.photo_customize_icon_03, R.drawable.photo_customize_icon_04 };
 	
 	String _uname = "";
 	String _email = "";
@@ -79,10 +57,9 @@ public class PhotoCustomizationActivity extends Activity {
 		back = (ImageView)findViewById(R.id.back);
 		photo_customize = (ImageView)findViewById(R.id.photo_customize);
 		Button btn = (Button)findViewById(R.id.btn);
-		mList = (HorizontalListView)findViewById(R.id.mList);
-		setFontTypeText(title);
-		setFontTypeButton(btn);
-		mList.setAdapter(mAdapter);
+		
+		new helpers(getApplicationContext()).setFontTypeText(title);
+		new helpers(getApplicationContext()).setFontTypeButton(btn);
 		
 		// get bundle data
 		try{
@@ -147,90 +124,40 @@ public class PhotoCustomizationActivity extends Activity {
 			}
 		});
 	}
-	public void setFontTypeText(TextView tv){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		tv.setTypeface(face);
-	}
-	public void setFontTypeButton(Button btn){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		btn.setTypeface(face);
-	}
 	
-	private BaseAdapter mAdapter = new BaseAdapter() {
-		
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			// TODO Auto-generated method stub
-			View rowView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_photo_customization, null);
-			ImageView icon = (ImageView)rowView.findViewById(R.id.icon);
-			icon.setImageResource(dataObjects[position]);
-			return rowView;
-		}
-		
-		@Override
-		public long getItemId(int arg0) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-		
-		@Override
-		public Object getItem(int arg0) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		@Override
-		public int getCount() {
-			// TODO Auto-generated method stub
-			return dataObjects.length;
-		}
-	};
 	private void captureImage() {
-		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-	    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-	        File photoFile = null;
-	        try {
-	            photoFile = createImageFile();
-	        } catch (IOException ex) {
-	        	Log.e("Mainactivity", "Cannot create image: "+ex.getMessage(), ex);
-	        }
-	        if (photoFile != null) {
-	            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-	                    Uri.fromFile(photoFile));
-	            startActivityForResult(takePictureIntent, CAMERA_REQUEST);
-	        }
-	    }
+		// use standard intent to capture an image
+        Intent captureIntent = new Intent(
+                MediaStore.ACTION_IMAGE_CAPTURE);
+        // we will handle the returned data in onActivityResult
+        startActivityForResult(captureIntent, CAMERA_REQUEST);
     }
-	private File createImageFile() throws IOException {
-	    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-	    String imageFileName = "JPEG_" + timeStamp + ".jpg";
-
-	    File photo = new File(Environment.getExternalStorageDirectory(),  imageFileName);
-	    picturePath=photo.getAbsolutePath();
-	    return photo;
-	}
+	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data){
-			Uri selectedImage = data.getData();
-			String[] filePathColumn = { MediaStore.Images.Media.DATA };
-			Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-			cursor.moveToFirst();
-			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-			picturePath = cursor.getString(columnIndex);
-			cursor.close();
-			Bitmap bm = BitmapFactory.decodeFile(picturePath);
-			photo_customize.setImageBitmap(ImageManager.scaleBitmap(bm, 900, 900));
-			new UploadImg().execute(picturePath);
+			picUri = data.getData();
+			performCrop();
 		}else if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {  
-			Intent returnIntent = new Intent();
-    		returnIntent.putExtra("Path", picturePath);
-    		setResult(RESULT_OK, returnIntent);
-    		Log.d("capture path", picturePath);
-    		Bitmap bm = BitmapFactory.decodeFile(picturePath);
-			photo_customize.setImageBitmap(ImageManager.scaleBitmap(bm, 480, 480));
-    		new UploadImg().execute(picturePath);
+			picUri = data.getData();
+			performCrop();
+        }else if (requestCode == CROP_PIC) {
+            // get the returned data
+            Bundle extras = data.getExtras();
+            
+            if (extras != null) {               
+                Bitmap photo = extras.getParcelable("data");
+                photo_customize.setImageBitmap(photo);
+                
+                String root = Environment.getExternalStorageDirectory().toString();
+                File myDir = new File(root + "/saved_images");    
+                myDir.mkdirs();
+                Random generator = new Random();
+                int n = 10000;
+                n = generator.nextInt(n);
+                picturePath = myDir + "/Image-"+ n +".jpg";
+                Log.d("myTag", picturePath);
+                new UploadImg().execute(picturePath);
+            }
         }
 	};
 	/*
@@ -246,7 +173,7 @@ public class PhotoCustomizationActivity extends Activity {
 		protected Void doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			try {
-				uploadImage(params[0]);
+				_avatar = UploadImage.uploadImage(params[0]);
 			} catch (Exception e) {
 				Log.d("error", e.getMessage(), e);
 			}
@@ -258,49 +185,36 @@ public class PhotoCustomizationActivity extends Activity {
 			super.onPostExecute(result);
 		}
 	}
-	private String getNameFromPath(String path){
-		return path;
-	}
-	private CompressFormat getFormat(String path){
-		return CompressFormat.JPEG;
-	}
-	@SuppressWarnings("deprecation")
-	private String uploadImage(String filePath) throws Exception {
-		String urlResult=null;
-        try {
-        	Bitmap bm = BitmapFactory.decodeFile(filePath);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bm.compress(getFormat(filePath), 75, bos);
-            byte[] data = bos.toByteArray();
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpPost postRequest = new HttpPost(helpers.url+"api/v1/upload-avatar");
-            ByteArrayBody bab = new ByteArrayBody(data, getNameFromPath(filePath));
-            MultipartEntity reqEntity = new MultipartEntity(
-                    HttpMultipartMode.BROWSER_COMPATIBLE);
-            reqEntity.addPart("image", bab);
-            postRequest.setEntity(reqEntity);
 
-            HttpResponse response = httpClient.execute(postRequest);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    response.getEntity().getContent(), "UTF-8"));
-            String sResponse;
-            StringBuilder s = new StringBuilder();
-            
-            while ((sResponse = reader.readLine()) != null) {
-                s = s.append(sResponse);
-            }
-            JSONObject jsonReader = new JSONObject(s.toString());
-            Log.d("error", s.toString());
-            try{
-            	_avatar = jsonReader.getString("url");
-            }catch(Exception e){
-            	Log.d("error", "Upload error or json not match: "+e.getMessage());
-            	return null;
-            }
-        } catch (Exception e) {
-            Log.d("error", e.getMessage(), e);
-            return null;
+	/**
+     * this function does the crop operation.
+     */
+    private void performCrop() {
+        // take care of exceptions
+        try {
+            // call the standard crop action intent (the user device may not
+            // support it)
+            Intent cropIntent = new Intent("com.android.camera.action.CROP");
+            // indicate image type and Uri
+            cropIntent.setDataAndType(picUri, "image/*");
+            // set crop properties
+            cropIntent.putExtra("crop", "true");
+            // indicate aspect of desired crop
+            cropIntent.putExtra("aspectX", 2);
+            cropIntent.putExtra("aspectY", 2);
+            // indicate output X and Y
+            cropIntent.putExtra("outputX", 256);
+            cropIntent.putExtra("outputY", 256);
+            // retrieve data on return
+            cropIntent.putExtra("return-data", true);
+            // start the activity - we handle returning in onActivityResult
+            startActivityForResult(cropIntent, CROP_PIC);
         }
-        return urlResult;
+        // respond to users whose devices do not support the crop action
+        catch (ActivityNotFoundException anfe) {
+            Toast toast = Toast
+                    .makeText(this, "This device doesn't support the crop action!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.muslimmarry.R;
 import com.muslimmarry.helpers.ImageManager;
+import com.muslimmarry.helpers.helpers;
 
 public class PhotoConfirmationActivity extends Activity {
 	
@@ -43,8 +43,9 @@ public class PhotoConfirmationActivity extends Activity {
 		Button btn = (Button)findViewById(R.id.btn);
 		TextView title = (TextView)findViewById(R.id.title);
 		ImageView photo = (ImageView)findViewById(R.id.photo);
-		setFontTypeText(title);
-		setFontTypeButton(btn);
+		
+		new helpers(getApplicationContext()).setFontTypeText(title);
+		new helpers(getApplicationContext()).setFontTypeButton(btn);
 		
 		try{
 			Bundle getResults = getIntent().getExtras();
@@ -63,7 +64,7 @@ public class PhotoConfirmationActivity extends Activity {
 		try{
 //			photo.setImageBitmap(BitmapFactory.decodeFile(getIntent().getExtras().getString("picturePath")));
 			Bitmap bm = BitmapFactory.decodeFile(getIntent().getExtras().getString("picturePath"));
-			photo.setImageBitmap(ImageManager.scaleBitmap(bm, 900, 900));
+			photo.setImageBitmap(bm);
 		}catch(NullPointerException e){}
 		
 		back.setOnTouchListener(new OnTouchListener() {
@@ -105,15 +106,5 @@ public class PhotoConfirmationActivity extends Activity {
 			}
 		});
 	}
-	public void setFontTypeText(TextView tv){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		tv.setTypeface(face);
-	}
 	
-	public void setFontTypeButton(Button btn){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		btn.setTypeface(face);
-	}
 }

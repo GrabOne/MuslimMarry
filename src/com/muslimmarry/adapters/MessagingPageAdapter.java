@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -59,7 +58,7 @@ public class MessagingPageAdapter extends ArrayAdapter<MessageItem> {
 
 		comment.setText(coment.comment);
 
-		frame.setBackgroundResource(coment.left ? R.drawable.bubble_yellow : R.drawable.bubble_green);
+		frame.setBackgroundResource(coment.left ? R.drawable.bubble_gray : R.drawable.bubble_green);
 		wrapper.setGravity(coment.left ? Gravity.LEFT : Gravity.RIGHT);
 
 		return row;

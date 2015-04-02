@@ -5,201 +5,271 @@
     android:background="#ffffff"
     android:orientation="vertical" >
     
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="100dp" >
-        
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/avatar"
-            android:contentDescription="@string/image_desc" />
-        
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_toRightOf="@id/avatar" >
-            
-            <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="Say something..."
-	            android:textColor="#a8a6a6"
-	            android:textSize="14sp"
-	            android:layout_marginTop="5dp"
-	            android:layout_marginLeft="20dp" />
-	        
-	        <ImageView
-	            android:id="@+id/icon"
-	            android:layout_alignParentBottom="true"
-	            android:layout_width="15dp"
-	            android:layout_height="15dp"
-	            android:layout_marginBottom="13dp"
-	            android:layout_marginLeft="15dp"
-	            android:src="@drawable/gift_check"
-	            android:contentDescription="@string/image_desc" />
-	        
-	        <TextView
-	            android:layout_toRightOf="@id/icon"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="Muslimmarry.de"
-	            android:textColor="#52bbdb"
-	            android:textSize="14sp"
-	            android:layout_marginLeft="4dp"
-	            android:layout_marginTop="60dp" />
-	        
-	        <TextView
-	            android:layout_toRightOf="@id/icon"
-	            android:layout_alignParentBottom="true"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="Bonus Code:dr4me"
-	            android:textColor="#52bbdb"
-	            android:textSize="14sp"
-	            android:layout_marginLeft="4dp"
-	            android:layout_marginBottom="3dp" />
-	        
-	        <View
-	            android:layout_width="fill_parent"
-	            android:layout_height="1dp"
-	            android:layout_alignParentBottom="true"
-	            android:background="#aaaaaa" />
-            
-        </RelativeLayout>
-        
-    </RelativeLayout>
-    
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:orientation="horizontal" >
-        
-        <LinearLayout
-            android:layout_width="180dp"
-            android:layout_height="40dp"
-            android:orientation="horizontal" >
-            
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/fbs_icon"
-                android:contentDescription="@string/image_desc"
-                android:layout_marginLeft="10dp" />
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Facebook"
-                android:textSize="18sp"
-                android:textColor="#262626"
-                android:layout_marginLeft="15dp"
-                android:layout_gravity="center_vertical" />
-            
-        </LinearLayout>
-        
-        <View
-            android:layout_width="1dp"
-            android:layout_height="40dp"
-            android:background="#aaaaaa" />
-        
-        <LinearLayout
-            android:layout_width="180dp"
-            android:layout_height="40dp"
-            android:orientation="horizontal" >
-            
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/instagam_icon"
-                android:contentDescription="@string/image_desc"
-                android:layout_marginLeft="10dp" />
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Instagram"
-                android:textSize="18sp"
-                android:textColor="#262626"
-                android:layout_marginLeft="15dp"
-                android:layout_gravity="center_vertical" />
-            
-        </LinearLayout>
-        
-    </LinearLayout>
-    <View
-	    android:layout_width="fill_parent"
-	    android:layout_height="1dp"
-	    android:background="#aaaaaa" />
-    
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        android:orientation="horizontal" >
-        
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/promocode_icon"
-            android:contentDescription="@string/image_desc"
-            android:layout_gravity="center_vertical" />
-        
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Others"
-            android:textSize="18sp"
-            android:textColor="#262626"
-            android:layout_marginLeft="15dp"
-            android:layout_gravity="center_vertical" />
-        
-    </LinearLayout>
-    <View
-	    android:layout_width="fill_parent"
-	    android:layout_height="1dp"
-	    android:layout_alignParentBottom="true"
-	    android:background="#aaaaaa" />
-    
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        android:orientation="horizontal" >
-        
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bonus credit earned*"
-            android:textColor="#1c1c1c"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp" />
-        
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3€"
-            android:textSize="16sp"
-            android:textColor="#605f5f"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp" />
-        
-    </RelativeLayout>
-    <View
-	    android:layout_width="fill_parent"
-	    android:layout_height="1dp"
-	    android:layout_alignParentBottom="true"
-	    android:background="#aaaaaa" />
-    <TextView
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="*When friends sign up with your Promo Code “dr4me” you both receive bonus credit."
-        android:textSize="12sp"
-        android:textColor="#605f5f"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp" />
+        android:scrollbars="none" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="10dp" >
+            <TextView
+		        android:layout_width="220dp"
+		        android:layout_height="wrap_content"
+		        android:text="Share your picture with friends!"
+		        android:textSize="13sp"
+		        android:textColor="#212222"
+		        android:layout_gravity="center_horizontal"
+		        android:gravity="center_horizontal"
+		        android:layout_marginTop="20dp" />
+		    
+		    <ImageView
+		        android:id="@+id/photo"
+		        android:layout_width="120dp"
+		        android:layout_height="120dp"
+		        android:contentDescription="@string/image_desc"
+		        android:layout_gravity="center_horizontal"
+		        android:layout_marginTop="20dp" />
+		    
+		    <RelativeLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="20dp"
+		        android:layout_marginTop="15dp"
+		        android:paddingLeft="15dp"
+		        android:paddingRight="15dp"
+		        android:orientation="horizontal" >
+		        <View
+		            android:layout_width="85dp"
+		            android:layout_height="1dp"
+		            android:background="#CCCCCC"
+		            android:layout_centerVertical="true" />
+		        
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="SHARE YOUR PHOTO"
+		            android:textColor="#212222"
+		            android:textSize="12sp"
+		            android:layout_centerHorizontal="true"
+		            android:layout_centerVertical="true" />
+		        
+		        <View
+		            android:layout_width="85dp"
+		            android:layout_height="1dp"
+		            android:background="#CCCCCC"
+		            android:layout_centerVertical="true"
+		            android:layout_alignParentRight="true" />
+		    </RelativeLayout>
+		    
+		    <RelativeLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:paddingLeft="5dp"
+		        android:paddingRight="5dp" >
+		        <LinearLayout
+		            android:layout_width="110dp"
+		            android:layout_height="wrap_content"
+		            android:orientation="vertical"
+		            android:background="#CCCCCC"
+		            android:paddingTop="15dp"
+		            android:paddingBottom="15dp" >
+		            <LinearLayout
+		                android:layout_width="110dp"
+		                android:layout_height="wrap_content"
+		                android:orientation="vertical" >
+		                <ImageView
+		                    android:layout_width="60dp"
+		                    android:layout_height="60dp"
+		                    android:src="@drawable/invite_via_google"
+		                    android:contentDescription="@string/image_desc"
+		                    android:layout_gravity="center_horizontal" />
+		                <TextView
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="Google +"
+		                    android:textSize="14sp"
+		                    android:textColor="#3a3b3b"
+		                    android:layout_marginTop="5dp"
+		                    android:layout_gravity="center_horizontal" />
+		            </LinearLayout>
+		            <LinearLayout
+		                android:layout_width="110dp"
+		                android:layout_height="wrap_content"
+		                android:orientation="vertical"
+		                android:layout_marginTop="10dp" >
+		                <ImageView
+		                    android:layout_width="60dp"
+		                    android:layout_height="60dp"
+		                    android:src="@drawable/invite_via_fb"
+		                    android:contentDescription="@string/image_desc"
+		                    android:layout_gravity="center_horizontal" />
+		                <TextView
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="Facebook"
+		                    android:textSize="14sp"
+		                    android:textColor="#3a3b3b"
+		                    android:layout_marginTop="5dp"
+		                    android:layout_gravity="center_horizontal" />
+		            </LinearLayout>
+		        </LinearLayout>
+		        
+		        <LinearLayout
+		            android:layout_width="110dp"
+		            android:layout_height="wrap_content"
+		            android:orientation="vertical"
+		            android:background="#CCCCCC"
+		            android:paddingTop="15dp"
+		            android:paddingBottom="15dp"
+		            android:layout_centerHorizontal="true" >
+		            <LinearLayout
+		                android:layout_width="110dp"
+		                android:layout_height="wrap_content"
+		                android:orientation="vertical" >
+		                <ImageView
+		                    android:layout_width="60dp"
+		                    android:layout_height="60dp"
+		                    android:src="@drawable/invite_via_gmail"
+		                    android:contentDescription="@string/image_desc"
+		                    android:layout_gravity="center_horizontal" />
+		                <TextView
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="Gmail"
+		                    android:textSize="14sp"
+		                    android:textColor="#3a3b3b"
+		                    android:layout_marginTop="5dp"
+		                    android:layout_gravity="center_horizontal" />
+		            </LinearLayout>
+		            <LinearLayout
+		                android:layout_width="110dp"
+		                android:layout_height="wrap_content"
+		                android:orientation="vertical"
+		                android:layout_marginTop="10dp" >
+		                <ImageView
+		                    android:layout_width="60dp"
+		                    android:layout_height="60dp"
+		                    android:src="@drawable/invite_via_whatsapp"
+		                    android:contentDescription="@string/image_desc"
+		                    android:layout_gravity="center_horizontal" />
+		                <TextView
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="WhatsApp"
+		                    android:textSize="14sp"
+		                    android:textColor="#3a3b3b"
+		                    android:layout_marginTop="5dp"
+		                    android:layout_gravity="center_horizontal" />
+		            </LinearLayout>
+		        </LinearLayout>
+		        
+		        <LinearLayout
+		            android:layout_width="110dp"
+		            android:layout_height="wrap_content"
+		            android:orientation="vertical"
+		            android:background="#CCCCCC"
+		            android:paddingTop="15dp"
+		            android:paddingBottom="15dp"
+		            android:layout_alignParentRight="true" >
+		            <LinearLayout
+		                android:layout_width="110dp"
+		                android:layout_height="wrap_content"
+		                android:orientation="vertical" >
+		                <ImageView
+		                    android:layout_width="60dp"
+		                    android:layout_height="60dp"
+		                    android:src="@drawable/invite_via_messages"
+		                    android:contentDescription="@string/image_desc"
+		                    android:layout_gravity="center_horizontal" />
+		                <TextView
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="SMS/MMS"
+		                    android:textSize="14sp"
+		                    android:textColor="#3a3b3b"
+		                    android:layout_marginTop="5dp"
+		                    android:layout_gravity="center_horizontal" />
+		            </LinearLayout>
+		            <LinearLayout
+		                android:layout_width="110dp"
+		                android:layout_height="wrap_content"
+		                android:orientation="vertical"
+		                android:layout_marginTop="10dp" >
+		                <ImageView
+		                    android:layout_width="60dp"
+		                    android:layout_height="60dp"
+		                    android:src="@drawable/invite_via_messenger"
+		                    android:contentDescription="@string/image_desc"
+		                    android:layout_gravity="center_horizontal" />
+		                <TextView
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:text="Messenger"
+		                    android:textSize="14sp"
+		                    android:textColor="#3a3b3b"
+		                    android:layout_marginTop="5dp"
+		                    android:layout_gravity="center_horizontal" />
+		            </LinearLayout>
+		        </LinearLayout>
+		    </RelativeLayout>
+		    
+		    <View
+		        android:layout_width="match_parent"
+		        android:layout_height="1dp"
+		        android:background="#CCCCCC"
+		        android:layout_marginTop="5dp" />
+		    
+		    <TextView
+		        android:id="@+id/more"
+		        android:layout_width="80dp"
+		        android:layout_height="50dp"
+		        android:text="More Apps"
+		        android:textSize="14sp"
+		        android:textColor="#1c1c1c"
+		        android:layout_gravity="center"
+		        android:gravity="center" />
+		    
+		    <View
+		        android:layout_width="match_parent"
+		        android:layout_height="1dp"
+		        android:background="#CCCCCC" />
+		    
+		    <RelativeLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="50dp" >
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:textSize="13sp"
+		            android:text="Bonus credit earned*"
+		            android:textColor="#1c1c1c"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="10dp" />
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:textSize="13sp"
+		            android:text="3€"
+		            android:textColor="#1c1c1c"
+		            android:layout_centerVertical="true"
+		            android:layout_marginRight="10dp"
+		            android:layout_alignParentRight="true" />
+		    </RelativeLayout>
+		    
+		    <View
+		        android:layout_width="match_parent"
+		        android:layout_height="1dp"
+		        android:background="#CCCCCC" />
+		    <TextView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="*Lifetime bonus credit earned"
+		        android:textColor="#605f5f"
+		        android:textSize="12sp"
+		        android:layout_marginTop="5dp"
+		        android:layout_marginLeft="10dp" />
+        </LinearLayout>
+    </ScrollView>
 	
 </LinearLayout>

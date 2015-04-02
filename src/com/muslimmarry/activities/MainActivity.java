@@ -51,15 +51,18 @@ import com.muslimmary.fragments.AppSettingFragment;
 import com.muslimmary.fragments.DashboardAlertFragment;
 import com.muslimmary.fragments.DashboardMessageFragment;
 import com.muslimmary.fragments.EditProfileFragment;
+import com.muslimmary.fragments.EditProfileFragment.SendDataToSharePhoto;
+import com.muslimmary.fragments.FavoriteFragment;
 import com.muslimmary.fragments.InviteFragment;
 import com.muslimmary.fragments.PaymentOptionFragment;
 import com.muslimmary.fragments.ProfileFragment;
 import com.muslimmary.fragments.SearchFilterFragment;
 import com.muslimmary.fragments.SearchFilterFragment.SendDataToSearchResult;
 import com.muslimmary.fragments.SearchResultFragment;
+import com.muslimmary.fragments.SharePhotoFragment;
 import com.squareup.picasso.Picasso;
 
-public class MainActivity extends Activity implements SendDataToSearchResult, OnTouchListener {
+public class MainActivity extends Activity implements SendDataToSearchResult, SendDataToSharePhoto, OnTouchListener {
 	
 	RelativeLayout top_nav;
 	ImageView back;
@@ -89,7 +92,7 @@ public class MainActivity extends Activity implements SendDataToSearchResult, On
     TransparentProgressDialog pd;
     String resultString = "";
     
-    final String[] data ={"edit profile","account","app settings", "billing", "invite a friend", "contact us", "log out"};
+    final String[] data ={"edit profile","account","app settings", "billing", "favorites", "invite a friend", "contact us", "log out"};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -194,11 +197,14 @@ public class MainActivity extends Activity implements SendDataToSearchResult, On
 			startActivity(i);
 			break;
 		case 4:
-			fragment = new InviteFragment();
+			fragment = new FavoriteFragment();
 			break;
 		case 5:
+			fragment = new InviteFragment();
 			break;
 		case 6:
+			break;
+		case 7:
 			fragment = null;
 			user = new prefUser(MainActivity.this);
 			user.LogoutUser();
@@ -501,6 +507,10 @@ public class MainActivity extends Activity implements SendDataToSearchResult, On
     	day = Integer.parseInt(birthday.substring(8, 10));
     }
     
+    /*
+     * Send arrList from SearchFilterFragment to SearchResultFragment
+     */
+    
 	@Override
 	public void SendArrList(String arrList) {
 		// TODO Auto-generated method stub
@@ -514,7 +524,7 @@ public class MainActivity extends Activity implements SendDataToSearchResult, On
 	    fragmentTransaction.addToBackStack(null).commit();
 	}
 	/*
-	 * Send data from Search result to profile
+	 * Send data from SearchResultFragment to ProfileFragment
 	 */
 	public void SendUserInfo(String id, String avatar, String name, String username, String age, String language, String height, String occupation) {
 		// TODO Auto-generated method stub
@@ -528,6 +538,21 @@ public class MainActivity extends Activity implements SendDataToSearchResult, On
 		bundle.putString("language", language);
 		bundle.putString("height", height);
 		bundle.putString("occupation", occupation);
+		fr.setArguments(bundle);
+		FragmentManager fm = getFragmentManager();
+	    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+	    fragmentTransaction.replace(R.id.frag, fr);
+	    fragmentTransaction.addToBackStack(null).commit();
+	}
+	/*
+	 * Send image url from EditProfileFragment to SharePhotoFragment
+	 */
+	@Override
+	public void SendPhoto(String avatar) {
+		// TODO Auto-generated method stub
+		SharePhotoFragment fr = new SharePhotoFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString("avatar", avatar);
 		fr.setArguments(bundle);
 		FragmentManager fm = getFragmentManager();
 	    FragmentTransaction fragmentTransaction = fm.beginTransaction();

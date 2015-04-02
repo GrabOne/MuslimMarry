@@ -13,7 +13,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
-import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -40,6 +39,7 @@ import com.muslimmarry.authenticator.FacebookLogin;
 import com.muslimmarry.authenticator.GoogleLogin;
 import com.muslimmarry.authenticator.TwitterLogin;
 import com.muslimmarry.helpers.TransparentProgressDialog;
+import com.muslimmarry.helpers.helpers;
 import com.muslimmarry.sharedpref.prefUser;
 
 public class LoginOrRegisterActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -82,9 +82,9 @@ public class LoginOrRegisterActivity extends Activity implements GoogleApiClient
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login_or_register);
 		btnLogin = (Button)findViewById(R.id.btnLogin);
-		setFontTypeButton(btnLogin);
 		btnRegister = (Button)findViewById(R.id.btnRegister);
-		setFontTypeButton(btnRegister);
+		new helpers(getApplicationContext()).setFontTypeButton(btnLogin);
+		new helpers(getApplicationContext()).setFontTypeButton(btnRegister);
 		fb_ic = (ImageView)findViewById(R.id.fb_ic);
 		tt_ic = (ImageView)findViewById(R.id.tt_ic);
 		gg_ic = (ImageView)findViewById(R.id.gg_ic);
@@ -123,7 +123,7 @@ public class LoginOrRegisterActivity extends Activity implements GoogleApiClient
 		tt_ic.setOnClickListener(this);
 		gg_ic.setOnClickListener(this);
 		
-		// create api client object
+		// create GoogleApiClient object
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 	        .addConnectionCallbacks(this)
 	        .addOnConnectionFailedListener(this)
@@ -141,12 +141,6 @@ public class LoginOrRegisterActivity extends Activity implements GoogleApiClient
 		// Twitter
 		mLocatePref = getApplicationContext().getSharedPreferences(LOCATE_PRE_NAME, 0);
 		new TwitterLogin(LoginOrRegisterActivity.this, mLocatePref.getString("country", ""), mLocatePref.getString("city", ""), mLocatePref.getString("lat", ""), mLocatePref.getString("lng", "")).initTwitter();
-	}
-	
-	public void setFontTypeButton(Button btn){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		btn.setTypeface(face);
 	}
 
 	@Override

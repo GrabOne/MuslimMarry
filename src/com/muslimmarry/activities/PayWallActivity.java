@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.muslimmarry.R;
+import com.muslimmarry.helpers.helpers;
 
 public class PayWallActivity extends Activity {
 	
@@ -42,9 +42,10 @@ public class PayWallActivity extends Activity {
 		TextView title2 = (TextView)findViewById(R.id.title2);
 		back = (ImageView)findViewById(R.id.back);
 		Button upgrade = (Button)findViewById(R.id.upgrade);
-		setFontTypeText(title);
-		setFontTypeText(title2);
-		setFontTypeButton(upgrade);
+
+		new helpers(getApplicationContext()).setFontTypeText(title);
+		new helpers(getApplicationContext()).setFontTypeText(title2);
+		new helpers(getApplicationContext()).setFontTypeButton(upgrade);
 		
 		back.setOnTouchListener(new OnTouchListener() {
 			
@@ -83,16 +84,7 @@ public class PayWallActivity extends Activity {
 			}
 		});
 	}
-	public void setFontTypeText(TextView tv){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		tv.setTypeface(face);
-	}
-	public void setFontTypeButton(Button btn){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		btn.setTypeface(face);
-	}
+	
 	private void SelectPlan(){
 		plans = new String[] {"4.99$/MONTH"};
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(PayWallActivity.this);

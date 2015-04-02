@@ -113,7 +113,7 @@ public class GoogleLogin implements ConnectionCallbacks, OnConnectionFailedListe
         if (!mGoogleApiClient.isConnecting()) {
             Log.d(TAG, "Not connecting");
 
-            Log.d(TAG, "REsolve in sign");
+            Log.d(TAG, "Resolve in sign");
             resolveSignInError();
         }else{
             Log.d(TAG, "GG Connected !");

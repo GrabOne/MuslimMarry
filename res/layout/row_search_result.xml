@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >    
+    android:layout_height="fill_parent"
+    android:background="#ffffff" >    
     
     <com.muslimmarry.helpers.SquareImageView
         android:id="@+id/avatar"
@@ -36,61 +37,45 @@
         android:layout_marginLeft="15dp"
         android:visibility="gone" />
     
-    <RelativeLayout
-        android:id="@+id/bottom_bar"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_below="@id/avatar"
+        android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:layout_alignParentBottom="true" >
-        
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true" >
-            
-            <TextView
-	            android:id="@+id/txtage"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:textColor="#ffffff"
-	            android:textSize="14sp"
-	            android:layout_marginLeft="5dp" />
-	        
-	        <TextView
-	            android:id="@+id/age"
-	            android:layout_toRightOf="@id/txtage"
-	            android:layout_centerVertical="true"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:textColor="#101010"
-	            android:textSize="14sp"
-	            android:layout_marginLeft="5dp" />
-	        
-	        <TextView
-	            android:id="@+id/txtjob"
-	            android:layout_toRightOf="@id/age"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:textColor="#ffffff"
-	            android:textSize="14sp"
-	            android:layout_centerVertical="true"
-	            android:layout_marginLeft="10dp" />
-	        
-	        <TextView
-	            android:id="@+id/job"
-	            android:layout_toRightOf="@id/txtjob"
-	            android:layout_centerVertical="true"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:textColor="#101010"
-	            android:textSize="14sp"
-	            android:layout_marginLeft="5dp"
-	            android:textAllCaps="true" />
-            
-        </RelativeLayout>
-        <View
+        android:orientation="horizontal"
+        android:layout_marginTop="1dp" >
+        <TextView
+            android:id="@+id/txtage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
-    </RelativeLayout>
+            android:textColor="#9a9a9a"
+            android:textSize="14sp"
+            android:layout_marginLeft="5dp" />
+        <TextView
+            android:id="@+id/age"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#101010"
+            android:textSize="14sp"
+            android:layout_marginLeft="5dp" />
+        <TextView
+            android:id="@+id/txtjob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#9a9a9a"
+            android:textSize="14sp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp" />
+        
+        <TextView
+            android:id="@+id/job"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#101010"
+            android:textSize="14sp"
+            android:layout_marginLeft="5dp"
+            android:textAllCaps="true" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -134,6 +135,24 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
     
     SharedPreferences pref;
     Editor editor;
+    
+    SendDataToSharePhoto mCallback;
+    
+    public interface SendDataToSharePhoto{
+    	public void SendPhoto(String avatar);
+    }
+    
+    @Override
+    public void onAttach(Activity activity) {
+    	// TODO Auto-generated method stub
+    	super.onAttach(activity);
+    	try{
+			mCallback = (SendDataToSharePhoto)activity;
+		}catch(ClassCastException e){
+			throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+		}
+    }
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -228,12 +247,15 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				selectImage();
+				EditPhotoFragment fr = new EditPhotoFragment();
+				FragmentManager fm = getFragmentManager();
+			    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+			    fragmentTransaction.replace(R.id.frag, fr);
+			    fragmentTransaction.addToBackStack(null).commit();
 			}
 		});
 		
 		tvshare.setOnClickListener(this);
-		
 		arrow_dategr.setOnClickListener(this);
 		arrow_occgr.setOnClickListener(this);
 		arrow_heightgr.setOnClickListener(this);
@@ -645,7 +667,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.tvshare:
 			((MainActivity)getActivity()).hideKeyboard();
-			selectFragCustomize(new SharePhotoFragment());
+			mCallback.SendPhoto(_avatar);
 			break;
 		case R.id.arrow_dategr:
 			if(birthday.getText().toString().length() > 0){

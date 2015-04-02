@@ -3,7 +3,6 @@ package com.muslimmarry.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.muslimmarry.R;
+import com.muslimmarry.helpers.helpers;
 
 public class LocationActivity extends Activity {
 	
@@ -39,9 +39,10 @@ public class LocationActivity extends Activity {
 		back = (ImageView)findViewById(R.id.back);
 		Button auto = (Button)findViewById(R.id.auto);
 		Button manually = (Button)findViewById(R.id.manually);
-		setFontTypeText(title);
-		setFontTypeButton(auto);
-		setFontTypeButton(manually);
+		
+		new helpers(getApplicationContext()).setFontTypeText(title);
+		new helpers(getApplicationContext()).setFontTypeButton(auto);
+		new helpers(getApplicationContext()).setFontTypeButton(manually);
 		
 		back.setOnTouchListener(new OnTouchListener() {
 			
@@ -115,15 +116,5 @@ public class LocationActivity extends Activity {
 				startActivity(i);
 			}
 		});
-	}
-	public void setFontTypeText(TextView tv){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		tv.setTypeface(face);
-	}
-	public void setFontTypeButton(Button btn){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		btn.setTypeface(face);
 	}
 }

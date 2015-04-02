@@ -8,11 +8,12 @@
         android:id="@+id/mGrid"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:verticalSpacing="0dp"
-        android:horizontalSpacing="0dp"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
         android:numColumns="2"
-        android:scrollbars="none" ></GridView>
+        android:scrollbars="none"
+        android:padding="15dp" ></GridView>
     
     <TextView
         android:id="@+id/notify"

@@ -13,12 +13,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,12 +49,13 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.muslimmarry.gps.GPSManager;
 import com.muslimmarry.helpers.TransparentProgressDialog;
 import com.muslimmarry.helpers.helpers;
 import com.muslimmarry.sharedpref.prefUser;
 
 public class ManuallyLocateActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
-	GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMarkerDragListener, OnMapClickListener, OnMapLongClickListener{
+	GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMarkerDragListener, OnMapClickListener, OnMapLongClickListener, OnTouchListener {
 	
 	private GoogleMap googleMap;
 	private GoogleApiClient mGoogleApiClient;
@@ -91,26 +93,9 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 		TextView title = (TextView)findViewById(R.id.title);
 		back = (ImageView)findViewById(R.id.back);
 		location_name = (TextView)findViewById(R.id.location_name);
-		setFontTypeText(title);
-
-		back.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-				switch (arg1.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					back.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					back.setBackgroundColor(Color.TRANSPARENT);
-					finish();
-				default:
-					break;
-				}
-				return true;
-			}
-		});
+		new helpers(getApplicationContext()).setFontTypeText(title);
+		back.setOnTouchListener(this);
+		
 		// create user object
 		user = new prefUser(ManuallyLocateActivity.this);
 		
@@ -130,7 +115,6 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 		}
 		
 		btndone = (Button)findViewById(R.id.btndone);
-		
 		btndone.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -140,6 +124,15 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 			}
 		});
 		
+		// check gps
+		LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE );
+		boolean statusOfGPS = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		if(!statusOfGPS){
+			GPSManager gps = new GPSManager(ManuallyLocateActivity.this);
+			gps.start();
+		}
+		
+		// create GoogleApiClient object
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 		        .addConnectionCallbacks(this)
 		        .addOnConnectionFailedListener(this)
@@ -268,11 +261,6 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 		    e.printStackTrace();
 		    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
 		}
-	}
-	public void setFontTypeText(TextView tv){
-		Typeface face = Typeface.createFromAsset(getAssets(),
-	            "fonts/moolbor_0.ttf");
-		tv.setTypeface(face);
 	}
 
 	@Override
@@ -408,5 +396,22 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 				e.printStackTrace();
 			}
 		}
+	}
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		if(v.getId() == R.id.back){
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				back.setBackgroundColor(Color.parseColor("#2e9dbc"));
+				break;
+			case MotionEvent.ACTION_UP:
+				back.setBackgroundColor(Color.TRANSPARENT);
+				finish();
+			default:
+				break;
+			}
+		}
+		return true;
 	}
 }
