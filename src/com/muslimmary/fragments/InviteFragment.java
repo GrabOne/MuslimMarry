@@ -21,9 +21,15 @@ public class InviteFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_invite, container, false);
 		helpers.setTouch(rootView);
+		
 		TextView more = (TextView)rootView.findViewById(R.id.more);
+		
+		// set event for element
 		more.setOnClickListener(this);
+		
+		// set background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
+		
 		return rootView;
 	}
 	@Override

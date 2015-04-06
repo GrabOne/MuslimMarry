@@ -32,6 +32,7 @@ public class DashboardAlertFragment extends Fragment {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_dashboard_alert, container, false);
 		helpers.setTouch(rootView);
+		
 		mList = (ListView)rootView.findViewById(R.id.mList);
 		
 		((MainActivity)getActivity()).setBgGroupBell();

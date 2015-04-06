@@ -17,6 +17,7 @@ public class MediaFragment extends Fragment {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_media, container, false);
 		helpers.setTouch(rootView);
+		// set background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
 		return rootView;
 	}

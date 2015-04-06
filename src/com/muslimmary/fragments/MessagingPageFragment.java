@@ -42,6 +42,8 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
     prefUser user;
     String userid = "";
     String token = "";
+    
+    Socket socket;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +51,7 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_messaging_page, container, false);
 		helpers.setTouch(rootView);
+		
 		TextView name = (TextView)rootView.findViewById(R.id.name);
 		large_img = (ImageView)rootView.findViewById(R.id.large_img);
 		message_content = (ViewGroup)rootView.findViewById(R.id.message_content);
@@ -58,9 +61,15 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
         adapter = new MessagingPageAdapter(getActivity(), R.layout.row_chat_message);
         lvMsg.setAdapter(adapter);
 		ImageView back = (ImageView)rootView.findViewById(R.id.back);
+		
+		// set event for element
 		back.setOnClickListener(this);
 		btnSend.setOnClickListener(this);
+		
+		// set background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
+		
+		// set font for element
 		new helpers(getActivity()).setFontTypeText(name);
 		
 		// create user object
@@ -68,8 +77,10 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
 		HashMap<String, String> user_info = user.getUserDetail();
 		userid = user_info.get(prefUser.KEY_USERID);
 		token = user_info.get(prefUser.KEY_TOKEN);
-		if(user_info.get(prefUser.KEY_AVATAR).length() > 0){
-			Picasso.with(getActivity()).load(user_info.get(prefUser.KEY_AVATAR)).fit().centerCrop().into(large_img);
+		
+		// display photo url
+		if(user_info.get(prefUser.KEY_PHOTO).length() > 0){
+			Picasso.with(getActivity()).load(user_info.get(prefUser.KEY_PHOTO)).fit().centerCrop().into(large_img);
 		}
 		
 		etmessage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -118,7 +129,8 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
                 etmessage.setText("");
                 
                 try{
-                	Socket socket = IO.socket("http://campcoders.com:7777/chat?user_id="+ userid +"&token=" + token);
+                	socket = IO.socket("http://campcoders.com:7777/chat?user_id="+ userid +"&token=" + token);
+                	
                 	socket.connect();
                 }catch(URISyntaxException e){
                 	e.printStackTrace();

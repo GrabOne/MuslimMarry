@@ -31,8 +31,10 @@ public class DashboardMessageFragment extends Fragment {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_dashboard_message, container, false);
 		helpers.setTouch(rootView);
+		
 		mList = (ListView)rootView.findViewById(R.id.mList);
 		
+		// set background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupMessage();
 		
 		mList.setOnItemClickListener(new OnItemClickListener() {

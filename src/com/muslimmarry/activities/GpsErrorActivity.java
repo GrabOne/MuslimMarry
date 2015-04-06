@@ -26,7 +26,11 @@ public class GpsErrorActivity extends Activity implements OnTouchListener {
 		
 		back = (ImageView)findViewById(R.id.back);
 		TextView title = (TextView)findViewById(R.id.title);
+		
+		// set event for element
 		back.setOnTouchListener(this);
+		
+		// set font for element
 		new helpers(getApplicationContext()).setFontTypeText(title);
 	}
 

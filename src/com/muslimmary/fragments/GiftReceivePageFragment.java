@@ -15,7 +15,7 @@ import com.example.muslimmarry.R;
 import com.muslimmarry.activities.MainActivity;
 import com.muslimmarry.helpers.helpers;
 
-public class GiftReceivePageFragment extends Fragment {
+public class GiftReceivePageFragment extends Fragment implements OnClickListener {
 	
 	ImageView more;
 	ViewGroup profile_detail;
@@ -31,6 +31,7 @@ public class GiftReceivePageFragment extends Fragment {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_gift_receive_page, container, false);
 		helpers.setTouch(rootView);
+		
 		profile_detail = (ViewGroup)rootView.findViewById(R.id.profile_detail);
 		iv = (ImageView)rootView.findViewById(R.id.iv);
 		iv.setTag(R.drawable.ic_heart_unselected);
@@ -42,113 +43,17 @@ public class GiftReceivePageFragment extends Fragment {
 		more = (ImageView)rootView.findViewById(R.id.more);
 		more.setTag(R.drawable.arrow_up);
 		
+		// set background fo bottom nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
-		more.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				if((Integer)more.getTag() == R.drawable.arrow_up){
-					more.setTag(R.drawable.arrow_down);
-					more.setImageResource(R.drawable.arrow_down);
-					profile_detail.setVisibility(View.VISIBLE);
-					iv.setVisibility(View.GONE);
-				}else{
-					more.setTag(R.drawable.arrow_up);
-					more.setImageResource(R.drawable.arrow_up);
-					profile_detail.setVisibility(View.GONE);
-					iv.setVisibility(View.VISIBLE);
-				}
-			}
-		});
-		heart_selected.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				if((Integer)heart_selected.getTag() == R.drawable.ic_heart_selected){
-					heart_selected.setImageResource(R.drawable.ic_heart_unselected);
-					heart_selected.setTag(R.drawable.ic_heart_unselected);
-					iv.setImageResource(R.drawable.ic_heart_unselected);
-					iv.setTag(R.drawable.ic_heart_unselected);
-				}else{
-					heart_selected.setImageResource(R.drawable.ic_heart_selected);
-					heart_selected.setTag(R.drawable.ic_heart_selected);
-					iv.setImageResource(R.drawable.ic_heart_selected);
-					iv.setTag(R.drawable.ic_heart_selected);
-				}
-			}
-		});
-		iv.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				if((Integer)iv.getTag() == R.drawable.ic_heart_selected){
-					iv.setImageResource(R.drawable.ic_heart_unselected);
-					iv.setTag(R.drawable.ic_heart_unselected);
-					heart_selected.setImageResource(R.drawable.ic_heart_unselected);
-					heart_selected.setTag(R.drawable.ic_heart_unselected);
-				}else{
-					iv.setImageResource(R.drawable.ic_heart_selected);
-					iv.setTag(R.drawable.ic_heart_selected);
-					heart_selected.setImageResource(R.drawable.ic_heart_selected);
-					heart_selected.setTag(R.drawable.ic_heart_selected);
-				}
-			}
-		});
-		invisible.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
-				alertDialog.setMessage("Do you want to block this user?");
-				alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Permanently", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub
-						invisible.setImageResource(R.drawable.invisible_actived);
-					}
-				});
-				alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "30 Days", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub
-						invisible.setImageResource(R.drawable.invisible_actived);
-					}
-				});
-				alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Cancel", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						// TODO Auto-generated method stub
-						
-					}
-				});
-				alertDialog.show();
-				
-			}
-		});
-		gift.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				((MainActivity)getActivity()).displayPopupSendGift(v);
-			}
-		});
-		report_spam.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				report_spam.setImageResource(R.drawable.spam_actived);
-				Toast.makeText(getActivity(), "Sent report to admin!", Toast.LENGTH_SHORT).show();
-			}
-		});
+		
+		// set event for element
+		more.setOnClickListener(this);
+		heart_selected.setOnClickListener(this);
+		iv.setOnClickListener(this);
+		invisible.setOnClickListener(this);
+		gift.setOnClickListener(this);
+		report_spam.setOnClickListener(this);
+		
 		return rootView;
 	}
 	@Override
@@ -157,5 +62,88 @@ public class GiftReceivePageFragment extends Fragment {
 		super.onResume();
 		((MainActivity)getActivity()).setElementTopNav(true, false, true, false);
 		((MainActivity)getActivity()).showTopNav(true);
+	}
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.more:
+			if((Integer)more.getTag() == R.drawable.arrow_up){
+				more.setTag(R.drawable.arrow_down);
+				more.setImageResource(R.drawable.arrow_down);
+				profile_detail.setVisibility(View.VISIBLE);
+				iv.setVisibility(View.GONE);
+			}else{
+				more.setTag(R.drawable.arrow_up);
+				more.setImageResource(R.drawable.arrow_up);
+				profile_detail.setVisibility(View.GONE);
+				iv.setVisibility(View.VISIBLE);
+			}
+			break;
+		case R.id.heart_selected:
+			if((Integer)heart_selected.getTag() == R.drawable.ic_heart_selected){
+				heart_selected.setImageResource(R.drawable.ic_heart_unselected);
+				heart_selected.setTag(R.drawable.ic_heart_unselected);
+				iv.setImageResource(R.drawable.ic_heart_unselected);
+				iv.setTag(R.drawable.ic_heart_unselected);
+			}else{
+				heart_selected.setImageResource(R.drawable.ic_heart_selected);
+				heart_selected.setTag(R.drawable.ic_heart_selected);
+				iv.setImageResource(R.drawable.ic_heart_selected);
+				iv.setTag(R.drawable.ic_heart_selected);
+			}
+			break;
+		case R.id.iv:
+			if((Integer)iv.getTag() == R.drawable.ic_heart_selected){
+				iv.setImageResource(R.drawable.ic_heart_unselected);
+				iv.setTag(R.drawable.ic_heart_unselected);
+				heart_selected.setImageResource(R.drawable.ic_heart_unselected);
+				heart_selected.setTag(R.drawable.ic_heart_unselected);
+			}else{
+				iv.setImageResource(R.drawable.ic_heart_selected);
+				iv.setTag(R.drawable.ic_heart_selected);
+				heart_selected.setImageResource(R.drawable.ic_heart_selected);
+				heart_selected.setTag(R.drawable.ic_heart_selected);
+			}
+			break;
+		case R.id.invisible:
+			AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+			alertDialog.setMessage("Do you want to block this user?");
+			alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Permanently", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					invisible.setImageResource(R.drawable.invisible_actived);
+				}
+			});
+			alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "30 Days", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					invisible.setImageResource(R.drawable.invisible_actived);
+				}
+			});
+			alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Cancel", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			alertDialog.show();
+			break;
+		case R.id.sendgift:
+			((MainActivity)getActivity()).displayPopupSendGift(v);
+			break;
+		case R.id.report_spam:
+			report_spam.setImageResource(R.drawable.spam_actived);
+			Toast.makeText(getActivity(), "Sent report to admin!", Toast.LENGTH_SHORT).show();
+			break;
+		default:
+			break;
+		}
 	}
 }

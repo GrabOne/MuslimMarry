@@ -73,7 +73,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 	RelativeLayout name_group;
 	View line1;
 	ImageView large_img;
-	ImageView avatar;
+	ImageView photo;
 	ImageView arrow_dategr;
 	ImageView arrow_occgr;
 	ImageView arrow_heightgr;
@@ -95,7 +95,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 	String _age = "";
 	String _birthday = "";
 	String _gender = "";
-	String _avatar = "";
+	String _photo = "";
 	String _occupation = "";
 	String _height = "";
 	String _language = "";
@@ -160,10 +160,11 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 		helpers.setTouch(rootView);
+		
 		name_group = (RelativeLayout)rootView.findViewById(R.id.name_group);
 		line1 = (View)rootView.findViewById(R.id.line1);
 		large_img = (ImageView)rootView.findViewById(R.id.large_img);
-		avatar = (ImageView)rootView.findViewById(R.id.avatar);
+		photo = (ImageView)rootView.findViewById(R.id.photo);
 		arrow_dategr = (ImageView)rootView.findViewById(R.id.arrow_dategr);
 		arrow_occgr = (ImageView)rootView.findViewById(R.id.arrow_occgr);
 		arrow_heightgr = (ImageView)rootView.findViewById(R.id.arrow_heightgr);
@@ -178,8 +179,21 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 		done = (Button)rootView.findViewById(R.id.done);
 		TextView tvshare = (TextView)rootView.findViewById(R.id.tvshare);
 		
+		// set background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
+		
+		// set font for element
 		new helpers(getActivity()).setFontTypeButton(done);
+		
+		// set event for element
+		photo.setOnClickListener(this);
+		tvshare.setOnClickListener(this);
+		arrow_dategr.setOnClickListener(this);
+		arrow_occgr.setOnClickListener(this);
+		arrow_heightgr.setOnClickListener(this);
+		arrow_citygr.setOnClickListener(this);
+		arrow_languagegr.setOnClickListener(this);
+		done.setOnClickListener(this);
 		
 		// create pref object
 		pref = getActivity().getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -197,7 +211,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 		_age = user_info.get(prefUser.KEY_AGE);
 		_birthday = user_info.get(prefUser.KEY_BIRTH_DAY);
 		_gender = user_info.get(prefUser.KEY_GENDER);
-		_avatar = user_info.get(prefUser.KEY_AVATAR);
+		_photo = user_info.get(prefUser.KEY_PHOTO);
 		_occupation = user_info.get(prefUser.KEY_OCCUPATION);
 		_height = user_info.get(prefUser.KEY_HEIGHT);
 		_language = user_info.get(prefUser.KEY_LANGUAGE);
@@ -219,6 +233,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 		}
 		body.setText(_height);
 		city.setText(_city);
+		
 		try{
 			JSONArray jArr = new JSONArray(user_info.get(prefUser.KEY_LANGUAGE));
 			if(jArr.length() <= 0){
@@ -236,32 +251,15 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		if(user_info.get(prefUser.KEY_AVATAR).toString().length() > 0){
-			Picasso.with(getActivity()).load(user_info.get(prefUser.KEY_AVATAR)).fit().centerCrop().into(avatar);
-			Picasso.with(getActivity()).load(user_info.get(prefUser.KEY_AVATAR)).fit().centerCrop().into(large_img);
-		}else{
-			avatar.setImageResource(R.drawable.avatar);
-		}
-		avatar.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				EditPhotoFragment fr = new EditPhotoFragment();
-				FragmentManager fm = getFragmentManager();
-			    FragmentTransaction fragmentTransaction = fm.beginTransaction();
-			    fragmentTransaction.replace(R.id.frag, fr);
-			    fragmentTransaction.addToBackStack(null).commit();
-			}
-		});
 		
-		tvshare.setOnClickListener(this);
-		arrow_dategr.setOnClickListener(this);
-		arrow_occgr.setOnClickListener(this);
-		arrow_heightgr.setOnClickListener(this);
-		arrow_citygr.setOnClickListener(this);
-		arrow_languagegr.setOnClickListener(this);
-		done.setOnClickListener(this);
+		// display photo url
+		if(user_info.get(prefUser.KEY_PHOTO).toString().length() > 0){
+			Picasso.with(getActivity()).load(user_info.get(prefUser.KEY_PHOTO)).fit().centerCrop().into(photo);
+			Picasso.with(getActivity()).load(user_info.get(prefUser.KEY_PHOTO)).fit().centerCrop().into(large_img);
+		}else{
+			photo.setImageResource(R.drawable.avatar);
+		}
+		
 		return rootView;
 	}
 	
@@ -530,7 +528,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 			String picturePath = cursor.getString(columnIndex);
 			cursor.close();
 			Bitmap bm = BitmapFactory.decodeFile(picturePath);
-			avatar.setImageBitmap(ImageManager.scaleBitmap(bm, 480, 480));
+			photo.setImageBitmap(ImageManager.scaleBitmap(bm, 480, 480));
 			new UploadImg().execute(picturePath);
 		}else if (requestCode == CAMERA_REQUEST) {  
 			Intent returnIntent = new Intent();
@@ -538,7 +536,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
     		getActivity().setResult(getActivity().RESULT_OK, returnIntent);
     		Log.d("capture path", mCurrentPhotoPath);
     		Bitmap bm = BitmapFactory.decodeFile(mCurrentPhotoPath);
-			avatar.setImageBitmap(ImageManager.scaleBitmap(bm, 480, 480));
+			photo.setImageBitmap(ImageManager.scaleBitmap(bm, 480, 480));
     		new UploadImg().execute(mCurrentPhotoPath);
         }
 	}
@@ -599,8 +597,8 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
             JSONObject jsonReader = new JSONObject(s.toString());
             Log.d("result", s.toString());
             try{
-            	_avatar = jsonReader.getString("url");
-            	new ChangeAvatar().execute(_avatar);
+            	_photo = jsonReader.getString("url");
+            	new ChangeAvatar().execute(_photo);
             }catch(JSONException e){
             	Log.d("error", "Upload error or json not match: "+e.getMessage());
             	return null;
@@ -651,7 +649,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 			try{
 				JSONObject jObj = new JSONObject(resultString);
 				if(jObj.getString("status").equalsIgnoreCase("success")){
-					editor.putString("avatar", _avatar);
+					editor.putString("avatar", _photo);
 					editor.commit();
 				}else{
 					Toast.makeText(getActivity(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
@@ -667,7 +665,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.tvshare:
 			((MainActivity)getActivity()).hideKeyboard();
-			mCallback.SendPhoto(_avatar);
+			mCallback.SendPhoto(_photo);
 			break;
 		case R.id.arrow_dategr:
 			if(birthday.getText().toString().length() > 0){
@@ -698,6 +696,13 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 				new UpdateNormalAccount().execute();
 			}
 			break;
+		case R.id.photo:
+			EditPhotoFragment fr = new EditPhotoFragment();
+			FragmentManager fm = getFragmentManager();
+		    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+		    fragmentTransaction.replace(R.id.frag, fr);
+		    fragmentTransaction.addToBackStack(null).commit();
+		    break;
 		default:
 			break;
 		}

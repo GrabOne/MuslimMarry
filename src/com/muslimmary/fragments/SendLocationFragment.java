@@ -66,11 +66,15 @@ public class SendLocationFragment extends Fragment implements GoogleApiClient.Co
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_send_location, container, false);
 		helpers.setTouch(rootView);
+		
 		back = (ImageView)rootView.findViewById(R.id.back);
-		back.setOnTouchListener(this);
 		Button send = (Button)rootView.findViewById(R.id.send);
+		
+		// set event for element
+		back.setOnTouchListener(this);
 		send.setOnClickListener(this);
 		
+		// set background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
 		
 		// check gps
@@ -78,7 +82,7 @@ public class SendLocationFragment extends Fragment implements GoogleApiClient.Co
 		boolean statusOfGPS = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 		if(!statusOfGPS){
 			GPSManager gps = new GPSManager(getActivity());
-			gps.start();
+			gps.start(false);
 		}
 		
 		// create GoogleApiClient object
@@ -155,7 +159,6 @@ public class SendLocationFragment extends Fragment implements GoogleApiClient.Co
 		LatLng dragPosition = arg0.getPosition();
         double dragLat = dragPosition.latitude;
         double dragLong = dragPosition.longitude;
-        Log.i("coordinates", "dragLat :" + dragLat + " dragLong :" + dragLong);
         getAddress(dragLat, dragLong);
         Toast.makeText(getActivity(), "Marker Dragged..!", Toast.LENGTH_LONG).show();
 	}
@@ -198,6 +201,7 @@ public class SendLocationFragment extends Fragment implements GoogleApiClient.Co
 		// TODO Auto-generated method stub
 		latitude = location.getLatitude();
 		longitude = location.getLongitude();
+		Log.d("myTag", "Lat: " + latitude + ", Lng: " + longitude);
 		MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title("I'm here");
         googleMap.addMarker(marker);
         CameraPosition cameraPosition = new CameraPosition.Builder().target(

@@ -31,6 +31,7 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_edit_photo, container, false);
 		helpers.setTouch(rootView);
+		
 		main_photo = (ViewGroup)rootView.findViewById(R.id.main_photo);
 		photo_1 = (ViewGroup)rootView.findViewById(R.id.photo_1);
 		photo_2 = (ViewGroup)rootView.findViewById(R.id.photo_2);
@@ -43,12 +44,16 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 		fc_btn_photo_3 = (ViewGroup)rootView.findViewById(R.id.fc_btn_photo_3);
 		fc_btn_photo_4 = (ViewGroup)rootView.findViewById(R.id.fc_btn_photo_4);
 		
+		// set background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
+		
+		// set event for element
 		main_photo.setOnClickListener(this);
 		photo_1.setOnClickListener(this);
 		photo_2.setOnClickListener(this);
 		photo_3.setOnClickListener(this);
 		photo_4.setOnClickListener(this);
+		
 		return rootView;
 	}
 	@Override

@@ -72,6 +72,7 @@ public class AccountSettingFragment extends Fragment implements OnClickListener 
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_account_setting, container, false);
 		helpers.setTouch(rootView);
+		
 		row2 = (RelativeLayout)rootView.findViewById(R.id.row2);
 		row3 = (RelativeLayout)rootView.findViewById(R.id.row3);
 		row4 = (RelativeLayout)rootView.findViewById(R.id.row4);
@@ -88,7 +89,10 @@ public class AccountSettingFragment extends Fragment implements OnClickListener 
 		ic_pc = (ImageView)rootView.findViewById(R.id.ic_pc);
 		done = (Button)rootView.findViewById(R.id.done);
 		
+		// set background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
+		
+		// set font for element
 		new helpers(getActivity()).setFontTypeButton(done);
 		
 		// create pref object
@@ -113,6 +117,7 @@ public class AccountSettingFragment extends Fragment implements OnClickListener 
 		mail.setText(user_info.get(prefUser.KEY_EMAIL));
 		pc.setText(user_info.get(prefUser.KEY_CODE));
 		
+		// set event for element
 		ic_name.setOnClickListener(this);
 		ic_pword.setOnClickListener(this);
 		ic_pc.setOnClickListener(this);

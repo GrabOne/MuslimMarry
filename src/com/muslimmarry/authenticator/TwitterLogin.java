@@ -121,9 +121,7 @@ public class TwitterLogin {
                 String username = new String(user.getName().getBytes("UTF-8"), "UTF-8");
                 String gender = "";
                 String avatar = user.getBiggerProfileImageURL();
-//                String language = user.getLang();
                 String id = user.getId()+"";
-//                Log.d("tt", username + " " + avatar + " " + language + " " + social_id);
                 new TTLogin().execute(username, avatar, gender, id);
             } catch (Exception e) {
                 Log.e("Twitter Login Error", e.getMessage());

@@ -89,7 +89,9 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
     static final int DATE_PICKER_ID = 1111; 
     
     prefUser user;
+    
     TransparentProgressDialog pd;
+    
     String resultString = "";
     
     final String[] data ={"edit profile","account","app settings", "billing", "favorites", "invite a friend", "contact us", "log out"};
@@ -100,6 +102,7 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
+		
 		dim = (View)findViewById(R.id.dim);
 		bell = (ViewGroup)findViewById(R.id.bell);
 		find_user = (ViewGroup)findViewById(R.id.find_user);
@@ -111,11 +114,15 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 		gift_icon = (ImageView)findViewById(R.id.gift_icon);
 		top_nav = (RelativeLayout)findViewById(R.id.top_nav);
 		
-		new helpers(MainActivity.this).setFontTypeText(title);
-		setBgGroupFindUser();
-		
+		// set event for element
 		back.setOnTouchListener(this);
 		option.setOnTouchListener(this);
+		
+		// set font for element
+		new helpers(MainActivity.this).setFontTypeText(title);
+		
+		// set background bottom nav elements
+		setBgGroupFindUser();
 		
 		// redirect to payment option
 		try{
@@ -151,11 +158,12 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 		navList.setAdapter(adapter);
 		navList.setOnItemClickListener(new SlideMenuClickListener());
 		ImageView large_img = (ImageView)findViewById(R.id.large_img);
+		
 		// create user object
 		user = new prefUser(this);
 		HashMap<String, String> user_info = user.getUserDetail();
-		if(user_info.get(prefUser.KEY_AVATAR).length() > 0){
-			Picasso.with(this).load(user_info.get(prefUser.KEY_AVATAR)).fit().centerCrop().into(large_img);
+		if(user_info.get(prefUser.KEY_PHOTO).length() > 0){
+			Picasso.with(this).load(user_info.get(prefUser.KEY_PHOTO)).fit().centerCrop().into(large_img);
 		}
 	}
 	/**

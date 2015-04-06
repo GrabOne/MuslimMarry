@@ -55,7 +55,8 @@ import com.muslimmarry.helpers.helpers;
 import com.muslimmarry.sharedpref.prefUser;
 
 public class ManuallyLocateActivity extends Activity implements GoogleApiClient.ConnectionCallbacks,
-	GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMarkerDragListener, OnMapClickListener, OnMapLongClickListener, OnTouchListener {
+	GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMarkerDragListener, OnMapClickListener, OnMapLongClickListener,
+	OnTouchListener, OnClickListener {
 	
 	private GoogleMap googleMap;
 	private GoogleApiClient mGoogleApiClient;
@@ -67,14 +68,13 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 	
 	ImageView back;
 	TextView location_name;
-	Button btndone;
 	
 	String _uname = "";
 	String _email = "";
 	String _age = "";
 	String _gender = "";
 	String _pword = "";
-	String _avatar = "";
+	String _photo = "";
 	String country = "";
 	String city = "";
 	
@@ -93,8 +93,14 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 		TextView title = (TextView)findViewById(R.id.title);
 		back = (ImageView)findViewById(R.id.back);
 		location_name = (TextView)findViewById(R.id.location_name);
-		new helpers(getApplicationContext()).setFontTypeText(title);
+		Button btndone = (Button)findViewById(R.id.btndone);
+		
+		// set event for element
 		back.setOnTouchListener(this);
+		btndone.setOnClickListener(this);
+		
+		// set font for element
+		new helpers(getApplicationContext()).setFontTypeText(title);
 		
 		// create user object
 		user = new prefUser(ManuallyLocateActivity.this);
@@ -107,29 +113,19 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 			_age = getResults.getString("age");
 			_gender = getResults.getString("gender");
 			_pword = getResults.getString("pword");
-			_avatar = getResults.getString("avatar");
+			_photo = getResults.getString("photo");
 			country = getResults.getString("country");
 			city = getResults.getString("city");
 		}catch(NullPointerException e){
 			e.printStackTrace();
 		}
 		
-		btndone = (Button)findViewById(R.id.btndone);
-		btndone.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				new Signup().execute();
-			}
-		});
-		
 		// check gps
 		LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE );
 		boolean statusOfGPS = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 		if(!statusOfGPS){
 			GPSManager gps = new GPSManager(ManuallyLocateActivity.this);
-			gps.start();
+			gps.start(false);
 		}
 		
 		// create GoogleApiClient object
@@ -145,8 +141,8 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 		        .setInterval(10 * 1000)        // 10 seconds, in milliseconds
 		        .setFastestInterval(1 * 1000); // 1 second, in milliseconds
 		
+		// Loading map
 		try {
-            // Loading map
             initilizeMap();
     		googleMap.setMyLocationEnabled(true);
  
@@ -219,6 +215,7 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 		// TODO Auto-generated method stub
 		latitude = location.getLatitude();
 		longitude = location.getLongitude();
+		Log.d("myTag", "Lat: " + latitude + ", Lng: " + longitude);
 		MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title("I'm here");
         googleMap.addMarker(marker);
         CameraPosition cameraPosition = new CameraPosition.Builder().target(
@@ -250,7 +247,7 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 	            location_name.setText(strReturnedAddress.toString());
 	            city = addresses.get(0).getLocality();
 	            country = addresses.get(0).getCountryName();
-	            Log.d("myTag", city + " - " + country);
+	            Log.d("myTag", "City: " + city + ", Country: " + country);
 	        }
 	        else{
 	            Toast.makeText(getApplicationContext(), "No Address returned!", Toast.LENGTH_SHORT).show();
@@ -258,8 +255,7 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 	        
 		} catch (IOException e) {
 		    // TODO Auto-generated catch block
-		    e.printStackTrace();
-		    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+		    Log.e("error", e.getMessage(), e);
 		}
 	}
 
@@ -275,7 +271,6 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 		LatLng dragPosition = arg0.getPosition();
         double dragLat = dragPosition.latitude;
         double dragLong = dragPosition.longitude;
-        Log.i("coordinates", "dragLat :" + dragLat + " dragLong :" + dragLong);
         getAddress(dragLat, dragLong);
         Toast.makeText(getApplicationContext(), "Marker Dragged..!", Toast.LENGTH_LONG).show();
 	}
@@ -323,7 +318,7 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 				jObj.put("username", _uname);
 				jObj.put("nickname", "");
 				jObj.put("email", _email);
-				jObj.put("avatar", _avatar);
+				jObj.put("avatar", _photo);
 				jObj.put("age", _age);
 				if(_gender.equalsIgnoreCase("male")){
 					jObj.put("gender", "men");
@@ -365,7 +360,6 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 				inputStream = response.getEntity().getContent();
 				if(inputStream != null){
 					resultString = helpers.convertInputStreamToString(inputStream);
-					Log.d("result", resultString);
 				}
 			}catch(Exception e){
 				
@@ -413,5 +407,13 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		if(v.getId() == R.id.btndone){
+			new Signup().execute();
+		}
 	}
 }

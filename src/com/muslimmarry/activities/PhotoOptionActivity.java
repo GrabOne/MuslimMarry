@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.example.muslimmarry.R;
 import com.muslimmarry.helpers.helpers;
 
-public class PhotoOptionActivity extends Activity implements OnClickListener {
+public class PhotoOptionActivity extends Activity implements OnClickListener, OnTouchListener {
 	
 	TextView title;
 	TextView title2;
@@ -39,37 +39,27 @@ public class PhotoOptionActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_photo_option);
+		
 		title = (TextView)findViewById(R.id.title);
 		title2 = (TextView)findViewById(R.id.title2);
 		back = (ImageView)findViewById(R.id.back);
 		upload = (Button)findViewById(R.id.upload);
 		take = (Button)findViewById(R.id.take);
 		notnow = (TextView)findViewById(R.id.notnow);
-
+		
+		// set font for element
 		new helpers(getApplicationContext()).setFontTypeText(title);
 		new helpers(getApplicationContext()).setFontTypeText(title2);
 		new helpers(getApplicationContext()).setFontTypeButton(take);
 		new helpers(getApplicationContext()).setFontTypeButton(upload);
 		
-		back.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-				switch (arg1.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					back.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					back.setBackgroundColor(Color.TRANSPARENT);
-					finish();
-				default:
-					break;
-				}
-				return true;
-			}
-		});
-		// get bundle data
+		// set event for element
+		upload.setOnClickListener(this);
+		take.setOnClickListener(this);
+		notnow.setOnClickListener(this);
+		back.setOnTouchListener(this);
+		
+		// get data bundle
 		try{
 			Bundle getResults = getIntent().getExtras();
 			_uname = getResults.getString("uname");
@@ -83,9 +73,6 @@ public class PhotoOptionActivity extends Activity implements OnClickListener {
 			e.printStackTrace();
 		}
 		
-		upload.setOnClickListener(this);
-		take.setOnClickListener(this);
-		notnow.setOnClickListener(this);
 	}
 	
 	@Override
@@ -137,5 +124,23 @@ public class PhotoOptionActivity extends Activity implements OnClickListener {
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		if(v.getId() == R.id.back){
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				back.setBackgroundColor(Color.parseColor("#2e9dbc"));
+				break;
+			case MotionEvent.ACTION_UP:
+				back.setBackgroundColor(Color.TRANSPARENT);
+				finish();
+			default:
+				break;
+			}
+		}
+		return true;
 	}
 }

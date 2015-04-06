@@ -28,7 +28,7 @@ import com.example.muslimmarry.R;
 import com.muslimmarry.helpers.UploadImage;
 import com.muslimmarry.helpers.helpers;
 
-public class PhotoCustomizationActivity extends Activity {
+public class PhotoCustomizationActivity extends Activity implements OnClickListener, OnTouchListener {
 	
 	ImageView back;
 	ImageView photo_customize;
@@ -45,7 +45,7 @@ public class PhotoCustomizationActivity extends Activity {
 	String _pword = "";
 	String country = "";
 	String city = "";
-	String _avatar = "";
+	String _photo = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +53,21 @@ public class PhotoCustomizationActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_photo_customization);
+		
 		TextView title = (TextView)findViewById(R.id.title);
 		back = (ImageView)findViewById(R.id.back);
 		photo_customize = (ImageView)findViewById(R.id.photo_customize);
 		Button btn = (Button)findViewById(R.id.btn);
 		
+		// set font for element
 		new helpers(getApplicationContext()).setFontTypeText(title);
 		new helpers(getApplicationContext()).setFontTypeButton(btn);
 		
-		// get bundle data
+		// set event for element
+		back.setOnTouchListener(this);
+		btn.setOnClickListener(this);
+		
+		// get data bundle
 		try{
 			Bundle getResults = getIntent().getExtras();
 			_uname = getResults.getString("uname");
@@ -74,6 +80,7 @@ public class PhotoCustomizationActivity extends Activity {
 		}catch(NullPointerException e){
 			e.printStackTrace();
 		}
+		
 		try{
 			if(getIntent().getExtras().getString("flag").equals("upload photo")){
 				Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -84,45 +91,6 @@ public class PhotoCustomizationActivity extends Activity {
 				
 			}
 		}catch(NullPointerException e){}
-		
-		back.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-				switch (arg1.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					back.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					back.setBackgroundColor(Color.TRANSPARENT);
-					finish();
-				default:
-					break;
-				}
-				return true;
-			}
-		});
-		btn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent(PhotoCustomizationActivity.this, PhotoConfirmationActivity.class);
-				Bundle bundle = new Bundle();
-				bundle.putString("uname", _uname);
-				bundle.putString("email", _email);
-				bundle.putString("age", _age);
-				bundle.putString("gender", _gender);
-				bundle.putString("pword", _pword);
-				bundle.putString("country", country);
-				bundle.putString("city", city);
-				bundle.putString("avatar", _avatar);
-				bundle.putString("picturePath", picturePath);
-				i.putExtras(bundle);
-				startActivity(i);
-			}
-		});
 	}
 	
 	private void captureImage() {
@@ -173,7 +141,7 @@ public class PhotoCustomizationActivity extends Activity {
 		protected Void doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			try {
-				_avatar = UploadImage.uploadImage(params[0]);
+				_photo = UploadImage.uploadImage(params[0]);
 			} catch (Exception e) {
 				Log.d("error", e.getMessage(), e);
 			}
@@ -217,4 +185,42 @@ public class PhotoCustomizationActivity extends Activity {
             toast.show();
         }
     }
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		if(v.getId() == R.id.back){
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				back.setBackgroundColor(Color.parseColor("#2e9dbc"));
+				break;
+			case MotionEvent.ACTION_UP:
+				back.setBackgroundColor(Color.TRANSPARENT);
+				finish();
+			default:
+				break;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		if(v.getId() == R.id.btn){
+			Intent i = new Intent(PhotoCustomizationActivity.this, PhotoConfirmationActivity.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("uname", _uname);
+			bundle.putString("email", _email);
+			bundle.putString("age", _age);
+			bundle.putString("gender", _gender);
+			bundle.putString("pword", _pword);
+			bundle.putString("country", country);
+			bundle.putString("city", city);
+			bundle.putString("photo", _photo);
+			bundle.putString("picturePath", picturePath);
+			i.putExtras(bundle);
+			startActivity(i);
+		}
+	}
 }

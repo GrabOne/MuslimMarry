@@ -25,10 +25,15 @@ public class PhotoAudioFragment extends Fragment implements OnTouchListener {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_photo_audio, container, false);
 		helpers.setTouch(rootView);
+		
 		back = (ImageView)rootView.findViewById(R.id.back);
 		option = (ImageView)rootView.findViewById(R.id.option);
+		
+		// set event for element
 		back.setOnTouchListener(this);
 		option.setOnTouchListener(this);
+		
+		// set background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
 		return rootView;
 	}

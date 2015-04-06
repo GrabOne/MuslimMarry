@@ -47,7 +47,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 	ImageView gift;
 	ImageView invisible;
 	ImageView report_spam;
-	ImageView avatar;
+	ImageView photo;
 	TextView name;
 	TextView age;
 	TextView city;
@@ -55,8 +55,8 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 	TextView occupation;
 	LinearLayout llLanguage;
 	
-	String _user_id_block = "";
-	String _avatar = "";
+	String _user_id_viewing = "";
+	String _photo = "";
 	String _name = "";
 	String _username = "";
 	String _age = "";
@@ -90,7 +90,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 		more.setTag(R.drawable.arrow_up);
 		Button option = (Button)rootView.findViewById(R.id.option);
 		ImageView back = (ImageView)rootView.findViewById(R.id.back);
-		avatar = (ImageView)rootView.findViewById(R.id.avatar);
+		photo = (ImageView)rootView.findViewById(R.id.photo);
 		name = (TextView)rootView.findViewById(R.id.name);
 		age = (TextView)rootView.findViewById(R.id.age);
 		city = (TextView)rootView.findViewById(R.id.city);
@@ -105,18 +105,18 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 		token = user_info.get(prefUser.KEY_TOKEN);
 		
 		try{
-			_user_id_block = getArguments().getString("id");
-			_avatar = getArguments().getString("avatar");
+			_user_id_viewing = getArguments().getString("id");
+			_photo = getArguments().getString("photo");
 			_name = getArguments().getString("name");
 			_username = getArguments().getString("username");
 			_age = getArguments().getString("age");
 			_height = getArguments().getString("height");
 			_occupation = getArguments().getString("occupation");
 			_language = getArguments().getString("language");
-			if(_avatar.length() > 0){
-				Picasso.with(getActivity()).load(_avatar).fit().centerInside().into(avatar);
+			if(_photo.length() > 0){
+				Picasso.with(getActivity()).load(_photo).fit().centerInside().into(photo);
 			}else{
-				avatar.setImageResource(R.drawable.portrait);
+				photo.setImageResource(R.drawable.portrait);
 			}
 			if(_name.length() <= 0){
 				name.setText(_username);
@@ -263,7 +263,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 				JSONObject jObj = new JSONObject();
 				jObj.put("user_id", userid);
 				jObj.put("remember_token", token);
-				jObj.put("user_block_id", _user_id_block);
+				jObj.put("user_block_id", _user_id_viewing);
 				jObj.put("type", Integer.parseInt(params[0]));
 				
 				HttpClient httpClient = new DefaultHttpClient();
@@ -322,7 +322,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 				JSONObject jObj = new JSONObject();
 				jObj.put("user_id", userid);
 				jObj.put("remember_token", token);
-				jObj.put("user_report_id", _user_id_block);
+				jObj.put("user_report_id", _user_id_viewing);
 				
 				HttpClient httpClient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(helpers.url+"api/v1/report-user");

@@ -15,7 +15,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,14 +30,12 @@ import com.muslimmarry.helpers.TransparentProgressDialog;
 import com.muslimmarry.helpers.helpers;
 import com.muslimmarry.sharedpref.prefUser;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements OnTouchListener, OnClickListener {
 	
-	Button btnLogin;
 	ImageView back;
 	EditText uname;
 	EditText pword;
 	
-	prefUser user;
 	String resultString = "";
 	
 	TransparentProgressDialog pd;
@@ -49,45 +46,18 @@ public class LoginActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login);
-		btnLogin = (Button)findViewById(R.id.btnLogin);
+		
+		Button btnLogin = (Button)findViewById(R.id.btnLogin);
 		back = (ImageView)findViewById(R.id.back);
 		uname = (EditText)findViewById(R.id.uname);
 		pword = (EditText)findViewById(R.id.pword);
+		
+		// set event for element
+		back.setOnTouchListener(this);
+		btnLogin.setOnClickListener(this);
+		
+		// set font for element
 		new helpers(getApplicationContext()).setFontTypeButton(btnLogin);
-		
-		// create user object
-		user = new prefUser(LoginActivity.this);
-		
-		btnLogin.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if(uname.getText().toString().length() <= 0 || pword.getText().toString().length() <= 0){
-					Toast.makeText(getApplicationContext(), "Please enter username or passowrd!", Toast.LENGTH_SHORT).show();
-				}else{
-					new Signin().execute();
-				}
-			}
-		});
-		back.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-				switch (arg1.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					back.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					back.setBackgroundColor(Color.TRANSPARENT);
-					finish();
-				default:
-					break;
-				}
-				return true;
-			}
-		});
 	}
 	
 	/*
@@ -122,7 +92,6 @@ public class LoginActivity extends Activity {
 				inputStream = response.getEntity().getContent();
 				if(inputStream != null){
 					resultString = helpers.convertInputStreamToString(inputStream);
-					Log.d("result", resultString);
 				}
 			}catch(Exception e){
 				e.printStackTrace();
@@ -141,12 +110,14 @@ public class LoginActivity extends Activity {
 					JSONArray languageArr = data.getJSONArray("language");
 					JSONObject locate = new JSONObject(data.getString("location"));
 					JSONObject coordinates = new JSONObject(locate.getString("coordinates"));
-					String _birthday = "";
+					String birthday = "";
 					if(!data.isNull("birthday")){
-						_birthday = data.getString("birthday");
+						birthday = data.getString("birthday");
 					}
+					// create user object
+					prefUser user = new prefUser(LoginActivity.this);
 					user.createUserSession(data.getString("_id"), new String(data.getString("nickname").getBytes("UTF-8"), "UTF-8"), data.getString("username"), data.getString("email"), data.getString("age"),
-							_birthday, data.getString("gender"), data.getString("avatar"), data.getString("remember_token"), data.getString("occupation"), data.getString("height"), languageArr.toString(),
+							birthday, data.getString("gender"), data.getString("avatar"), data.getString("remember_token"), data.getString("occupation"), data.getString("height"), languageArr.toString(),
 							locate.getString("country"), locate.getString("city"), coordinates.getString("lat"), coordinates.getString("lng"), data.getString("promocode"), "", "", "false");
 					Intent i = new Intent(LoginActivity.this, MainActivity.class);
 					startActivity(i);
@@ -158,6 +129,36 @@ public class LoginActivity extends Activity {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		if(v.getId() == R.id.btnLogin){
+			if(uname.getText().toString().length() <= 0 || pword.getText().toString().length() <= 0){
+				Toast.makeText(getApplicationContext(), "Please enter username or passowrd!", Toast.LENGTH_SHORT).show();
+			}else{
+				new Signin().execute();
+			}
+		}
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		if(v.getId() == R.id.back){
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				back.setBackgroundColor(Color.parseColor("#2e9dbc"));
+				break;
+			case MotionEvent.ACTION_UP:
+				back.setBackgroundColor(Color.TRANSPARENT);
+				finish();
+			default:
+				break;
+			}
+		}
+		return true;
 	}
 	
 }

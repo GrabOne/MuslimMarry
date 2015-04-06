@@ -26,16 +26,22 @@ public class SharePhotoFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_share_photo, container, false);
 		helpers.setTouch(rootView);
+		
 		TextView more = (TextView)rootView.findViewById(R.id.more);
 		photo = (ImageView)rootView.findViewById(R.id.photo);
+		
+		// set event for element
 		more.setOnClickListener(this);
 		
+		// get photo and display
 		try{
-			String avatar = getArguments().getString("avatar");
-			Picasso.with(getActivity()).load(avatar).fit().centerCrop().into(photo);
+			String _photo = getArguments().getString("photo");
+			Picasso.with(getActivity()).load(_photo).fit().centerCrop().into(photo);
 		}catch(NullPointerException e){}
 		
+		// get background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
+		
 		return rootView;
 	}
 	@Override

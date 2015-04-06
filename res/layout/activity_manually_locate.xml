@@ -54,13 +54,14 @@
 	            android:textColor="#ffffff"
 	            android:textSize="12sp"
 	            android:layout_marginLeft="15dp"
-	            android:layout_marginTop="2dp" />
+	            android:layout_centerVertical="true" />
 	        
 	        <Button
 	            android:id="@+id/btndone"
 	            android:layout_width="60dp"
 	            android:layout_height="20dp"
 	            android:layout_alignParentRight="true"
+	            android:layout_centerVertical="true"
 	            android:text="DONE"
 	            android:textColor="#ffffff"
 	            android:textSize="14sp"

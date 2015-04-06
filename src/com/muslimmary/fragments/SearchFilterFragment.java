@@ -51,7 +51,7 @@ import com.muslimmarry.model.SpeakItem;
 import com.muslimmarry.sharedpref.DistanceIn;
 import com.muslimmarry.sharedpref.prefUser;
 
-public class SearchFilterFragment extends Fragment {
+public class SearchFilterFragment extends Fragment implements OnClickListener {
 	
 	View rootView;
 	EditText speak;
@@ -117,6 +117,7 @@ public class SearchFilterFragment extends Fragment {
 		// TODO Auto-generated method stub
 		rootView = inflater.inflate(R.layout.fragment_search_filter, container, false);
 		helpers.setTouch(rootView);
+		
 		speak = (EditText)rootView.findViewById(R.id.speak);
 		addSpeak = (ImageView)rootView.findViewById(R.id.addSpeak);
 		job = (EditText)rootView.findViewById(R.id.job);
@@ -134,6 +135,7 @@ public class SearchFilterFragment extends Fragment {
 		listSpeak = (ListView)rootView.findViewById(R.id.listSpeak);
 		listJob = (ListView)rootView.findViewById(R.id.listJob);
 		
+		// fetch all speaks
 		new FetchSpeaks().execute();
 		
 		// create user object
@@ -155,90 +157,18 @@ public class SearchFilterFragment extends Fragment {
 		}
 		
 		//((MainActivity)getActivity()).setBgGroupFindUser();
-
-		show.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-			    ((MainActivity)getActivity()).setBgGroupOriginal();
-				int selectedId = radioSex.getCheckedRadioButtonId();
-				radioSexBtn = (RadioButton)rootView.findViewById(selectedId);
-				sexValue = radioSexBtn.getText().toString();
-				if(dataSpeaks.size() <= 0){
-					Toast.makeText(getActivity(), "Please select speak!", Toast.LENGTH_SHORT).show();
-				}else if(dataJobs.size() <= 0){
-					Toast.makeText(getActivity(), "Please select occupation!", Toast.LENGTH_SHORT).show();
-				}else{
-					new Search().execute();
-				}
-			}
-		});
+		
+		// set font for element
 		new helpers(getActivity()).setFontTypeButton(show);
 		
-		// speak
-		speak.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				selectSpeak();
-			}
-		});
-		addSpeak.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				int count = 0;
-				if(speak.getText().toString().length() > 0){
-					for(int i=0; i<dataSpeaks.size(); i++){
-						if(dataSpeaks.get(i).getLanguage().equals(speak.getText().toString())){
-							count += 1;
-						}
-					}
-					if(count == 0){
-						dataSpeaks.add(new SpeakItem(speak.getText().toString()));
-					}
-					listSpeak.setAdapter(speakListAdapter);
-					speakListAdapter.notifyDataSetChanged();
-					helpers.setListViewHeightBasedOnChildren(listSpeak);
-					speak.setText("");
-				}
-			}
-		});
-		
-		// job
-		job.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				selectJob();
-			}
-		});
-		addJob.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				int count = 0;
-				if(job.getText().toString().length() > 0){
-					for(int i=0; i<dataJobs.size(); i++){
-						if(dataJobs.get(i).getJob().equals(job.getText().toString())){
-							count += 1;
-						}
-					}
-					if(count == 0){
-						dataJobs.add(new JobItem(job.getText().toString()));
-					}
-					listJob.setAdapter(jobListAdapter);
-					jobListAdapter.notifyDataSetChanged();
-					helpers.setListViewHeightBasedOnChildren(listJob);
-					job.setText("");
-				}
-			}
-		});
+		/** set event for element **/
+		show.setOnClickListener(this);
+		// add speak
+		speak.setOnClickListener(this);
+		addSpeak.setOnClickListener(this);
+		// add job
+		job.setOnClickListener(this);
+		addJob.setOnClickListener(this);
 		
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		// seekbar age
@@ -295,6 +225,9 @@ public class SearchFilterFragment extends Fragment {
 		return rootView;
 	}
 	
+	/*
+	 * adapter speak list
+	 */
 	private BaseAdapter speakListAdapter = new BaseAdapter() {
 		
 		@Override
@@ -341,6 +274,9 @@ public class SearchFilterFragment extends Fragment {
 		}
 	};
 	
+	/*
+	 * adapter job list
+	 */
 	private BaseAdapter jobListAdapter = new BaseAdapter() {
 		
 		@Override
@@ -542,7 +478,6 @@ public class SearchFilterFragment extends Fragment {
 					JSONObject jObj = new JSONObject(jsonStr);
 					if(jObj.getString("status").equalsIgnoreCase("success")){
 						JSONArray jArr = new JSONArray(jObj.getString("data"));
-						Log.d("myTag", jArr.toString());
 						for(int i=0; i<jArr.length(); i++){
 							JSONObject data = jArr.getJSONObject(i);
 							speaksLst.add(new GetDialogItem(data.getString("_id"), data.getString("name")));
@@ -569,5 +504,66 @@ public class SearchFilterFragment extends Fragment {
 		((MainActivity)getActivity()).setElementTopNav(true, true, false, false);
 		((MainActivity)getActivity()).setTitle("search filters");
 		((MainActivity)getActivity()).showTopNav(true);
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		int count = 0;
+		switch (v.getId()) {
+		case R.id.show:
+			((MainActivity)getActivity()).setBgGroupOriginal();
+			int selectedId = radioSex.getCheckedRadioButtonId();
+			radioSexBtn = (RadioButton)rootView.findViewById(selectedId);
+			sexValue = radioSexBtn.getText().toString();
+			if(dataSpeaks.size() <= 0){
+				Toast.makeText(getActivity(), "Please select speak!", Toast.LENGTH_SHORT).show();
+			}else if(dataJobs.size() <= 0){
+				Toast.makeText(getActivity(), "Please select occupation!", Toast.LENGTH_SHORT).show();
+			}else{
+				new Search().execute();
+			}
+			break;
+		case R.id.speak:
+			selectSpeak();
+			break;
+		case R.id.addSpeak:
+			if(speak.getText().toString().length() > 0){
+				for(int i=0; i<dataSpeaks.size(); i++){
+					if(dataSpeaks.get(i).getLanguage().equals(speak.getText().toString())){
+						count += 1;
+					}
+				}
+				if(count == 0){
+					dataSpeaks.add(new SpeakItem(speak.getText().toString()));
+				}
+				listSpeak.setAdapter(speakListAdapter);
+				speakListAdapter.notifyDataSetChanged();
+				helpers.setListViewHeightBasedOnChildren(listSpeak);
+				speak.setText("");
+			}
+			break;
+		case R.id.job:
+			selectJob();
+			break;
+		case R.id.addJob:
+			if(job.getText().toString().length() > 0){
+				for(int i=0; i<dataJobs.size(); i++){
+					if(dataJobs.get(i).getJob().equals(job.getText().toString())){
+						count += 1;
+					}
+				}
+				if(count == 0){
+					dataJobs.add(new JobItem(job.getText().toString()));
+				}
+				listJob.setAdapter(jobListAdapter);
+				jobListAdapter.notifyDataSetChanged();
+				helpers.setListViewHeightBasedOnChildren(listJob);
+				job.setText("");
+			}
+			break;
+		default:
+			break;
+		}
 	}
 }

@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.example.muslimmarry.R;
 import com.muslimmarry.helpers.helpers;
 
-public class PayWallActivity extends Activity {
+public class PayWallActivity extends Activity implements OnTouchListener, OnClickListener {
 	
 	ImageView back;
 	EditText plan;
@@ -42,47 +42,16 @@ public class PayWallActivity extends Activity {
 		TextView title2 = (TextView)findViewById(R.id.title2);
 		back = (ImageView)findViewById(R.id.back);
 		Button upgrade = (Button)findViewById(R.id.upgrade);
-
+		
+		// set font for element
 		new helpers(getApplicationContext()).setFontTypeText(title);
 		new helpers(getApplicationContext()).setFontTypeText(title2);
 		new helpers(getApplicationContext()).setFontTypeButton(upgrade);
 		
-		back.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-				switch (arg1.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					back.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					back.setBackgroundColor(Color.TRANSPARENT);
-					finish();
-				default:
-					break;
-				}
-				return true;
-			}
-		});
-		upgrade.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent(PayWallActivity.this, MainActivity.class);
-				i.putExtra("flag", 1);
-				startActivity(i);
-			}
-		});
-		plan.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				SelectPlan();
-			}
-		});
+		// set event for element
+		back.setOnTouchListener(this);
+		upgrade.setOnClickListener(this);
+		plan.setOnClickListener(this);
 	}
 	
 	private void SelectPlan(){
@@ -107,5 +76,40 @@ public class PayWallActivity extends Activity {
 		});
 		dialog = alertDialog.create();
 		dialog.show();
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.upgrade:
+			Intent i = new Intent(PayWallActivity.this, MainActivity.class);
+			i.putExtra("flag", 1);
+			startActivity(i);
+			break;
+		case R.id.plan:
+			SelectPlan();
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		if(v.getId() == R.id.back){
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				back.setBackgroundColor(Color.parseColor("#2e9dbc"));
+				break;
+			case MotionEvent.ACTION_UP:
+				back.setBackgroundColor(Color.TRANSPARENT);
+				finish();
+			default:
+				break;
+			}
+		}
+		return true;
 	}
 }

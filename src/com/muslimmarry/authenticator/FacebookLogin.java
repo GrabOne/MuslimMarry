@@ -207,7 +207,7 @@ public class FacebookLogin {
 			    locate.put("coordinates", latlng);
 			    
 			    jObj.put("location", locate);
-//			    Log.d("obj", jObj.toString());
+			    Log.d("obj", jObj.toString());
 			    
 			    HttpClient httpClient = new DefaultHttpClient();
 				HttpPost httppost = new HttpPost(helpers.url+"api/v1/login-social");

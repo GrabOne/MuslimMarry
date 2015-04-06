@@ -17,6 +17,8 @@ public class FavoriteFragment extends Fragment {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_favorite, container, false);
 		helpers.setTouch(rootView);
+		
+		// set background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
 		return rootView;
 	}

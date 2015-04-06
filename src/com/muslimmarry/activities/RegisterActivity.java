@@ -37,7 +37,7 @@ import com.example.muslimmarry.R;
 import com.muslimmarry.helpers.TransparentProgressDialog;
 import com.muslimmarry.helpers.helpers;
 
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends Activity implements OnClickListener, OnTouchListener {
 	
 	Button btnNext;
 	ImageView back;
@@ -69,6 +69,7 @@ public class RegisterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_register);
+		
 		btnNext = (Button)findViewById(R.id.btnNext);
 		back = (ImageView)findViewById(R.id.back);
 		uname = (EditText)findViewById(R.id.uname);
@@ -88,7 +89,12 @@ public class RegisterActivity extends Activity {
 //			}
 //		});
 		
-		// get bundle data
+		// set event for element
+		btnNext.setOnClickListener(this);
+		back.setOnTouchListener(this);
+		gender.setOnClickListener(this);
+		
+		// get data bundle
 		try{
 			Bundle getResults = getIntent().getExtras();
 			country = getResults.getString("country");
@@ -98,63 +104,6 @@ public class RegisterActivity extends Activity {
 		}catch(NullPointerException e){
 			e.printStackTrace();
 		}
-		
-		btnNext.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if(!isValidUsername(uname.getText().toString())){
-					Toast.makeText(getApplicationContext(), "Username is invalid", Toast.LENGTH_SHORT).show();
-				}else if(uname.getText().toString().length() < 4 || uname.getText().toString().length() > 40){
-					Toast.makeText(getApplicationContext(), "Username: min 4 | max 40 characters!", Toast.LENGTH_SHORT).show();
-				}else if(!isValidEmail(mail.getText().toString())){
-					Toast.makeText(getApplicationContext(), "Email is invalid!", Toast.LENGTH_SHORT).show();
-				}else if(mail.getText().toString().length() > 40){
-					Toast.makeText(getApplicationContext(), "Email: max 40 characters!", Toast.LENGTH_SHORT).show();
-				}else if(age.getText().toString().length() <= 0){
-					Toast.makeText(getApplicationContext(), "Please enter age!", Toast.LENGTH_SHORT).show();
-				}else if(age.getText().toString().length() > 2){
-					Toast.makeText(getApplicationContext(), "Age: max 2 numbers!", Toast.LENGTH_SHORT).show();
-				}else if(gender.getText().toString().equalsIgnoreCase("gender")){
-					Toast.makeText(getApplicationContext(), "Please select gender!", Toast.LENGTH_SHORT).show();
-				}else if(pword.getText().toString().length() < 6 || pword.getText().toString().length() > 40){
-					Toast.makeText(getApplicationContext(), "Password: min 6 | max 40 characters!", Toast.LENGTH_SHORT).show();
-				}else if(!pword.getText().toString().equalsIgnoreCase(cfpword.getText().toString())){
-					Toast.makeText(getApplicationContext(), "Password not match!", Toast.LENGTH_SHORT).show();
-				}else{
-					new CheckUsernameEmail().execute();
-				}
-			}
-		});
-		
-		back.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-				switch (arg1.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					back.setBackgroundColor(Color.parseColor("#2e9dbc"));
-					break;
-				case MotionEvent.ACTION_UP:
-					back.setBackgroundColor(Color.TRANSPARENT);
-					finish();
-				default:
-					break;
-				}
-				return true;
-			}
-		});
-		
-		gender.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				selectGender();
-			}
-		});
 	}
 	/*
 	 * Select gender
@@ -307,6 +256,57 @@ public class RegisterActivity extends Activity {
 			}catch(Exception e){
 				e.printStackTrace();
 			}
+		}
+	}
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		if(v.getId() == R.id.back){
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				back.setBackgroundColor(Color.parseColor("#2e9dbc"));
+				break;
+			case MotionEvent.ACTION_UP:
+				back.setBackgroundColor(Color.TRANSPARENT);
+				finish();
+			default:
+				break;
+			}
+		}
+		return true;
+	}
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.btnNext:
+			if(!isValidUsername(uname.getText().toString())){
+				Toast.makeText(getApplicationContext(), "Username is invalid", Toast.LENGTH_SHORT).show();
+			}else if(uname.getText().toString().length() < 4 || uname.getText().toString().length() > 40){
+				Toast.makeText(getApplicationContext(), "Username: min 4 | max 40 characters!", Toast.LENGTH_SHORT).show();
+			}else if(!isValidEmail(mail.getText().toString())){
+				Toast.makeText(getApplicationContext(), "Email is invalid!", Toast.LENGTH_SHORT).show();
+			}else if(mail.getText().toString().length() > 40){
+				Toast.makeText(getApplicationContext(), "Email: max 40 characters!", Toast.LENGTH_SHORT).show();
+			}else if(age.getText().toString().length() <= 0){
+				Toast.makeText(getApplicationContext(), "Please enter age!", Toast.LENGTH_SHORT).show();
+			}else if(age.getText().toString().length() > 2){
+				Toast.makeText(getApplicationContext(), "Age: max 2 numbers!", Toast.LENGTH_SHORT).show();
+			}else if(gender.getText().toString().equalsIgnoreCase("gender")){
+				Toast.makeText(getApplicationContext(), "Please select gender!", Toast.LENGTH_SHORT).show();
+			}else if(pword.getText().toString().length() < 6 || pword.getText().toString().length() > 40){
+				Toast.makeText(getApplicationContext(), "Password: min 6 | max 40 characters!", Toast.LENGTH_SHORT).show();
+			}else if(!pword.getText().toString().equalsIgnoreCase(cfpword.getText().toString())){
+				Toast.makeText(getApplicationContext(), "Password not match!", Toast.LENGTH_SHORT).show();
+			}else{
+				new CheckUsernameEmail().execute();
+			}
+			break;
+		case R.id.gender:
+			selectGender();
+			break;
+		default:
+			break;
 		}
 	}
 }

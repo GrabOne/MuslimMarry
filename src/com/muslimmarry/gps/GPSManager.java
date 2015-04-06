@@ -18,7 +18,7 @@ public class GPSManager {
         this.activity = activity;
     }
 
-    public void start() {
+    public void start(final boolean exit) {
         mlocManager = (LocationManager) activity
                 .getSystemService(Context.LOCATION_SERVICE);
 
@@ -29,7 +29,7 @@ public class GPSManager {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                     activity);
             alertDialogBuilder
-                    .setMessage("GPS is disabled in your device. Enable it to this feature!")
+                    .setMessage("GPS is disabled in your device. Enable it to use next feature!")
                     .setCancelable(false)
                     .setPositiveButton("Enable GPS",
                             new DialogInterface.OnClickListener() {
@@ -44,6 +44,9 @@ public class GPSManager {
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
+                            if(exit == true){
+                            	System.exit(0);
+                            }
                         }
                     });
             AlertDialog alert = alertDialogBuilder.create();
