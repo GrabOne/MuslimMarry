@@ -1,6 +1,7 @@
 package com.muslimmarry.activities;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Random;
 
 import android.app.Activity;
@@ -122,9 +123,20 @@ public class PhotoCustomizationActivity extends Activity implements OnClickListe
                 Random generator = new Random();
                 int n = 10000;
                 n = generator.nextInt(n);
-                picturePath = myDir + "/Image-"+ n +".jpg";
-                Log.d("myTag", picturePath);
-                new UploadImg().execute(picturePath);
+                String fname = "Image-"+ n +".jpg";
+                File file = new File (myDir, fname);
+                if (file.exists ()) file.delete (); 
+                try {
+                   FileOutputStream out = new FileOutputStream(file);
+                   photo.compress(Bitmap.CompressFormat.JPEG, 75, out);
+                   out.flush();
+                   out.close();
+                } catch (Exception e) {
+                   e.printStackTrace();
+                }
+                picturePath = file.toString();
+                Log.d("myTag", file.toString());
+                new UploadImg().execute(file.toString());
             }
         }
 	};

@@ -156,8 +156,6 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 			titHeight.setText("HEIGHT (CM)");
 		}
 		
-		//((MainActivity)getActivity()).setBgGroupFindUser();
-		
 		// set font for element
 		new helpers(getActivity()).setFontTypeButton(show);
 		

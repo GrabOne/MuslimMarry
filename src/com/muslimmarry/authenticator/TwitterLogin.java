@@ -64,7 +64,9 @@ public class TwitterLogin {
     static final String PREF_KEY_TWITTER_LOGIN = "isTwitterLogedIn";
     
     prefUser user;
+    
     String resultString = "";
+    
     String _country;
     String _city;
     String _lat;

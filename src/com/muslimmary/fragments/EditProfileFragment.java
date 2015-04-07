@@ -352,8 +352,6 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 				if(jObj.getString("status").equalsIgnoreCase("success")){
 					JSONObject data = new JSONObject(jObj.getString("data"));
 					JSONArray languageArr = data.getJSONArray("language");
-//					JSONObject locate = new JSONObject(data.getString("location"));
-//					JSONObject coordinates = new JSONObject(locate.getString("coordinates"));
 					
 					editor.putString("birthday", birthday.getText().toString());
 					editor.putString("occupation", religion.getText().toString());
