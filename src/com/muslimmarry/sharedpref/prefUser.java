@@ -38,6 +38,7 @@ public class prefUser {
     public static final String KEY_BIRTH_DAY = "birthday";
     public static final String KEY_GENDER = "gender";
     public static final String KEY_PHOTO = "photo";
+    public static final String KEY_ALBUM = "album";
     public static final String KEY_TOKEN = "token";
     public static final String KEY_OCCUPATION = "occupation";
     public static final String KEY_HEIGHT = "height";
@@ -61,7 +62,7 @@ public class prefUser {
      * Create user session
      */
     public void createUserSession(String userid, String name, String username, String email, String age, String birthday, String gender,
-    	String photo, String token, String occupation, String height, String language, String country, String city, String lat, String lng,
+    	String photo, String album, String token, String occupation, String height, String language, String country, String city, String lat, String lng,
     	String code, String login_with, String social_id, String is_social){
     	
     	editor.putBoolean(IS_LOGIN, true);
@@ -73,6 +74,7 @@ public class prefUser {
     	editor.putString(KEY_BIRTH_DAY, birthday);
     	editor.putString(KEY_GENDER, gender);
     	editor.putString(KEY_PHOTO, photo);
+    	editor.putString(KEY_ALBUM, album);
     	editor.putString(KEY_TOKEN, token);
     	editor.putString(KEY_OCCUPATION, occupation);
     	editor.putString(KEY_HEIGHT, height);
@@ -100,6 +102,7 @@ public class prefUser {
     	user.put(KEY_BIRTH_DAY, pref.getString(KEY_BIRTH_DAY, null));
     	user.put(KEY_GENDER, pref.getString(KEY_GENDER, null));
     	user.put(KEY_PHOTO, pref.getString(KEY_PHOTO, null));
+    	user.put(KEY_ALBUM, pref.getString(KEY_ALBUM, null));
     	user.put(KEY_TOKEN, pref.getString(KEY_TOKEN, null));
     	user.put(KEY_OCCUPATION, pref.getString(KEY_OCCUPATION, null));
     	user.put(KEY_HEIGHT, pref.getString(KEY_HEIGHT, null));

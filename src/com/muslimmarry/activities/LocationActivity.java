@@ -27,7 +27,7 @@ public class LocationActivity extends Activity implements OnTouchListener, OnCli
 	String _pword = "";
 	String country = "";
 	String city = "";
-	String _photo = "";
+	String photo = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class LocationActivity extends Activity implements OnTouchListener, OnCli
 			_age = getResults.getString("age");
 			_gender = getResults.getString("gender");
 			_pword = getResults.getString("pword");
-			_photo = getResults.getString("photo");
+			photo = getResults.getString("photo");
 			country = getResults.getString("country");
 			city = getResults.getString("city");
 		}catch(NullPointerException e){
@@ -83,9 +83,10 @@ public class LocationActivity extends Activity implements OnTouchListener, OnCli
 			bundle.putString("pword", _pword);
 			bundle.putString("country", country);
 			bundle.putString("city", city);
-			bundle.putString("photo", _photo);
+			bundle.putString("photo", photo);
 			i.putExtras(bundle);
 			startActivity(i);
+			new helpers(LocationActivity.this).PushActivityLeft();
 			break;
 		case R.id.manually:
 			bundle = new Bundle();
@@ -97,9 +98,10 @@ public class LocationActivity extends Activity implements OnTouchListener, OnCli
 			bundle.putString("pword", _pword);
 			bundle.putString("country", country);
 			bundle.putString("city", city);
-			bundle.putString("photo", _photo);
+			bundle.putString("photo", photo);
 			i.putExtras(bundle);
 			startActivity(i);
+			new helpers(LocationActivity.this).PushActivityLeft();
 			break;
 		default:
 			break;
@@ -117,10 +119,17 @@ public class LocationActivity extends Activity implements OnTouchListener, OnCli
 			case MotionEvent.ACTION_UP:
 				back.setBackgroundColor(Color.TRANSPARENT);
 				finish();
+				new helpers(LocationActivity.this).PushActivityRight();
 			default:
 				break;
 			}
 		}
 		return true;
+	}
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		new helpers(LocationActivity.this).PushActivityRight();
 	}
 }

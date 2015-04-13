@@ -302,14 +302,6 @@
 						android:layout_marginTop="12dp"
 						android:layout_marginLeft="12dp" />
 	                
-	                <!-- <ImageView
-	                    android:layout_width="20dp"
-	                    android:layout_height="20dp"
-	                    android:src="@drawable/remove_icon"
-	                    android:contentDescription="@string/image_desc"
-	                    android:layout_marginTop="12dp"
-	                    android:layout_marginLeft="12dp" /> -->
-	                
 	            </LinearLayout>
 	            <ListView
 	                android:id="@+id/listJob"

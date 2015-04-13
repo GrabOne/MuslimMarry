@@ -2,243 +2,318 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff" >
+    android:background="#ffffff"
+    android:padding="10dp" >
     
+    <!-- main photo -->
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
+        android:id="@+id/main_photo_group"
+        android:layout_width="224dp"
+        android:layout_height="224dp" >
+        
+        <RelativeLayout
+	         android:layout_width="204dp"
+	         android:layout_height="204dp"
+	         android:background="#52bbdb"
+	         android:layout_centerInParent="true" >
+	         
+	         <RelativeLayout
+	             android:layout_width="200dp"
+	             android:layout_height="200dp"
+	             android:layout_centerInParent="true"
+	             android:background="#acacac" >
+	             <ImageView
+	                 android:layout_width="55dp"
+	                 android:layout_height="55dp"
+	                 android:src="@drawable/add_photo_icon"
+	                 android:contentDescription="@string/image_desc"
+	                 android:layout_centerInParent="true" />
+	             <ImageView
+	                 android:id="@+id/main_photo"
+	                 android:layout_width="match_parent"
+	                 android:layout_height="match_parent"
+	                 android:contentDescription="@string/image_desc" />
+	         </RelativeLayout>
+    	</RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/fc_btn_main_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+            <ImageView
+                 android:id="@+id/delete_icon_main_photo"
+	             android:layout_width="40dp"
+	             android:layout_height="40dp"
+	             android:src="@drawable/delete_photo_icon"
+	             android:contentDescription="@string/image_desc" />
+	         <ImageView
+	             android:layout_width="40dp"
+	             android:layout_height="40dp"
+	             android:src="@drawable/edit_photo_icon"
+	             android:contentDescription="@string/image_desc"
+	             android:layout_alignParentRight="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+    
+    <!-- photo 1 -->
+    <RelativeLayout
+        android:id="@+id/photo1_group"
+        android:layout_alignBaseline="@id/main_photo_group"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:layout_alignParentRight="true" >
+        
+        <RelativeLayout
+	         android:layout_width="84dp"
+	         android:layout_height="84dp"
+	         android:background="#52bbdb"
+	         android:layout_centerInParent="true" >
+	         
+	         <RelativeLayout
+	             android:layout_width="80dp"
+	             android:layout_height="80dp"
+	             android:background="#acacac"
+	             android:layout_centerInParent="true" >
+	             <ImageView
+	                android:layout_width="30dp"
+	                android:layout_height="30dp"
+	                android:src="@drawable/add_photo_icon"
+	                android:contentDescription="@string/image_desc"
+	                android:layout_centerInParent="true" />
+	             <ImageView
+	                 android:id="@+id/photo1"
+	                 android:layout_width="match_parent"
+	                 android:layout_height="match_parent"
+	                 android:contentDescription="@string/image_desc" />
+	         </RelativeLayout>
+    	</RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/fc_btn_photo1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+            <ImageView
+	             android:id="@+id/delete_icon_photo1"
+		         android:layout_width="30dp"
+		         android:layout_height="30dp"
+		         android:src="@drawable/delete_photo_icon"
+		         android:contentDescription="@string/image_desc" />
+	         <ImageView
+	             android:layout_width="30dp"
+	             android:layout_height="30dp"
+	             android:src="@drawable/edit_photo_icon"
+	             android:contentDescription="@string/image_desc"
+	             android:layout_alignParentRight="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+    
+    <!-- photo 2 -->
+    <RelativeLayout
+        android:id="@+id/photo2_group"
+        android:layout_alignBaseline="@id/main_photo_group"
+        android:layout_below="@id/photo1_group"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:layout_alignParentRight="true" >
+        
+        <RelativeLayout
+	         android:layout_width="84dp"
+	         android:layout_height="84dp"
+	         android:background="#52bbdb"
+	         android:layout_centerInParent="true" >
+	         
+	         <RelativeLayout
+	             android:layout_width="80dp"
+	             android:layout_height="80dp"
+	             android:background="#acacac"
+	             android:layout_centerInParent="true" >
+	             <ImageView
+	                android:layout_width="30dp"
+	                android:layout_height="30dp"
+	                android:src="@drawable/add_photo_icon"
+	                android:contentDescription="@string/image_desc"
+	                android:layout_centerInParent="true" />
+	             <ImageView
+	                 android:id="@+id/photo2"
+	                 android:layout_width="match_parent"
+	                 android:layout_height="match_parent"
+	                 android:contentDescription="@string/image_desc" />
+	         </RelativeLayout>
+    	</RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/fc_btn_photo2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+            <ImageView
+                 android:id="@+id/delete_icon_photo2"
+	             android:layout_width="30dp"
+	             android:layout_height="30dp"
+	             android:src="@drawable/delete_photo_icon"
+	             android:contentDescription="@string/image_desc" />
+	         <ImageView
+	             android:layout_width="30dp"
+	             android:layout_height="30dp"
+	             android:src="@drawable/edit_photo_icon"
+	             android:contentDescription="@string/image_desc"
+	             android:layout_alignParentRight="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+    
+    <!-- photo 3 -->
+    <RelativeLayout
+        android:id="@+id/photo3_group"
+        android:layout_below="@id/main_photo_group"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:layout_alignParentRight="true" >
+        
+        <RelativeLayout
+	         android:layout_width="84dp"
+	         android:layout_height="84dp"
+	         android:background="#52bbdb"
+	         android:layout_centerInParent="true" >
+         
+	         <RelativeLayout
+	             android:layout_width="80dp"
+	             android:layout_height="80dp"
+	             android:background="#acacac"
+	             android:layout_centerInParent="true" >
+	             <ImageView
+	                android:layout_width="30dp"
+	                android:layout_height="30dp"
+	                android:src="@drawable/add_photo_icon"
+	                android:contentDescription="@string/image_desc"
+	                android:layout_centerInParent="true" />
+	             <ImageView
+	                 android:id="@+id/photo3"
+	                 android:layout_width="match_parent"
+	                 android:layout_height="match_parent"
+	                 android:contentDescription="@string/image_desc" />
+	         </RelativeLayout>
+    	</RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/fc_btn_photo3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+            <ImageView
+                 android:id="@+id/delete_icon_photo3"
+	             android:layout_width="30dp"
+	             android:layout_height="30dp"
+	             android:src="@drawable/delete_photo_icon"
+	             android:contentDescription="@string/image_desc" />
+	         <ImageView
+	             android:layout_width="30dp"
+	             android:layout_height="30dp"
+	             android:src="@drawable/edit_photo_icon"
+	             android:contentDescription="@string/image_desc"
+	             android:layout_alignParentRight="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+    
+    <!-- photo 4 -->
+    <RelativeLayout
+        android:id="@+id/photo4_group"
+        android:layout_below="@id/main_photo_group"
+        android:layout_toLeftOf="@id/photo3_group"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
         android:layout_marginRight="10dp" >
         
-        <!-- main photo -->
         <RelativeLayout
-            android:id="@+id/main_photo"
-            android:layout_width="224dp"
-            android:layout_height="224dp" >
-            
-            <RelativeLayout
-	            android:layout_width="204dp"
-	            android:layout_height="204dp"
-	            android:background="#52bbdb"
-	            android:layout_centerInParent="true" >
-	            
-	            <ImageView
-		            android:layout_width="200dp"
-		            android:layout_height="200dp"
-		            android:src="@drawable/avatar"
-		            android:contentDescription="@string/image_desc"
-		            android:layout_centerInParent="true" />
-        	</RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/fc_btn_main_photo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" >
-                <ImageView
-	                android:layout_width="20dp"
-	                android:layout_height="20dp"
-	                android:src="@drawable/delete_photo_icon"
-	                android:contentDescription="@string/image_desc" />
-	            <ImageView
-	                android:layout_width="20dp"
-	                android:layout_height="20dp"
-	                android:src="@drawable/for_man_photo"
+	         android:layout_width="84dp"
+	         android:layout_height="84dp"
+	         android:background="#52bbdb"
+	         android:layout_centerInParent="true" >
+         
+	         <RelativeLayout
+	             android:layout_width="80dp"
+	             android:layout_height="80dp"
+	             android:background="#acacac"
+	             android:layout_centerInParent="true" >
+	             <ImageView
+	                android:layout_width="30dp"
+	                android:layout_height="30dp"
+	                android:src="@drawable/add_photo_icon"
 	                android:contentDescription="@string/image_desc"
-	                android:layout_alignParentRight="true" />
-            </RelativeLayout>
-        </RelativeLayout>
-        
-        <!-- photo 1 -->
+	                android:layout_centerInParent="true" />
+	             <ImageView
+	                 android:id="@+id/photo4"
+	                 android:layout_width="match_parent"
+	                 android:layout_height="match_parent"
+	                 android:contentDescription="@string/image_desc" />
+	         </RelativeLayout>
+    	</RelativeLayout>
         <RelativeLayout
-            android:id="@+id/photo_1"
-            android:layout_alignBaseline="@id/main_photo"
-            android:layout_width="104dp"
-            android:layout_height="104dp"
-            android:layout_alignParentRight="true" >
-            
-            <RelativeLayout
-	            android:layout_width="84dp"
-	            android:layout_height="84dp"
-	            android:background="#52bbdb"
-	            android:layout_centerInParent="true" >
-	            
-	            <ImageView
-		            android:layout_width="80dp"
-		            android:layout_height="80dp"
-		            android:src="@drawable/avatar"
-		            android:contentDescription="@string/image_desc"
-		            android:layout_centerInParent="true" />
-        	</RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/fc_btn_photo_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" >
-                <ImageView
-	                android:layout_width="20dp"
-	                android:layout_height="20dp"
-	                android:src="@drawable/delete_photo_icon"
-	                android:contentDescription="@string/image_desc" />
-	            <ImageView
-	                android:layout_width="20dp"
-	                android:layout_height="20dp"
-	                android:src="@drawable/for_man_photo"
+            android:id="@+id/fc_btn_photo4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+            <ImageView
+                 android:id="@+id/delete_icon_photo4"
+	             android:layout_width="30dp"
+	             android:layout_height="30dp"
+	             android:src="@drawable/delete_photo_icon"
+	             android:contentDescription="@string/image_desc" />
+	         <ImageView
+	             android:layout_width="30dp"
+	             android:layout_height="30dp"
+	             android:src="@drawable/edit_photo_icon"
+	             android:contentDescription="@string/image_desc"
+	             android:layout_alignParentRight="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+    
+    <!-- photo 5 -->
+    <RelativeLayout
+        android:id="@+id/photo5_group"
+        android:layout_below="@id/main_photo_group"
+        android:layout_width="104dp"
+        android:layout_height="104dp" >
+        
+        <RelativeLayout
+	         android:layout_width="84dp"
+	         android:layout_height="84dp"
+	         android:background="#52bbdb"
+	         android:layout_centerInParent="true" >
+         
+	         <RelativeLayout
+	             android:layout_width="80dp"
+	             android:layout_height="80dp"
+	             android:background="#acacac"
+	             android:layout_centerInParent="true" >
+	             <ImageView
+	                android:layout_width="30dp"
+	                android:layout_height="30dp"
+	                android:src="@drawable/add_photo_icon"
 	                android:contentDescription="@string/image_desc"
-	                android:layout_alignParentRight="true" />
-            </RelativeLayout>
-        </RelativeLayout>
-        
-        <!-- photo 2 -->
+	                android:layout_centerInParent="true" />
+	             <ImageView
+	                 android:id="@+id/photo5"
+	                 android:layout_width="match_parent"
+	                 android:layout_height="match_parent"
+	                 android:contentDescription="@string/image_desc" />
+	         </RelativeLayout>
+    	</RelativeLayout>
         <RelativeLayout
-            android:id="@+id/photo_2"
-            android:layout_alignBaseline="@id/main_photo"
-            android:layout_below="@id/photo_1"
-            android:layout_width="104dp"
-            android:layout_height="104dp"
-            android:layout_alignParentRight="true" >
-            
-            <RelativeLayout
-	            android:layout_width="84dp"
-	            android:layout_height="84dp"
-	            android:background="#52bbdb"
-	            android:layout_centerInParent="true" >
-	            
-	            <ImageView
-		            android:layout_width="80dp"
-		            android:layout_height="80dp"
-		            android:src="@drawable/avatar"
-		            android:contentDescription="@string/image_desc"
-		            android:layout_centerInParent="true" />
-        	</RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/fc_btn_photo_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" >
-                <ImageView
-	                android:layout_width="20dp"
-	                android:layout_height="20dp"
-	                android:src="@drawable/delete_photo_icon"
-	                android:contentDescription="@string/image_desc" />
-	            <ImageView
-	                android:layout_width="20dp"
-	                android:layout_height="20dp"
-	                android:src="@drawable/for_man_photo"
-	                android:contentDescription="@string/image_desc"
-	                android:layout_alignParentRight="true" />
-            </RelativeLayout>
+            android:id="@+id/fc_btn_photo5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+            <ImageView
+                 android:id="@+id/delete_icon_photo5"
+	             android:layout_width="30dp"
+	             android:layout_height="30dp"
+	             android:src="@drawable/delete_photo_icon"
+	             android:contentDescription="@string/image_desc" />
+	         <ImageView
+	             android:layout_width="30dp"
+	             android:layout_height="30dp"
+	             android:src="@drawable/edit_photo_icon"
+	             android:contentDescription="@string/image_desc"
+	             android:layout_alignParentRight="true" />
         </RelativeLayout>
-        
-        <!-- photo 3 -->
-        <RelativeLayout
-            android:id="@+id/photo_3"
-            android:layout_below="@id/main_photo"
-            android:layout_width="104dp"
-            android:layout_height="104dp"
-            android:layout_alignParentRight="true" >
-            
-            <RelativeLayout
-	            android:layout_width="84dp"
-	            android:layout_height="84dp"
-	            android:background="#52bbdb"
-	            android:layout_centerInParent="true" >
-	            
-	            <ImageView
-		            android:layout_width="80dp"
-		            android:layout_height="80dp"
-		            android:src="@drawable/avatar"
-		            android:contentDescription="@string/image_desc"
-		            android:layout_centerInParent="true" />
-        	</RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/fc_btn_photo_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" >
-                <ImageView
-	                android:layout_width="20dp"
-	                android:layout_height="20dp"
-	                android:src="@drawable/delete_photo_icon"
-	                android:contentDescription="@string/image_desc" />
-	            <ImageView
-	                android:layout_width="20dp"
-	                android:layout_height="20dp"
-	                android:src="@drawable/for_man_photo"
-	                android:contentDescription="@string/image_desc"
-	                android:layout_alignParentRight="true" />
-            </RelativeLayout>
-        </RelativeLayout>
-        
-        <!-- photo 4 -->
-        <RelativeLayout
-            android:id="@+id/photo_4"
-            android:layout_below="@id/main_photo"
-            android:layout_toLeftOf="@id/photo_3"
-            android:layout_width="104dp"
-            android:layout_height="104dp"
-            android:layout_marginRight="10dp" >
-            
-            <RelativeLayout
-	            android:layout_width="84dp"
-	            android:layout_height="84dp"
-	            android:background="#52bbdb"
-	            android:layout_centerInParent="true" >
-	            
-	            <ImageView
-		            android:layout_width="80dp"
-		            android:layout_height="80dp"
-		            android:src="@drawable/avatar"
-		            android:contentDescription="@string/image_desc"
-		            android:layout_centerInParent="true" />
-        	</RelativeLayout>
-            <RelativeLayout
-                android:id="@+id/fc_btn_photo_4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" >
-                <ImageView
-	                android:layout_width="20dp"
-	                android:layout_height="20dp"
-	                android:src="@drawable/delete_photo_icon"
-	                android:contentDescription="@string/image_desc" />
-	            <ImageView
-	                android:layout_width="20dp"
-	                android:layout_height="20dp"
-	                android:src="@drawable/for_man_photo"
-	                android:contentDescription="@string/image_desc"
-	                android:layout_alignParentRight="true" />
-            </RelativeLayout>
-        </RelativeLayout>
-        
-        <!-- add photo -->
-        <RelativeLayout
-            android:id="@+id/add_photo"
-            android:layout_below="@id/main_photo"
-            android:layout_width="84dp"
-            android:layout_height="84dp"
-            android:background="#52bbdb"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp" >
-            
-            <RelativeLayout
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="#acacac"
-                android:layout_centerInParent="true" >
-                
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/add_photo_icon"
-                    android:contentDescription="@string/image_desc"
-                    android:layout_centerInParent="true" />
-                
-            </RelativeLayout>
-            
-        </RelativeLayout>
-        
     </RelativeLayout>
 
 </RelativeLayout>

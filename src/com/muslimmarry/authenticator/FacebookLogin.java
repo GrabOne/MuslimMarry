@@ -160,7 +160,7 @@ public class FacebookLogin {
 			super.onPreExecute();
 			((Activity)mContext).runOnUiThread(new Runnable() {
 			    public void run() {
-					pd = new TransparentProgressDialog(mContext, R.drawable.loading_spinner);
+			    	pd = new TransparentProgressDialog(mContext, R.drawable.loading_spinner);
 					pd.show();
 			    }
 			});
@@ -213,7 +213,7 @@ public class FacebookLogin {
 			    Log.d("obj", jObj.toString());
 			    
 			    HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(helpers.url+"api/v1/login-social");
+				HttpPost httppost = new HttpPost(helpers.url+"login-social");
 				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httppost.setHeader("Accept", "application/json");
 				httppost.setHeader("Content-type", "application/json;charset=UTF-8");
@@ -237,7 +237,7 @@ public class FacebookLogin {
 			super.onPostExecute(result);
 			((Activity)mContext).runOnUiThread(new Runnable() {
 			    public void run() {
-					pd.dismiss();
+			    	pd.dismiss();
 			    }
 			});
 			try{
@@ -248,12 +248,16 @@ public class FacebookLogin {
 					JSONObject locate = new JSONObject(data.getString("location"));
 					JSONObject coordinates = new JSONObject(locate.getString("coordinates"));
 					
-					if(!coordinates.isNull("city")){
-						_city = coordinates.getString("city");
+					if(!locate.isNull("city")){
+						_city = locate.getString("city");
 					}
-					
+					String album = "";
+					if(!data.isNull("images")){
+						JSONArray albumArr = data.getJSONArray("images");
+						album = albumArr.toString();
+					}
 					user.createUserSession(data.getString("_id"), new String(data.getString("nickname").getBytes("UTF-8"), "UTF-8"), "", new String(data.getString("email").getBytes("UTF-8"), "UTF-8"), data.getString("age"),
-							data.getString("birthday"), data.getString("gender"), data.getString("avatar"), data.getString("remember_token"), data.getString("occupation"), data.getString("height"), languageArr.toString(), locate.getString("country"),
+							data.getString("birthday"), data.getString("gender"), data.getString("avatar"), album, data.getString("remember_token"), data.getString("occupation"), data.getString("height"), languageArr.toString(), locate.getString("country"),
 							_city, coordinates.getString("lat"), coordinates.getString("lng"), data.getString("promocode"), "fb", data.getString("facebook_id"), "true");
 					Intent i = new Intent(mContext, MainActivity.class);
 					mContext.startActivity(i);

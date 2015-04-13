@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -26,13 +27,18 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.muslimmarry.R;
+
 public class helpers {
 	
+	Activity activity;
 	Context mContext;
-	public static String url = "http://muslimmarry.campcoders.com/";
+	public static String url = "http://muslimmarry.campcoders.com/api/v1/";
 	
-	public helpers(Context ctx){
-		this.mContext = ctx;
+	TransparentProgressDialog pd;
+	
+	public helpers(Context mContext){
+		this.mContext = mContext;
 	}
 	
 	public static String convertInputStreamToString(InputStream inputStream) throws IOException{
@@ -45,6 +51,9 @@ public class helpers {
         inputStream.close();
         return result;
     }
+	/*
+	 * Custom height for listview
+	 */
 	public static void setListViewHeightBasedOnChildren(ListView listView) {
 	    ListAdapter listAdapter = listView.getAdapter();
 	    if (listAdapter == null)
@@ -66,6 +75,9 @@ public class helpers {
 	    listView.setLayoutParams(params);
 	    listView.requestLayout();
 	}
+	/*
+	 * Set touch fragment
+	 */
 	public static void setTouch(View view){
 		view.setOnTouchListener(new OnTouchListener() {
 			
@@ -76,19 +88,26 @@ public class helpers {
 			}
 		});
 	}
-	
+	/*
+	 * Set font for text
+	 */
 	public void setFontTypeText(TextView tv){
 		Typeface face = Typeface.createFromAsset(mContext.getAssets(),
 	            "fonts/moolbor_0.ttf");
 		tv.setTypeface(face);
 	}
-	
+	/*
+	 * Set font for button
+	 */
 	public void setFontTypeButton(Button btn){
 		Typeface face = Typeface.createFromAsset(mContext.getAssets(),
 	            "fonts/moolbor_0.ttf");
 		btn.setTypeface(face);
 	}
-	// Returns the URI path to the Bitmap displayed in specified ImageView
+	
+	/*
+	 * Returns the URI path to the Bitmap displayed in specified ImageView
+	 */
 	public static Uri getLocalBitmapUri(ImageView imageView) {
 	    // Extract Bitmap from ImageView drawable
 	    Drawable drawable = imageView.getDrawable();
@@ -112,5 +131,17 @@ public class helpers {
 	        e.printStackTrace();
 	    }
 	    return bmpUri;
+	}
+	/*
+	 * Push activity to left
+	 */
+	public void PushActivityLeft(){
+		((Activity)mContext).overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+	}
+	/*
+	 * Push activity to right
+	 */
+	public void PushActivityRight(){
+		((Activity)mContext).overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
 	}
 }

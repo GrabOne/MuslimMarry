@@ -1,6 +1,7 @@
 package com.muslimmary.fragments;
 
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 
 import org.apache.http.HttpResponse;
@@ -25,12 +26,16 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muslimmarry.R;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.muslimmarry.activities.MainActivity;
 import com.muslimmarry.helpers.TransparentProgressDialog;
 import com.muslimmarry.helpers.helpers;
@@ -54,6 +59,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 	TextView height;
 	TextView occupation;
 	LinearLayout llLanguage;
+	EditText etmessage;
 	
 	String _user_id_viewing = "";
 	String _photo = "";
@@ -63,13 +69,18 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 	String _language = "";
 	String _height = "";
 	String _occupation = "";
+	String _city = "";
 	
 	prefUser user;
 	String userid = "";
 	String token = "";
+
+	String resultString = "";
 	
 	TransparentProgressDialog pd;
-	String resultString = "";
+	
+	Socket socket;
+	String message = "";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,6 +108,8 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 		height = (TextView)rootView.findViewById(R.id.height);
 		occupation = (TextView)rootView.findViewById(R.id.occupation);
 		llLanguage = (LinearLayout)rootView.findViewById(R.id.llLanguage);
+		Button btnSend = (Button)rootView.findViewById(R.id.btnSend);
+		etmessage = (EditText)rootView.findViewById(R.id.etmessage);
 		
 		// create user object
 		user = new prefUser(getActivity());
@@ -113,10 +126,9 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 			_height = getArguments().getString("height");
 			_occupation = getArguments().getString("occupation");
 			_language = getArguments().getString("language");
+			_city = getArguments().getString("city");
 			if(_photo.length() > 0){
-				Picasso.with(getActivity()).load(_photo).fit().centerInside().into(photo);
-			}else{
-				photo.setImageResource(R.drawable.portrait);
+				Picasso.with(getActivity()).load(_photo).fit().centerCrop().into(photo);
 			}
 			if(_name.length() <= 0){
 				name.setText(_username);
@@ -126,6 +138,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 			age.setText(_age);
 			height.setText(_height);
 			occupation.setText(_occupation.toUpperCase());
+			city.setText(_city.toUpperCase());
 			JSONArray jArr = new JSONArray(_language);
 			for(int i=0; i<jArr.length(); i++){
 				TextView value = new TextView(getActivity());
@@ -141,8 +154,10 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 			e.printStackTrace();
 		}
 		
+		// set background for bottm nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
 		
+		// set event for element
 		back.setOnClickListener(this);
 		more.setOnClickListener(this);
 		option.setOnClickListener(this);
@@ -151,6 +166,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 		invisible.setOnClickListener(this);
 		gift.setOnClickListener(this);
 		report_spam.setOnClickListener(this);
+		btnSend.setOnClickListener(this);
 		
 		return rootView;
 	}
@@ -240,6 +256,49 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 		case R.id.report_spam:
 			new ReportUser().execute();
 			break;
+		case R.id.btnSend:
+			if(etmessage.getText().toString().length() > 0){
+				message = etmessage.getText().toString();
+				try{
+	            	socket = IO.socket("http://muslimmarry.campcoders.com:7777/chat?user_id="+ userid +"&token=" + token);
+	            	socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+						
+						@Override
+						public void call(Object... arg0) {
+							// TODO Auto-generated method stub
+							try{
+			            		JSONObject obj = new JSONObject();
+			            		obj.put("user_send", userid);
+			            		obj.put("user_recei", _user_id_viewing);
+			            		obj.put("content", message);
+			            		socket.emit("send_message", obj);
+			            	}catch(Exception e){
+			            		Log.e("error", e.getMessage(), e);
+			            	}
+						}
+					}).on("send_message", new Emitter.Listener() {
+						
+						@Override
+						public void call(Object... arg0) {
+							// TODO Auto-generated method stub
+							JSONObject obj = (JSONObject)arg0[0];
+							Log.d("myTag", obj.toString());
+						}
+					}).on("send_message_success", new Emitter.Listener() {
+						
+						@Override
+						public void call(Object... arg0) {
+							// TODO Auto-generated method stub
+							JSONObject obj = (JSONObject)arg0[0];
+							Log.d("myTag", obj.toString());
+						}
+					});
+	            	socket.connect();
+	            }catch(URISyntaxException e){
+	            	Log.e("error", e.getMessage(), e);
+	            }
+				etmessage.setText("");
+			}
 		default:
 			break;
 		}
@@ -267,7 +326,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 				jObj.put("type", Integer.parseInt(params[0]));
 				
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(helpers.url+"api/v1/block-user");
+				HttpPost httppost = new HttpPost(helpers.url+"block-user");
 				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httppost.setHeader("Accept", "application/json");
 				httppost.setHeader("Content-type", "application/json;charset=UTF-8");
@@ -325,7 +384,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 				jObj.put("user_report_id", _user_id_viewing);
 				
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(helpers.url+"api/v1/report-user");
+				HttpPost httppost = new HttpPost(helpers.url+"report-user");
 				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httppost.setHeader("Accept", "application/json");
 				httppost.setHeader("Content-type", "application/json;charset=UTF-8");

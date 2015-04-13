@@ -6,7 +6,7 @@ public class SearchResultItem {
 	private String username;
 	private String occupation;
 	private String age;
-	private String avatar;
+	private String photo;
 	private String birthday;
 	private String email;
 	private String height;
@@ -19,14 +19,14 @@ public class SearchResultItem {
 	private double distance;
 	private boolean click = false;
 	
-	public SearchResultItem(String id, String name, String username, String occupation, String age, String avatar, String birthday, String email,
+	public SearchResultItem(String id, String name, String username, String occupation, String age, String photo, String birthday, String email,
 			String height, String language, String promocode, String country, String city, String lat, String lng, double distance, boolean click){
 		this.id = id;
 		this.name = name;
 		this.username = username;
 		this.occupation = occupation;
 		this.age = age;
-		this.avatar = avatar;
+		this.photo = photo;
 		this.birthday = birthday;
 		this.email = email;
 		this.height = height;
@@ -80,12 +80,12 @@ public class SearchResultItem {
 		this.age = age;
 	}
 	
-	public String getAvatar(){
-		return avatar;
+	public String getPhoto(){
+		return photo;
 	}
 	
-	public void setAvatar(String avatar){
-		this.avatar = avatar;
+	public void setPhoto(String photo){
+		this.photo = photo;
 	}
 	
 	public String getBirthday(){

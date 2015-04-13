@@ -169,7 +169,7 @@ public class TwitterLogin {
     		// TODO Auto-generated method stub
     		super.onPreExecute();
     		pd = new TransparentProgressDialog(mContext, R.drawable.loading_spinner);
-    		pd.show();
+			pd.show();
     	}
     	@Override
     	protected Void doInBackground(String... params) {
@@ -197,7 +197,7 @@ public class TwitterLogin {
 			    Log.d("obj", jObj.toString());
 			    
 			    HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(helpers.url+"api/v1/login-social");
+				HttpPost httppost = new HttpPost(helpers.url+"login-social");
 				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httppost.setHeader("Accept", "application/json");
 				httppost.setHeader("Content-type", "application/json;charset=UTF-8");
@@ -228,10 +228,18 @@ public class TwitterLogin {
 					JSONArray languageArr = data.getJSONArray("language");
 					JSONObject locate = new JSONObject(data.getString("location"));
 					JSONObject coordinates = new JSONObject(locate.getString("coordinates"));
+					if(!locate.isNull("city")){
+						_city = locate.getString("city");
+					}
+					String album = "";
+					if(!data.isNull("images")){
+						JSONArray albumArr = data.getJSONArray("images");
+						album = albumArr.toString();
+					}
 					user = new prefUser(mContext);
 					user.createUserSession(data.getString("_id"), new String(data.getString("nickname").getBytes("UTF-8"), "UTF-8"), "", new String(data.getString("email").getBytes("UTF-8"), "UTF-8"), data.getString("age"),
-							data.getString("birthday"), data.getString("gender"), data.getString("avatar"), data.getString("remember_token"), data.getString("occupation"), data.getString("height"), languageArr.toString(), locate.getString("country"),
-							locate.getString("city"), coordinates.getString("lat"), coordinates.getString("lng"), data.getString("promocode"), "tt", data.getString("twitter_id"), "true");
+							data.getString("birthday"), data.getString("gender"), data.getString("avatar"), album, data.getString("remember_token"), data.getString("occupation"), data.getString("height"), languageArr.toString(), locate.getString("country"),
+							_city, coordinates.getString("lat"), coordinates.getString("lng"), data.getString("promocode"), "tt", data.getString("twitter_id"), "true");
 					Intent i = new Intent(mContext, MainActivity.class);
 					mContext.startActivity(i);
 					

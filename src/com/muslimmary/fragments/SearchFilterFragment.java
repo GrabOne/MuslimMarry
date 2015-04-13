@@ -7,7 +7,7 @@ import java.util.HashMap;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,7 +25,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -76,6 +75,7 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 	
 	ListView listJob;
 	ArrayList<JobItem> dataJobs = new ArrayList<JobItem>();
+	ArrayList<GetDialogItem> jobsLst = new ArrayList<GetDialogItem>();
 	
 	DistanceIn mi;
 	
@@ -87,14 +87,14 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 	prefUser user;
 	
 	String resultString = "";
-	
-	TransparentProgressDialog pd;
-	
+
 	SendDataToSearchResult mCallback;
 	
 	AlertDialog dialog;
 	String[] speaks;
 	String[] jobs;
+	
+	TransparentProgressDialog pd;
 	
 	public interface SendDataToSearchResult{
 		public void SendArrList(String arrList);
@@ -135,8 +135,9 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 		listSpeak = (ListView)rootView.findViewById(R.id.listSpeak);
 		listJob = (ListView)rootView.findViewById(R.id.listJob);
 		
-		// fetch all speaks
+		// fetch all speaks, all jobs
 		new FetchSpeaks().execute();
+		new FetchJobs().execute();
 		
 		// create user object
 		user = new prefUser(getActivity());
@@ -375,18 +376,17 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 				Log.d("obj", jObj.toString());
 				
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(helpers.url+"api/v1/search");
-				StringEntity se = new StringEntity(jObj.toString());
-				httppost.setEntity(se);
+				HttpPost httppost = new HttpPost(helpers.url+"search");
+				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httppost.setHeader("Accept", "application/json");
-				httppost.setHeader("Content-type", "application/json");
+				httppost.setHeader("Content-type", "application/json;charset=UTF-8");
+				httppost.setHeader("Accept-Charset", "utf-8");
 				
 				HttpResponse response = httpClient.execute(httppost);
 				
 				inputStream = response.getEntity().getContent();
 				if(inputStream != null){
 					resultString = helpers.convertInputStreamToString(inputStream);
-					Log.d("result", resultString);
 				}
 			}catch(Exception e){
 				e.printStackTrace();
@@ -439,14 +439,13 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 	 * Select job
 	 */
 	private void selectJob(){
-		jobs = new String[] {"Student", "Doctor" , "Teacher"};
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View convertView = inflater.inflate(R.layout.layout_my_dialog, null);
 		alertDialog.setView(convertView);
 		alertDialog.setTitle("Select Occupation!");
 		ListView lv = (ListView)convertView.findViewById(R.id.lv);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, jobs);
+		MyDialogAdapter adapter = new MyDialogAdapter(getActivity(), jobsLst);
 		lv.setAdapter(adapter);
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
@@ -455,7 +454,7 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 					long arg3) {
 				// TODO Auto-generated method stub
 				dialog.dismiss();
-				job.setText(jobs[arg2].toString());
+				job.setText(jobsLst.get(arg2).getValue().substring(0, 1).toUpperCase() + jobsLst.get(arg2).getValue().substring(1));
 			}
 		});
 		dialog = alertDialog.create();
@@ -469,7 +468,7 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 		protected Void doInBackground(String... arg0) {
 			// TODO Auto-generated method stub
 			ServiceHandler sh = new ServiceHandler();
-			String jsonStr = sh.makeServiceCall(helpers.url+"api/v1/language", ServiceHandler.GET);
+			String jsonStr = sh.makeServiceCall(helpers.url+"language", ServiceHandler.GET);
 			if(jsonStr != null){
 				speaksLst.clear();
 				try{
@@ -479,6 +478,40 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 						for(int i=0; i<jArr.length(); i++){
 							JSONObject data = jArr.getJSONObject(i);
 							speaksLst.add(new GetDialogItem(data.getString("_id"), data.getString("name")));
+						}
+					}else{
+						Toast.makeText(getActivity(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
+					}
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+			return null;
+		}
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+		}
+	}
+	/*
+	 * get jobs
+	 */
+	private class FetchJobs extends AsyncTask<String, String, Void>{
+		@Override
+		protected Void doInBackground(String... arg0) {
+			// TODO Auto-generated method stub
+			ServiceHandler sh = new ServiceHandler();
+			String jsonStr = sh.makeServiceCall(helpers.url+"occupation", ServiceHandler.GET);
+			if(jsonStr != null){
+				jobsLst.clear();
+				try{
+					JSONObject jObj = new JSONObject(jsonStr);
+					if(jObj.getString("status").equalsIgnoreCase("success")){
+						JSONArray jArr = new JSONArray(jObj.getString("data"));
+						for(int i=0; i<jArr.length(); i++){
+							JSONObject data = jArr.getJSONObject(i);
+							jobsLst.add(new GetDialogItem(data.getString("_id"), data.getString("name")));
 						}
 					}else{
 						Toast.makeText(getActivity(), jObj.getString("message"), Toast.LENGTH_SHORT).show();

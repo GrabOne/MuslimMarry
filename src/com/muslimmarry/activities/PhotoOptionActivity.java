@@ -78,10 +78,12 @@ public class PhotoOptionActivity extends Activity implements OnClickListener, On
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		Intent i = null;
+		Bundle bundle = null;
 		switch (v.getId()) {
 		case R.id.upload:
-			Intent uploadIntent = new Intent(PhotoOptionActivity.this, PhotoCustomizationActivity.class);
-			Bundle bundle = new Bundle();
+			i = new Intent(PhotoOptionActivity.this, PhotoCustomizationActivity.class);
+			bundle = new Bundle();
 			bundle.putString("uname", _uname);
 			bundle.putString("email", _email);
 			bundle.putString("age", _age);
@@ -90,36 +92,39 @@ public class PhotoOptionActivity extends Activity implements OnClickListener, On
 			bundle.putString("country", country);
 			bundle.putString("city", city);
 			bundle.putString("flag", "upload photo");
-			uploadIntent.putExtras(bundle);
-			startActivity(uploadIntent);
+			i.putExtras(bundle);
+			startActivity(i);
+			new helpers(PhotoOptionActivity.this).PushActivityLeft();
 			break;
 		case R.id.take:
-			Intent takeIntent = new Intent(PhotoOptionActivity.this, PhotoCustomizationActivity.class);
-			Bundle bundle2 = new Bundle();
-			bundle2.putString("uname", _uname);
-			bundle2.putString("email", _email);
-			bundle2.putString("age", _age);
-			bundle2.putString("gender", _gender);
-			bundle2.putString("pword", _pword);
-			bundle2.putString("country", country);
-			bundle2.putString("city", city);
-			bundle2.putString("flag", "take photo");
-			takeIntent.putExtras(bundle2);
-			startActivity(takeIntent);
+			i = new Intent(PhotoOptionActivity.this, PhotoCustomizationActivity.class);
+			bundle = new Bundle();
+			bundle.putString("uname", _uname);
+			bundle.putString("email", _email);
+			bundle.putString("age", _age);
+			bundle.putString("gender", _gender);
+			bundle.putString("pword", _pword);
+			bundle.putString("country", country);
+			bundle.putString("city", city);
+			bundle.putString("flag", "take photo");
+			i.putExtras(bundle);
+			startActivity(i);
+			new helpers(PhotoOptionActivity.this).PushActivityLeft();
 			break;
 		case R.id.notnow:
-			Intent notnowIntent = new Intent(PhotoOptionActivity.this, ManuallyLocateActivity.class);
-			Bundle bundle3 = new Bundle();
-			bundle3.putString("uname", _uname);
-			bundle3.putString("email", _email);
-			bundle3.putString("age", _age);
-			bundle3.putString("gender", _gender);
-			bundle3.putString("pword", _pword);
-			bundle3.putString("avatar", "");
-			bundle3.putString("country", country);
-			bundle3.putString("city", city);
-			notnowIntent.putExtras(bundle3);
-			startActivity(notnowIntent);
+			i = new Intent(PhotoOptionActivity.this, ManuallyLocateActivity.class);
+			bundle = new Bundle();
+			bundle.putString("uname", _uname);
+			bundle.putString("email", _email);
+			bundle.putString("age", _age);
+			bundle.putString("gender", _gender);
+			bundle.putString("pword", _pword);
+			bundle.putString("photo", "");
+			bundle.putString("country", country);
+			bundle.putString("city", city);
+			i.putExtras(bundle);
+			startActivity(i);
+			new helpers(PhotoOptionActivity.this).PushActivityLeft();
 			break;
 		default:
 			break;
@@ -137,10 +142,17 @@ public class PhotoOptionActivity extends Activity implements OnClickListener, On
 			case MotionEvent.ACTION_UP:
 				back.setBackgroundColor(Color.TRANSPARENT);
 				finish();
+				new helpers(PhotoOptionActivity.this).PushActivityRight();
 			default:
 				break;
 			}
 		}
 		return true;
+	}
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		new helpers(PhotoOptionActivity.this).PushActivityRight();
 	}
 }

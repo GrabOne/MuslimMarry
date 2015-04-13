@@ -6,7 +6,7 @@
     android:background="#ffffff" >
     
     <ImageView
-        android:id="@+id/large_img"
+        android:id="@+id/wallpaper"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:scaleType="centerCrop"

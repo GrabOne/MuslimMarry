@@ -40,8 +40,8 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResultItem> {
 			LayoutInflater inflate = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			rowView = inflate.inflate(R.layout.row_search_result, null);
 			viewHolder = new ViewHolder();
-			viewHolder.avatar = (ImageView)rowView.findViewById(R.id.avatar);
-			viewHolder.info_bg = (ImageView)rowView.findViewById(R.id.info_bg);
+			viewHolder.photo = (ImageView)rowView.findViewById(R.id.photo);
+			viewHolder.photo_bg = (ImageView)rowView.findViewById(R.id.photo_bg);
 			viewHolder.heart = (ImageView)rowView.findViewById(R.id.heart);
 			viewHolder.play = (ImageView)rowView.findViewById(R.id.play);
 			viewHolder.txtage = (TextView)rowView.findViewById(R.id.txtage);
@@ -53,23 +53,25 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResultItem> {
 			viewHolder = (ViewHolder)convertView.getTag();
 		}
 		SearchResultItem item = mlst.get(position);
-		if(item.getAvatar().length() > 0){
-			Picasso.with(mContext).load(item.getAvatar()).fit().centerInside().into(viewHolder.avatar);
+		if(item.getPhoto().length() > 0){
+			Picasso.with(mContext).load(item.getPhoto()).placeholder(R.drawable.avatar).fit().into(viewHolder.photo);
+		}else{
+			viewHolder.photo.setImageResource(R.drawable.avatar);
 		}
-		viewHolder.info_bg.setBackgroundColor(Color.parseColor("#80FFFFFF"));
+		viewHolder.photo_bg.setBackgroundColor(Color.parseColor("#80FFFFFF"));
 		viewHolder.txtage.setText("AGE");
 		viewHolder.age.setText(item.getAge()+"");
 		viewHolder.txtjob.setText("JOB");
 		viewHolder.job.setText(item.getOccupation().toString());
 		
 		if(item.getClick() == true){
-			viewHolder.info_bg.setVisibility(View.VISIBLE);
+			viewHolder.photo_bg.setVisibility(View.VISIBLE);
 			viewHolder.heart.setVisibility(View.VISIBLE);
 			viewHolder.play.setVisibility(View.VISIBLE);
 			viewHolder.heart.setImageResource(R.drawable.heart_icon);
 			viewHolder.play.setImageResource(R.drawable.play_icon);
 		}else{
-			viewHolder.info_bg.setVisibility(View.GONE);
+			viewHolder.photo_bg.setVisibility(View.GONE);
 			viewHolder.heart.setVisibility(View.GONE);
 			viewHolder.play.setVisibility(View.GONE);
 		}
@@ -86,7 +88,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResultItem> {
 				View parentRow = (View) v.getParent();
 				GridView gr = (GridView) parentRow.getParent();
 				final int pos = gr.getPositionForView(parentRow);
-				((MainActivity)mContext).SendUserInfo(mlst.get(pos).getId(), mlst.get(pos).getAvatar(), mlst.get(pos).getName(), mlst.get(pos).getUsername(), mlst.get(pos).getAge(), mlst.get(pos).getLanguage(), mlst.get(pos).getHeight(), mlst.get(pos).getOccupation());
+				((MainActivity)mContext).SendUserInfo(mlst.get(pos).getId(), mlst.get(pos).getPhoto(), mlst.get(pos).getName(), mlst.get(pos).getUsername(), mlst.get(pos).getAge(), mlst.get(pos).getLanguage(), mlst.get(pos).getHeight(), mlst.get(pos).getOccupation(), mlst.get(pos).getCity());
 			}
 		});
 		
@@ -94,8 +96,8 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResultItem> {
 	}
 	
 	static class ViewHolder{
-		ImageView avatar;
-		ImageView info_bg;
+		ImageView photo;
+		ImageView photo_bg;
 		ImageView heart;
 		ImageView play;
 		TextView txtage;

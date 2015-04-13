@@ -55,8 +55,6 @@ public class AccountSettingFragment extends Fragment implements OnClickListener 
 	String token = "";
 	String is_social = "";
 	
-	TransparentProgressDialog pd;
-	
 	String resultString = "";
 	
 	// Shared pref mode
@@ -66,6 +64,8 @@ public class AccountSettingFragment extends Fragment implements OnClickListener 
     
     SharedPreferences pref;
     Editor editor;
+    
+    TransparentProgressDialog pd;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -153,7 +153,7 @@ public class AccountSettingFragment extends Fragment implements OnClickListener 
 				}
 				
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPut httpput = new HttpPut(helpers.url+"api/v1/edit-normal-account");
+				HttpPut httpput = new HttpPut(helpers.url+"edit-normal-account");
 				httpput.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httpput.setHeader("Accept", "application/json");
 				httpput.setHeader("Content-type", "application/json;charset=UTF-8");
@@ -221,7 +221,7 @@ public class AccountSettingFragment extends Fragment implements OnClickListener 
 				}
 				
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPut httpput = new HttpPut(helpers.url+"api/v1/edit-social-account");
+				HttpPut httpput = new HttpPut(helpers.url+"edit-social-account");
 				httpput.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httpput.setHeader("Accept", "application/json");
 				httpput.setHeader("Content-type", "application/json;charset=UTF-8");

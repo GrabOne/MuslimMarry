@@ -72,7 +72,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 	
 	RelativeLayout name_group;
 	View line1;
-	ImageView large_img;
+	ImageView wallpaper;
 	ImageView photo;
 	ImageView arrow_dategr;
 	ImageView arrow_occgr;
@@ -108,17 +108,11 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 	String social_id= "";
 	String is_social = "";
 	
-	String[] arrHeight = {	"1.30", "1.32", "1.34", "1.36", "1.38", "1.40", "1.42", "1.44", "1.46", "1.48", "1.50",
+	String[] arrHeight = {"1.30", "1.32", "1.34", "1.36", "1.38", "1.40", "1.42", "1.44", "1.46", "1.48", "1.50",
 							"1.52", "1.54", "1.56", "1.58", "1.60", "1.62", "1.64", "1.66", "1.68", "1.70", "1.72",
 							"1.74", "1.76", "1.78", "1.80", "1.82", "1.84", "1.86", "1.88", "1.90", "1.92", "1.94",
 							"1.96", "1.98", "2.00", "2.02", "2.04", "2.06", "2.08", "2.10", "2.12", "2.14", "2.16",
 							"2.18", "2.20", "2.22", "2.24", "2.26", "2.28", "2.30"};
-	
-	prefUser user;
-	
-	String resultString = "";
-	
-	TransparentProgressDialog pd;
 	
 	private static int RESULT_LOAD_IMAGE = 1;
 	private static final int CAMERA_REQUEST = 1888;
@@ -138,8 +132,14 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
     
     SendDataToSharePhoto mCallback;
     
+    prefUser user;
+	
+	String resultString = "";
+	
+	TransparentProgressDialog pd;
+    
     public interface SendDataToSharePhoto{
-    	public void SendPhoto(String avatar);
+    	public void SendPhoto(String photo);
     }
     
     @Override
@@ -163,7 +163,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 		
 		name_group = (RelativeLayout)rootView.findViewById(R.id.name_group);
 		line1 = (View)rootView.findViewById(R.id.line1);
-		large_img = (ImageView)rootView.findViewById(R.id.large_img);
+		wallpaper = (ImageView)rootView.findViewById(R.id.wallpaper);
 		photo = (ImageView)rootView.findViewById(R.id.photo);
 		arrow_dategr = (ImageView)rootView.findViewById(R.id.arrow_dategr);
 		arrow_occgr = (ImageView)rootView.findViewById(R.id.arrow_occgr);
@@ -253,9 +253,9 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 		}
 		
 		// display photo url
-		if(user_info.get(prefUser.KEY_PHOTO).toString().length() > 0){
-			Picasso.with(getActivity()).load(user_info.get(prefUser.KEY_PHOTO)).fit().centerCrop().into(photo);
-			Picasso.with(getActivity()).load(user_info.get(prefUser.KEY_PHOTO)).fit().centerCrop().into(large_img);
+		if(_photo.length() > 0){
+			Picasso.with(getActivity()).load(_photo).placeholder(R.drawable.avatar).fit().into(photo);
+			Picasso.with(getActivity()).load(_photo).fit().centerCrop().into(wallpaper);
 		}else{
 			photo.setImageResource(R.drawable.avatar);
 		}
@@ -323,7 +323,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 				
 				//Log.d("myTag", jObj.toString());
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPut httpput = new HttpPut(helpers.url+"api/v1/edit-normal-account");
+				HttpPut httpput = new HttpPut(helpers.url+"edit-normal-account");
 				httpput.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httpput.setHeader("Accept", "application/json");
 				httpput.setHeader("Content-type", "application/json;charset=UTF-8");
@@ -419,7 +419,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 				
 				//Log.d("myTag", jObj.toString());
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPut httpput = new HttpPut(helpers.url+"api/v1/edit-social-account");
+				HttpPut httpput = new HttpPut(helpers.url+"edit-social-account");
 				httpput.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httpput.setHeader("Accept", "application/json");
 				httpput.setHeader("Content-type", "application/json;charset=UTF-8");
@@ -576,7 +576,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
             bm.compress(getFormat(filePath), 75, bos);
             byte[] data = bos.toByteArray();
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost postRequest = new HttpPost(helpers.url+"api/v1/upload-avatar");
+            HttpPost postRequest = new HttpPost(helpers.url+"upload-avatar");
             ByteArrayBody bab = new ByteArrayBody(data, getNameFromPath(filePath));
             MultipartEntity reqEntity = new MultipartEntity(
                     HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -622,7 +622,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 				jObj.put("avatar", params[0]);
 				
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPut httpput = new HttpPut(helpers.url+"api/v1/change-avatar");
+				HttpPut httpput = new HttpPut(helpers.url+"change-avatar");
 				StringEntity se = new StringEntity(jObj.toString());
 				httpput.setEntity(se);
 				httpput.setHeader("Accept", "application/json");
@@ -647,7 +647,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 			try{
 				JSONObject jObj = new JSONObject(resultString);
 				if(jObj.getString("status").equalsIgnoreCase("success")){
-					editor.putString("avatar", _photo);
+					editor.putString("photo", _photo);
 					editor.commit();
 				}else{
 					Toast.makeText(getActivity(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
@@ -662,8 +662,12 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.tvshare:
-			((MainActivity)getActivity()).hideKeyboard();
-			mCallback.SendPhoto(_photo);
+			if(_photo.length() > 0){
+				((MainActivity)getActivity()).hideKeyboard();
+				mCallback.SendPhoto(_photo);
+			}else{
+				Toast.makeText(getActivity(), "Image not found to share", Toast.LENGTH_SHORT).show();
+			}
 			break;
 		case R.id.arrow_dategr:
 			if(birthday.getText().toString().length() > 0){

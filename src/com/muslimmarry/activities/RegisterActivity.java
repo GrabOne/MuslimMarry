@@ -79,6 +79,8 @@ public class RegisterActivity extends Activity implements OnClickListener, OnTou
 		//dateofbirth = (EditText)findViewById(R.id.dateofbirth);
 		pword = (EditText)findViewById(R.id.pword);
 		cfpword = (EditText)findViewById(R.id.cfpword);
+		
+		// set font for element
 		new helpers(getApplicationContext()).setFontTypeButton(btnNext);
 //		dateofbirth.setOnClickListener(new OnClickListener() {
 //			
@@ -206,7 +208,7 @@ public class RegisterActivity extends Activity implements OnClickListener, OnTou
 				Log.d("myTag", jObj.toString());
 				
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(helpers.url+"api/v1/check-username-and-email-exist");
+				HttpPost httppost = new HttpPost(helpers.url+"check-username-and-email-exist");
 				StringEntity se = new StringEntity(jObj.toString());
 				httppost.setEntity(se);
 				httppost.setHeader("Accept", "application/json");
@@ -251,6 +253,7 @@ public class RegisterActivity extends Activity implements OnClickListener, OnTou
 						bundle.putString("city", city);
 						i.putExtras(bundle);
 						startActivity(i);
+						new helpers(RegisterActivity.this).PushActivityLeft();
 					}
 				}
 			}catch(Exception e){
@@ -269,6 +272,7 @@ public class RegisterActivity extends Activity implements OnClickListener, OnTou
 			case MotionEvent.ACTION_UP:
 				back.setBackgroundColor(Color.TRANSPARENT);
 				finish();
+				new helpers(RegisterActivity.this).PushActivityRight();
 			default:
 				break;
 			}
@@ -308,5 +312,11 @@ public class RegisterActivity extends Activity implements OnClickListener, OnTou
 		default:
 			break;
 		}
+	}
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		new helpers(RegisterActivity.this).PushActivityRight();
 	}
 }

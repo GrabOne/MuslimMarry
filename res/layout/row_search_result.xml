@@ -5,14 +5,13 @@
     android:background="#ffffff" >    
     
     <com.muslimmarry.helpers.SquareImageView
-        android:id="@+id/avatar"
+        android:id="@+id/photo"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:scaleType="centerCrop"
         android:contentDescription="@string/image_desc" />
     
     <com.muslimmarry.helpers.SquareImageView
-        android:id="@+id/info_bg"
+        android:id="@+id/photo_bg"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:contentDescription="@string/image_desc"
@@ -24,7 +23,7 @@
         android:layout_height="40dp"
         android:contentDescription="@string/image_desc"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="30dp"
         android:visibility="gone" />
     
     <ImageView
@@ -34,11 +33,11 @@
         android:layout_height="40dp"
         android:contentDescription="@string/image_desc"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="25dp"
         android:visibility="gone" />
     
     <LinearLayout
-        android:layout_below="@id/avatar"
+        android:layout_below="@id/photo"
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:orientation="horizontal"

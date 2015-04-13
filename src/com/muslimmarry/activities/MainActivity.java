@@ -90,12 +90,12 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
     
     prefUser user;
     
-    TransparentProgressDialog pd;
-    
     String resultString = "";
     
     final String[] data ={"edit profile","account","app settings", "billing", "favorites", "invite a friend", "contact us", "log out"};
 	
+    TransparentProgressDialog pd;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -119,7 +119,7 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 		option.setOnTouchListener(this);
 		
 		// set font for element
-		new helpers(MainActivity.this).setFontTypeText(title);
+		new helpers(getApplicationContext()).setFontTypeText(title);
 		
 		// set background bottom nav elements
 		setBgGroupFindUser();
@@ -157,13 +157,12 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 		navList = (ListView)findViewById(R.id.drawer);
 		navList.setAdapter(adapter);
 		navList.setOnItemClickListener(new SlideMenuClickListener());
-		ImageView large_img = (ImageView)findViewById(R.id.large_img);
-		
+		ImageView wallpaper = (ImageView)findViewById(R.id.wallpaper);
 		// create user object
 		user = new prefUser(this);
 		HashMap<String, String> user_info = user.getUserDetail();
 		if(user_info.get(prefUser.KEY_PHOTO).length() > 0){
-			Picasso.with(this).load(user_info.get(prefUser.KEY_PHOTO)).fit().centerCrop().into(large_img);
+			Picasso.with(this).load(user_info.get(prefUser.KEY_PHOTO)).fit().centerCrop().into(wallpaper);
 		}
 	}
 	/**
@@ -534,18 +533,19 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 	/*
 	 * Send data from SearchResultFragment to ProfileFragment
 	 */
-	public void SendUserInfo(String id, String avatar, String name, String username, String age, String language, String height, String occupation) {
+	public void SendUserInfo(String id, String photo, String name, String username, String age, String language, String height, String occupation, String city) {
 		// TODO Auto-generated method stub
 		ProfileFragment fr = new ProfileFragment();
 		Bundle bundle = new Bundle();
 		bundle.putString("id", id);
-		bundle.putString("avatar", avatar);
+		bundle.putString("photo", photo);
 		bundle.putString("name", name);
 		bundle.putString("username", username);
 		bundle.putString("age", age);
 		bundle.putString("language", language);
 		bundle.putString("height", height);
 		bundle.putString("occupation", occupation);
+		bundle.putString("city", city);
 		fr.setArguments(bundle);
 		FragmentManager fm = getFragmentManager();
 	    FragmentTransaction fragmentTransaction = fm.beginTransaction();
@@ -556,11 +556,11 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 	 * Send image url from EditProfileFragment to SharePhotoFragment
 	 */
 	@Override
-	public void SendPhoto(String avatar) {
+	public void SendPhoto(String photo) {
 		// TODO Auto-generated method stub
 		SharePhotoFragment fr = new SharePhotoFragment();
 		Bundle bundle = new Bundle();
-		bundle.putString("avatar", avatar);
+		bundle.putString("photo", photo);
 		fr.setArguments(bundle);
 		FragmentManager fm = getFragmentManager();
 	    FragmentTransaction fragmentTransaction = fm.beginTransaction();
@@ -601,5 +601,11 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 			}
 		}
 		return true;
+	}
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		new helpers(MainActivity.this).PushActivityRight();
 	}
 }

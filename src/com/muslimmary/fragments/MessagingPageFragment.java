@@ -37,7 +37,7 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
 	EditText etmessage;
 	Button btnSend;
     private ListView lvMsg;
-    ImageView large_img;
+    ImageView wallpaper;
     
     prefUser user;
     String userid = "";
@@ -53,7 +53,7 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
 		helpers.setTouch(rootView);
 		
 		TextView name = (TextView)rootView.findViewById(R.id.name);
-		large_img = (ImageView)rootView.findViewById(R.id.large_img);
+		wallpaper = (ImageView)rootView.findViewById(R.id.wallpaper);
 		message_content = (ViewGroup)rootView.findViewById(R.id.message_content);
 		etmessage = (EditText)rootView.findViewById(R.id.etmessage);
 		btnSend = (Button)rootView.findViewById(R.id.btnSend);
@@ -80,7 +80,7 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
 		
 		// display photo url
 		if(user_info.get(prefUser.KEY_PHOTO).length() > 0){
-			Picasso.with(getActivity()).load(user_info.get(prefUser.KEY_PHOTO)).fit().centerCrop().into(large_img);
+			Picasso.with(getActivity()).load(user_info.get(prefUser.KEY_PHOTO)).fit().centerCrop().into(wallpaper);
 		}
 		
 		etmessage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -127,14 +127,6 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
                 // Them Item vao khung chat. Xac dinh left de hien thi doan chat cua tung nguoi
                 addItems(true, etmessage.getText().toString());
                 etmessage.setText("");
-                
-                try{
-                	socket = IO.socket("http://campcoders.com:7777/chat?user_id="+ userid +"&token=" + token);
-                	
-                	socket.connect();
-                }catch(URISyntaxException e){
-                	e.printStackTrace();
-                }
             }
 		default:
 			break;

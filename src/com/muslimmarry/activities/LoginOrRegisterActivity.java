@@ -41,7 +41,6 @@ import com.muslimmarry.authenticator.FacebookLogin;
 import com.muslimmarry.authenticator.GoogleLogin;
 import com.muslimmarry.authenticator.TwitterLogin;
 import com.muslimmarry.gps.GPSManager;
-import com.muslimmarry.helpers.TransparentProgressDialog;
 import com.muslimmarry.helpers.helpers;
 import com.muslimmarry.sharedpref.prefUser;
 
@@ -73,8 +72,6 @@ public class LoginOrRegisterActivity extends Activity implements OnClickListener
     prefUser user;
     
     String resultString = "";
-    
-    TransparentProgressDialog pd;
    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +99,6 @@ public class LoginOrRegisterActivity extends Activity implements OnClickListener
 		
 		// create user object
 		user = new prefUser(LoginOrRegisterActivity.this);
-		if(user.isLoggedIn()){
-			Intent i = new Intent(LoginOrRegisterActivity.this, MainActivity.class);
-			startActivity(i);
-		}
 		
 		if (android.os.Build.VERSION.SDK_INT > 14) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
@@ -172,6 +165,7 @@ public class LoginOrRegisterActivity extends Activity implements OnClickListener
 		case R.id.btnLogin:
 			i = new Intent(LoginOrRegisterActivity.this, LoginActivity.class);
 			startActivity(i);
+			new helpers(LoginOrRegisterActivity.this).PushActivityLeft();
 			break;
 		case R.id.btnRegister:
 			i = new Intent(LoginOrRegisterActivity.this, RegisterActivity.class);
@@ -182,6 +176,7 @@ public class LoginOrRegisterActivity extends Activity implements OnClickListener
 			bundle.putString("lng", String.valueOf("lng"));
 			i.putExtras(bundle);
 			startActivity(i);
+			new helpers(LoginOrRegisterActivity.this).PushActivityLeft();
 			break;
 		case R.id.fb_ic:
 			new FacebookLogin(LoginOrRegisterActivity.this, country, city, String.valueOf(lat), String.valueOf(lng), facebook).Login();
@@ -232,12 +227,12 @@ public class LoginOrRegisterActivity extends Activity implements OnClickListener
 		Log.d("myTag", "Lat: " + lat + ", Lng: " + lng);
         getAddress(lat, lng);
         mSharedPreferences = getApplicationContext().getSharedPreferences(LOCATE_PRE_NAME, 0);
-		SharedPreferences.Editor value = mSharedPreferences.edit();
-		value.putString("city", city);
-		value.putString("country", country);
-		value.putString("lat", String.valueOf(lat));
-		value.putString("lng", String.valueOf(lng));
-		value.commit();
+		SharedPreferences.Editor editor = mSharedPreferences.edit();
+		editor.putString("city", city);
+		editor.putString("country", country);
+		editor.putString("lat", String.valueOf(lat));
+		editor.putString("lng", String.valueOf(lng));
+		editor.commit();
 	}
 	
 	public void getAddress(double lat, double lng) {
@@ -278,15 +273,6 @@ public class LoginOrRegisterActivity extends Activity implements OnClickListener
 		if(mGoogleApiClient.isConnected()){
 			LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
 			mGoogleApiClient.disconnect();
-		}
-	}
-	@Override
-	protected void onRestart() {
-		// TODO Auto-generated method stub
-		super.onRestart();
-		if(user.isLoggedIn()){
-			Intent i = new Intent(LoginOrRegisterActivity.this, MainActivity.class);
-			startActivity(i);
 		}
 	}
 }

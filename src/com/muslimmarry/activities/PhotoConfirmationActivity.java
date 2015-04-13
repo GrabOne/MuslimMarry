@@ -30,7 +30,6 @@ public class PhotoConfirmationActivity extends Activity implements OnClickListen
 	String _photo = "";
 	String country = "";
 	String city = "";
-	String picturePath = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +84,7 @@ public class PhotoConfirmationActivity extends Activity implements OnClickListen
 			case MotionEvent.ACTION_UP:
 				back.setBackgroundColor(Color.TRANSPARENT);
 				finish();
+				new helpers(PhotoConfirmationActivity.this).PushActivityRight();
 			default:
 				break;
 			}
@@ -108,7 +108,13 @@ public class PhotoConfirmationActivity extends Activity implements OnClickListen
 			bundle.putString("city", city);
 			i.putExtras(bundle);
 			startActivity(i);
+			new helpers(PhotoConfirmationActivity.this).PushActivityLeft();
 		}
 	}
-	
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		new helpers(PhotoConfirmationActivity.this).PushActivityRight();
+	}
 }

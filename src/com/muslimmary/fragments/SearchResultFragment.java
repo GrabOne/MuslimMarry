@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ public class SearchResultFragment extends Fragment {
 		// get json object from search filter
 		try{
 			JSONObject jObj = new JSONObject(getArguments().getString("arrList"));
+			Log.d("result", jObj.toString());
 			JSONArray jArr = new JSONArray(jObj.getString("data"));
 			if(jArr.length() > 0){
 				mlst.clear();

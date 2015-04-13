@@ -46,7 +46,7 @@ public class PhotoCustomizationActivity extends Activity implements OnClickListe
 	String _pword = "";
 	String country = "";
 	String city = "";
-	String _photo = "";
+	String photo = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +128,7 @@ public class PhotoCustomizationActivity extends Activity implements OnClickListe
                 if (file.exists ()) file.delete (); 
                 try {
                    FileOutputStream out = new FileOutputStream(file);
-                   photo.compress(Bitmap.CompressFormat.JPEG, 75, out);
+                   photo.compress(Bitmap.CompressFormat.JPEG, 90, out);
                    out.flush();
                    out.close();
                 } catch (Exception e) {
@@ -141,7 +141,7 @@ public class PhotoCustomizationActivity extends Activity implements OnClickListe
         }
 	};
 	/*
-	 * Upload image to server
+	 * Upload image to server and get photo url
 	 */
 	private class UploadImg extends AsyncTask<String, String, Void>{
 		@Override
@@ -153,7 +153,7 @@ public class PhotoCustomizationActivity extends Activity implements OnClickListe
 		protected Void doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			try {
-				_photo = UploadImage.uploadImage(params[0]);
+				photo = UploadImage.uploadImage(params[0]);
 			} catch (Exception e) {
 				Log.d("error", e.getMessage(), e);
 			}
@@ -166,7 +166,7 @@ public class PhotoCustomizationActivity extends Activity implements OnClickListe
 		}
 	}
 
-	/**
+	/*
      * this function does the crop operation.
      */
     private void performCrop() {
@@ -209,6 +209,7 @@ public class PhotoCustomizationActivity extends Activity implements OnClickListe
 			case MotionEvent.ACTION_UP:
 				back.setBackgroundColor(Color.TRANSPARENT);
 				finish();
+				new helpers(PhotoCustomizationActivity.this).PushActivityRight();
 			default:
 				break;
 			}
@@ -229,10 +230,17 @@ public class PhotoCustomizationActivity extends Activity implements OnClickListe
 			bundle.putString("pword", _pword);
 			bundle.putString("country", country);
 			bundle.putString("city", city);
-			bundle.putString("photo", _photo);
+			bundle.putString("photo", photo);
 			bundle.putString("picturePath", picturePath);
 			i.putExtras(bundle);
 			startActivity(i);
+			new helpers(PhotoCustomizationActivity.this).PushActivityLeft();
 		}
+	}
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		new helpers(PhotoCustomizationActivity.this).PushActivityRight();
 	}
 }

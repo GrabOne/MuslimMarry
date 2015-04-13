@@ -198,7 +198,7 @@ public class GoogleLogin implements ConnectionCallbacks, OnConnectionFailedListe
 			    jObj.put("location", locate);
 			    
 			    HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(helpers.url+"api/v1/login-social");
+				HttpPost httppost = new HttpPost(helpers.url+"login-social");
 				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httppost.setHeader("Accept", "application/json");
 				httppost.setHeader("Content-type", "application/json;charset=UTF-8");
@@ -229,16 +229,21 @@ public class GoogleLogin implements ConnectionCallbacks, OnConnectionFailedListe
 					JSONObject locate = new JSONObject(data.getString("location"));
 					JSONObject coordinates = new JSONObject(locate.getString("coordinates"));
 					
-					if(!coordinates.isNull("city")){
-						_city = coordinates.getString("city");
+					if(!locate.isNull("city")){
+						_city = locate.getString("city");
 					}
-					
+					String album = "";
+					if(!data.isNull("images")){
+						JSONArray albumArr = data.getJSONArray("images");
+						album = albumArr.toString();
+					}
 					user.createUserSession(data.getString("_id"), new String(data.getString("nickname").getBytes("UTF-8"), "UTF-8"), "", new String(data.getString("email").getBytes("UTF-8"), "UTF-8"), data.getString("age"),
-							data.getString("birthday"), data.getString("gender"), data.getString("avatar"), data.getString("remember_token"), data.getString("occupation"), data.getString("height"), languageArr.toString(), locate.getString("country"),
+							data.getString("birthday"), data.getString("gender"), data.getString("avatar"), album, data.getString("remember_token"), data.getString("occupation"), data.getString("height"), languageArr.toString(), locate.getString("country"),
 							_city, coordinates.getString("lat"), coordinates.getString("lng"), data.getString("promocode"), "gg", data.getString("google_id"), "true");
 					
 					SharedPreferences.Editor editor =mSharedPreferences.edit();
 	                editor.putBoolean(IS_GOOGLE_LOGIN, true);
+	                editor.commit();
 	                Intent i = new Intent(mContext, MainActivity.class);
 	                mContext.startActivity(i);
 				}else{
@@ -271,7 +276,7 @@ public class GoogleLogin implements ConnectionCallbacks, OnConnectionFailedListe
 	@Override
 	public void onConnected(Bundle arg0) {
 		// TODO Auto-generated method stub
-		Log.d(TAG, "On Connected ");
+		Log.d(TAG, "On Connected");
         mSignInClicked = false;
         Log.d(TAG, "User is connected");
 		getGGProfileInformation();

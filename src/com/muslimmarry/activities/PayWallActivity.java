@@ -106,10 +106,17 @@ public class PayWallActivity extends Activity implements OnTouchListener, OnClic
 			case MotionEvent.ACTION_UP:
 				back.setBackgroundColor(Color.TRANSPARENT);
 				finish();
+				new helpers(PayWallActivity.this).PushActivityRight();
 			default:
 				break;
 			}
 		}
 		return true;
+	}
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		new helpers(PayWallActivity.this).PushActivityRight();
 	}
 }

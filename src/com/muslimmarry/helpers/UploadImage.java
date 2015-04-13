@@ -31,10 +31,10 @@ public class UploadImage {
         try {
         	Bitmap bm = BitmapFactory.decodeFile(filePath);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bm.compress(getFormat(filePath), 75, bos);
+            bm.compress(getFormat(filePath), 90, bos);
             byte[] data = bos.toByteArray();
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost postRequest = new HttpPost(helpers.url+"api/v1/upload-avatar");
+            HttpPost postRequest = new HttpPost(helpers.url+"upload-avatar");
             ByteArrayBody bab = new ByteArrayBody(data, getNameFromPath(filePath));
             MultipartEntity reqEntity = new MultipartEntity(
                     HttpMultipartMode.BROWSER_COMPATIBLE);

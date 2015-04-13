@@ -11,10 +11,11 @@
         android:fillViewport="true"
         android:scrollbars="none" >
         
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp" >
+            android:padding="10dp"
+            android:orientation="vertical" >
             
             <RelativeLayout
                 android:id="@+id/pay_btn_box"
@@ -76,7 +77,7 @@
 	                android:layout_centerHorizontal="true" />
 	            
 	            <TextView
-	                android:id="@+id/b_service_price"
+	                android:id="@+id/b_plan"
 	                android:layout_below="@id/bank_logo"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
@@ -88,7 +89,7 @@
 	            
 	            <TextView
 	                android:id="@+id/title1"
-	                android:layout_below="@id/b_service_price"
+	                android:layout_below="@id/b_plan"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:text="Have a promo code?"
@@ -153,19 +154,6 @@
 	                android:textColor="#52bbdb"
 	                android:layout_marginTop="10dp" />
 	            
-	            <Button
-	                android:id="@+id/b_upgrade"
-	                android:layout_below="@id/swift"
-	                android:layout_width="250dp"
-	                android:layout_height="50dp"
-	                android:background="@drawable/my_btn_blue"
-	                android:text="UPGRADE NOW!"
-	                android:textColor="#ffffff"
-	                android:textSize="30dp"
-	                android:gravity="center"
-	                android:layout_centerHorizontal="true"
-	                android:layout_marginTop="10dp" />
-                
             </RelativeLayout>
             
             <RelativeLayout
@@ -185,7 +173,7 @@
 	                android:layout_centerHorizontal="true" />
 	            
 	            <TextView
-	                android:id="@+id/pp_service_price"
+	                android:id="@+id/pp_plan"
 	                android:layout_below="@id/paypal_logo"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
@@ -197,7 +185,7 @@
 	            
 	            <TextView
 	                android:id="@+id/title2"
-	                android:layout_below="@id/pp_service_price"
+	                android:layout_below="@id/pp_plan"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:text="Have a promo code?"
@@ -233,19 +221,6 @@
 	                android:textColorHint="#52bbdb"
 	                android:textColor="#52bbdb"
 	                android:layout_marginTop="10dp" />
-	            
-	            <Button
-	                android:id="@+id/pp_upgrade"
-	                android:layout_below="@id/ppPword"
-	                android:layout_width="250dp"
-	                android:layout_height="50dp"
-	                android:background="@drawable/my_btn_blue"
-	                android:text="UPGRADE NOW!"
-	                android:textColor="#ffffff"
-	                android:textSize="30dp"
-	                android:gravity="center"
-	                android:layout_centerHorizontal="true"
-	                android:layout_marginTop="10dp" />
                 
             </RelativeLayout>
             
@@ -266,7 +241,7 @@
 	                android:layout_centerHorizontal="true" />
 	            
 	            <TextView
-	                android:id="@+id/c_service_price"
+	                android:id="@+id/c_plan"
 	                android:layout_below="@id/card_logo"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
@@ -278,7 +253,7 @@
 	            
 	            <TextView
 	                android:id="@+id/title3"
-	                android:layout_below="@id/c_service_price"
+	                android:layout_below="@id/c_plan"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:text="Have a promo code?"
@@ -349,23 +324,22 @@
 		                android:layout_alignParentRight="true" />
 	                
 	            </RelativeLayout>
-	            
-	            <Button
-	                android:id="@+id/c_upgrade"
-	                android:layout_below="@id/date_cvc"
-	                android:layout_width="250dp"
-	                android:layout_height="50dp"
-	                android:background="@drawable/my_btn_blue"
-	                android:text="UPGRADE NOW!"
-	                android:textColor="#ffffff"
-	                android:textSize="30dp"
-	                android:gravity="center"
-	                android:layout_centerHorizontal="true"
-	                android:layout_marginTop="10dp" />
                 
             </RelativeLayout>
             
-        </RelativeLayout>
+            <Button
+                android:id="@+id/upgrade"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:background="@drawable/my_btn_blue"
+                android:text="UPGRADE NOW!"
+                android:textColor="#ffffff"
+                android:textSize="30dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp" />
+            
+        </LinearLayout>
         
     </ScrollView>
 

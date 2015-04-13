@@ -36,7 +36,7 @@ public class SharePhotoFragment extends Fragment implements OnClickListener {
 		// get photo and display
 		try{
 			String _photo = getArguments().getString("photo");
-			Picasso.with(getActivity()).load(_photo).fit().centerCrop().into(photo);
+			Picasso.with(getActivity()).load(_photo).placeholder(R.drawable.avatar).fit().centerCrop().into(photo);
 		}catch(NullPointerException e){}
 		
 		// get background for bottom nav element
@@ -66,8 +66,6 @@ public class SharePhotoFragment extends Fragment implements OnClickListener {
 		        shareIntent.setType("image/*");
 		        // Launch sharing dialog for image
 		        startActivity(Intent.createChooser(shareIntent, "Share with..."));    
-		    } else {
-		        // ...sharing failed, handle error
 		    }
 			break;
 

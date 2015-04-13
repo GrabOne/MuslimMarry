@@ -8,8 +8,9 @@ import java.util.Locale;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -74,15 +75,15 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 	String _age = "";
 	String _gender = "";
 	String _pword = "";
-	String _photo = "";
+	String photo = "";
 	String country = "";
 	String city = "";
-	
-	TransparentProgressDialog pd;
 	
 	String resultString = "";
 	
 	prefUser user;
+	
+	TransparentProgressDialog pd;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +114,7 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 			_age = getResults.getString("age");
 			_gender = getResults.getString("gender");
 			_pword = getResults.getString("pword");
-			_photo = getResults.getString("photo");
+			photo = getResults.getString("photo");
 			country = getResults.getString("country");
 			city = getResults.getString("city");
 		}catch(NullPointerException e){
@@ -318,7 +319,7 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 				jObj.put("username", _uname);
 				jObj.put("nickname", "");
 				jObj.put("email", _email);
-				jObj.put("avatar", _photo);
+				jObj.put("avatar", photo);
 				jObj.put("age", _age);
 				if(_gender.equalsIgnoreCase("male")){
 					jObj.put("gender", "men");
@@ -342,18 +343,15 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 				JSONObject coordinates = new JSONObject();
 				coordinates.put("lat", String.valueOf(latitude));
 				coordinates.put("lng", String.valueOf(longitude));
-				
 				locate.put("coordinates", coordinates);
-				
 				jObj.put("location", locate);
-				
 				Log.d("obj", jObj.toString());
 				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(helpers.url+"api/v1/signup");
-				StringEntity se = new StringEntity(jObj.toString());
-				httppost.setEntity(se);
+				HttpPost httppost = new HttpPost(helpers.url+"signup");
+				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
 				httppost.setHeader("Accept", "application/json");
-				httppost.setHeader("Content-type", "application/json");
+				httppost.setHeader("Content-type", "application/json;charset=UTF-8");
+				httppost.setHeader("Accept-Charset", "utf-8");
 				
 				HttpResponse response = httpClient.execute(httppost);
 				
@@ -362,7 +360,7 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 					resultString = helpers.convertInputStreamToString(inputStream);
 				}
 			}catch(Exception e){
-				
+				Log.e("error", e.getMessage(), e);
 			}
 			return null;
 		}
@@ -377,17 +375,26 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 					JSONObject data = new JSONObject(jObj.getString("data"));
 					JSONObject locate = new JSONObject(data.getString("location"));
 					JSONObject coordinates = new JSONObject(locate.getString("coordinates"));
+					if(!locate.isNull("city")){
+						city = locate.getString("city");
+					}
+					String album = "";
+					if(!data.isNull("images")){
+						JSONArray albumArr = data.getJSONArray("images");
+						album = albumArr.toString();
+					}
 					user.createUserSession(data.getString("_id"), "", data.getString("username"), data.getString("email"), data.getString("age"),
-							"", data.getString("gender"), data.getString("avatar"), data.getString("remember_token"), "", "", "", locate.getString("country"),
-							locate.getString("city"), coordinates.getString("lat"), coordinates.getString("lng"), data.getString("promocode"), "", "", "false");
+							"", data.getString("gender"), data.getString("avatar"), album, data.getString("remember_token"), "", "", "", locate.getString("country"),
+							city, coordinates.getString("lat"), coordinates.getString("lng"), data.getString("promocode"), "", "", "false");
 					Intent i = new Intent(ManuallyLocateActivity.this, MainActivity.class);
 					startActivity(i);
+					new helpers(ManuallyLocateActivity.this).PushActivityRight();
 					
 				}else{
 					Toast.makeText(getApplicationContext(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
 				}
 			}catch(Exception e){
-				e.printStackTrace();
+				Log.e("error", e.getMessage(), e);
 			}
 		}
 	}
@@ -402,6 +409,7 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 			case MotionEvent.ACTION_UP:
 				back.setBackgroundColor(Color.TRANSPARENT);
 				finish();
+				new helpers(ManuallyLocateActivity.this).PushActivityRight();
 			default:
 				break;
 			}
@@ -415,5 +423,11 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 		if(v.getId() == R.id.btndone){
 			new Signup().execute();
 		}
+	}
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		new helpers(ManuallyLocateActivity.this).PushActivityRight();
 	}
 }

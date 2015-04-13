@@ -1,5 +1,7 @@
 package com.muslimmary.fragments;
 
+import java.util.HashMap;
+
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import com.example.muslimmarry.R;
 import com.muslimmarry.activities.MainActivity;
 import com.muslimmarry.helpers.helpers;
+import com.muslimmarry.sharedpref.prefUser;
 
 public class PaymentOptionFragment extends Fragment implements OnClickListener {
 	
@@ -22,6 +25,10 @@ public class PaymentOptionFragment extends Fragment implements OnClickListener {
 	ViewGroup rlbank;
 	ViewGroup rlpaypal;
 	ViewGroup rlcard;
+	
+	prefUser user;
+	String userid = "";
+	String token = "";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,25 +43,28 @@ public class PaymentOptionFragment extends Fragment implements OnClickListener {
 		b_bank = (Button)rootView.findViewById(R.id.b_bank);
 		b_paypal = (Button)rootView.findViewById(R.id.b_paypal);
 		b_card = (Button)rootView.findViewById(R.id.b_card);
-		TextView b_service_price = (TextView)rootView.findViewById(R.id.b_service_price);
-		TextView pp_service_price = (TextView)rootView.findViewById(R.id.pp_service_price);
-		TextView c_service_price = (TextView)rootView.findViewById(R.id.c_service_price);
-		Button b_upgrade = (Button)rootView.findViewById(R.id.b_upgrade);
-		Button pp_upgrade = (Button)rootView.findViewById(R.id.pp_upgrade);
+		TextView b_plan = (TextView)rootView.findViewById(R.id.b_plan);
+		TextView pp_plan = (TextView)rootView.findViewById(R.id.pp_plan);
+		TextView c_plan = (TextView)rootView.findViewById(R.id.c_plan);
+		Button upgrade = (Button)rootView.findViewById(R.id.upgrade);
 		
 		// set font for element
-		Button c_upgrade = (Button)rootView.findViewById(R.id.c_upgrade);
-		new helpers(getActivity()).setFontTypeText(b_service_price);
-		new helpers(getActivity()).setFontTypeText(c_service_price);
-		new helpers(getActivity()).setFontTypeText(pp_service_price);
-		new helpers(getActivity()).setFontTypeButton(b_upgrade);
-		new helpers(getActivity()).setFontTypeButton(pp_upgrade);
-		new helpers(getActivity()).setFontTypeButton(c_upgrade);
+		new helpers(getActivity()).setFontTypeText(b_plan);
+		new helpers(getActivity()).setFontTypeText(c_plan);
+		new helpers(getActivity()).setFontTypeText(pp_plan);
+		new helpers(getActivity()).setFontTypeButton(upgrade);
 		
 		// set event for element
 		b_bank.setOnClickListener(this);
 		b_paypal.setOnClickListener(this);
 		b_card.setOnClickListener(this);
+		upgrade.setOnClickListener(this);
+		
+		// create object user
+		user = new prefUser(getActivity());
+		HashMap<String, String> user_info = user.getUserDetail();
+		userid = user_info.get(prefUser.KEY_USERID);
+		token = user_info.get(prefUser.KEY_TOKEN);
 		
 		return rootView;
 	}
@@ -108,6 +118,9 @@ public class PaymentOptionFragment extends Fragment implements OnClickListener {
 			rlbank.setVisibility(View.GONE);
 			rlpaypal.setVisibility(View.GONE);
 			rlcard.setVisibility(View.VISIBLE);
+			break;
+		case R.id.upgrade:
+			
 			break;
 		default:
 			break;
