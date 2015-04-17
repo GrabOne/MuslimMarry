@@ -1,7 +1,6 @@
 package com.muslimmarry.adapters;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -21,17 +20,15 @@ public class MessagingPageAdapter extends ArrayAdapter<MessageItem> {
 	
 	private RelativeLayout frame;
 	private TextView comment;
-	private List<MessageItem> comments = new ArrayList<MessageItem>();
+	private TextView time;
+	private ArrayList<MessageItem> comments = new ArrayList<MessageItem>();
 	private RelativeLayout wrapper;
+	private Context mContext;
 
-	@Override
-	public void add(MessageItem object) {
-		comments.add(object);
-		super.add(object);
-	}
-
-	public MessagingPageAdapter(Context context, int textViewResourceId) {
-		super(context, textViewResourceId);
+	public MessagingPageAdapter(Context context, int textViewResourceId, ArrayList<MessageItem> objects) {
+		super(context, textViewResourceId, objects);
+		this.mContext = context;
+		this.comments = objects;
 	}
 
 	public int getCount() {
@@ -45,7 +42,7 @@ public class MessagingPageAdapter extends ArrayAdapter<MessageItem> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
 		if (row == null) {
-			LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			row = inflater.inflate(R.layout.row_chat_message, parent, false);
 		}
 
@@ -55,8 +52,10 @@ public class MessagingPageAdapter extends ArrayAdapter<MessageItem> {
 
 		frame = (RelativeLayout)row.findViewById(R.id.frame);
 		comment = (TextView) row.findViewById(R.id.comment);
+		time = (TextView)row.findViewById(R.id.time);
 
 		comment.setText(coment.comment);
+		time.setText(coment.time);
 
 		frame.setBackgroundResource(coment.left ? R.drawable.bubble_gray : R.drawable.bubble_green);
 		wrapper.setGravity(coment.left ? Gravity.LEFT : Gravity.RIGHT);

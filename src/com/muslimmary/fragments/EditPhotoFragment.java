@@ -10,6 +10,7 @@ import java.util.Random;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
@@ -24,6 +25,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -31,11 +33,14 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muslimmarry.R;
@@ -45,9 +50,14 @@ import com.muslimmarry.helpers.UploadImage;
 import com.muslimmarry.helpers.helpers;
 import com.muslimmarry.model.AlbumItem;
 import com.muslimmarry.sharedpref.prefUser;
+import com.muslimmary.fragments.EditProfileFragment.SendDataToSharePhoto;
 import com.squareup.picasso.Picasso;
 
-public class EditPhotoFragment extends Fragment implements OnClickListener {
+public class EditPhotoFragment extends Fragment implements OnClickListener, OnTouchListener {
+	
+	ImageView back;
+	ImageView option;
+	ImageView share;
 	
 	RelativeLayout main_photo_group;
 	RelativeLayout photo1_group;
@@ -91,12 +101,37 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 	
 	ArrayList<AlbumItem> albums = new ArrayList<AlbumItem>();
 	
+	SendPhotoToShareFromEdit mCallback;
+	
+	public interface SendPhotoToShareFromEdit{
+		public void SendPhotoToShare(String photo);
+	}
+	
+	@Override
+	public void onAttach(Activity activity) {
+		// TODO Auto-generated method stub
+		super.onAttach(activity);
+		try{
+			mCallback = (SendPhotoToShareFromEdit)activity;
+		}catch(ClassCastException e){
+			throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+		}
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View rootView = inflater.inflate(R.layout.fragment_edit_photo, container, false);
 		helpers.setTouch(rootView);
+		
+		back = (ImageView)rootView.findViewById(R.id.back);
+		option = (ImageView)rootView.findViewById(R.id.option);
+		share = (ImageView)rootView.findViewById(R.id.share);
+		TextView title = (TextView)rootView.findViewById(R.id.title);
+		title.setText("EDIT PHOTOS");
+		new helpers(getActivity()).setFontTypeText(title);
 		
 		main_photo_group = (RelativeLayout)rootView.findViewById(R.id.main_photo_group);
 		photo1_group = (RelativeLayout)rootView.findViewById(R.id.photo1_group);
@@ -147,6 +182,7 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 		}
 		try{
 			JSONArray arr = new JSONArray(album);
+			albums.clear();
 			for(int i=0; i<arr.length(); i++){
 				if(!arr.get(i).toString().equalsIgnoreCase(photo)){
 					albums.add(new AlbumItem(arr.get(i).toString()));
@@ -212,6 +248,9 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 		delete_icon_photo3.setOnClickListener(this);
 		delete_icon_photo4.setOnClickListener(this);
 		delete_icon_photo5.setOnClickListener(this);
+		share.setOnClickListener(this);
+		back.setOnTouchListener(this);
+		option.setOnTouchListener(this);
 		
 		return rootView;
 	}
@@ -223,8 +262,10 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 			if(!main_photo.getTag().equals("blank")){
 				if(fc_btn_main_photo.getVisibility() == View.VISIBLE){
 					fc_btn_main_photo.setVisibility(View.GONE);
+					ShowHideTopRightBtn(true, false);
 				}else{
-					fc_btn_main_photo.setVisibility(View.VISIBLE);
+					ShowHideFcBtn(true, false, false, false, false, false);
+					ShowHideTopRightBtn(false, true);
 				}
 			}else{
 				selectImage();
@@ -234,8 +275,10 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 			if(!photo1.getTag().equals("blank")){
 				if(fc_btn_photo1.getVisibility() == View.VISIBLE){
 					fc_btn_photo1.setVisibility(View.GONE);
+					ShowHideTopRightBtn(true, false);
 				}else{
-					fc_btn_photo1.setVisibility(View.VISIBLE);
+					ShowHideFcBtn(false, true, false, false, false, false);
+					ShowHideTopRightBtn(false, true);
 				}
 			}else{
 				selectImage();
@@ -245,8 +288,10 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 			if(!photo2.getTag().equals("blank")){
 				if(fc_btn_photo2.getVisibility() == View.VISIBLE){
 					fc_btn_photo2.setVisibility(View.GONE);
+					ShowHideTopRightBtn(true, false);
 				}else{
-					fc_btn_photo2.setVisibility(View.VISIBLE);
+					ShowHideFcBtn(false, false, true, false, false, false);
+					ShowHideTopRightBtn(false, true);
 				}
 			}else{
 				selectImage();
@@ -256,8 +301,10 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 			if(!photo3.getTag().equals("blank")){
 				if(fc_btn_photo3.getVisibility() == View.VISIBLE){
 					fc_btn_photo3.setVisibility(View.GONE);
+					ShowHideTopRightBtn(true, false);
 				}else{
-					fc_btn_photo3.setVisibility(View.VISIBLE);
+					ShowHideFcBtn(false, false, false, true, false, false);
+					ShowHideTopRightBtn(false, true);
 				}
 			}else{
 				selectImage();
@@ -267,8 +314,10 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 			if(!photo4.getTag().equals("blank")){
 				if(fc_btn_photo4.getVisibility() == View.VISIBLE){
 					fc_btn_photo4.setVisibility(View.GONE);
+					ShowHideTopRightBtn(true, false);
 				}else{
-					fc_btn_photo4.setVisibility(View.VISIBLE);
+					ShowHideFcBtn(false, false, false, false, true, false);
+					ShowHideTopRightBtn(false, true);
 				}
 			}else{
 				selectImage();
@@ -278,8 +327,10 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 			if(!photo5.getTag().equals("blank")){
 				if(fc_btn_photo5.getVisibility() == View.VISIBLE){
 					fc_btn_photo5.setVisibility(View.GONE);
+					ShowHideTopRightBtn(true, false);
 				}else{
-					fc_btn_photo5.setVisibility(View.VISIBLE);
+					ShowHideFcBtn(false, false, false, false, false, true);
+					ShowHideTopRightBtn(false, true);
 				}
 			}else{
 				selectImage();
@@ -287,37 +338,145 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 			break;
 		case R.id.delete_icon_main_photo:
 			new RemoveImageFromCollection().execute(main_photo.getTag().toString());
+			new ChangeUserAvatar().execute("");
 			fc_btn_main_photo.setVisibility(View.GONE);
 			main_photo.setImageBitmap(null);
+			main_photo.setTag("blank");
+			Editor editor = prefs.edit();
+			editor.putString("photo", "").commit();
 			break;
 		case R.id.delete_icon_photo1:
 			new RemoveImageFromCollection().execute(photo1.getTag().toString());
 			fc_btn_photo1.setVisibility(View.GONE);
 			photo1.setImageBitmap(null);
+			photo1.setTag("blank");
 			break;
 		case R.id.delete_icon_photo2:
 			new RemoveImageFromCollection().execute(photo2.getTag().toString());
 			fc_btn_photo2.setVisibility(View.GONE);
 			photo2.setImageBitmap(null);
+			photo2.setTag("blank");
 			break;
 		case R.id.delete_icon_photo3:
 			new RemoveImageFromCollection().execute(photo3.getTag().toString());
 			fc_btn_photo3.setVisibility(View.GONE);
 			photo3.setImageBitmap(null);
+			photo3.setTag("blank");
 			break;
 		case R.id.delete_icon_photo4:
 			new RemoveImageFromCollection().execute(photo4.getTag().toString());
 			fc_btn_photo4.setVisibility(View.GONE);
 			photo4.setImageBitmap(null);
+			photo4.setTag("blank");
 			break;
 		case R.id.delete_icon_photo5:
 			new RemoveImageFromCollection().execute(photo5.getTag().toString());
 			fc_btn_photo5.setVisibility(View.GONE);
 			photo5.setImageBitmap(null);
+			photo5.setTag("blank");
+			break;
+		case R.id.share:
+			String photoShare = "";
+			if(fc_btn_main_photo.getVisibility() == View.VISIBLE){
+				photoShare = main_photo.getTag().toString();
+			}else if(fc_btn_photo1.getVisibility() == View.VISIBLE){
+				photoShare = photo1.getTag().toString();
+			}else if(fc_btn_photo2.getVisibility() == View.VISIBLE){
+				photoShare = photo2.getTag().toString();
+			}else if(fc_btn_photo3.getVisibility() == View.VISIBLE){
+				photoShare = photo3.getTag().toString();
+			}else if(fc_btn_photo4.getVisibility() == View.VISIBLE){
+				photoShare = photo4.getTag().toString();
+			}else if(fc_btn_photo5.getVisibility() == View.VISIBLE){
+				photoShare = photo5.getTag().toString();
+			}
+			mCallback.SendPhotoToShare(photoShare);
 			break;
 		default:
 			break;
 		}
+	}
+	/*
+	 * Show/hide function button
+	 */
+	private void ShowHideFcBtn(boolean _fc_btn_main_photo, boolean _fc_btn_photo1, boolean _fc_btn_photo2, boolean _fc_btn_photo3,
+			boolean _fc_btn_photo4, boolean _fc_btn_photo5){
+		if(_fc_btn_main_photo == true){
+			fc_btn_main_photo.setVisibility(View.VISIBLE);
+		}else{
+			fc_btn_main_photo.setVisibility(View.GONE);
+		}
+		if(_fc_btn_photo1 == true){
+			fc_btn_photo1.setVisibility(View.VISIBLE);
+		}else{
+			fc_btn_photo1.setVisibility(View.GONE);
+		}
+		if(_fc_btn_photo2 == true){
+			fc_btn_photo2.setVisibility(View.VISIBLE);
+		}else{
+			fc_btn_photo2.setVisibility(View.GONE);
+		}
+		if(_fc_btn_photo3 == true){
+			fc_btn_photo3.setVisibility(View.VISIBLE);
+		}else{
+			fc_btn_photo3.setVisibility(View.GONE);
+		}
+		if(_fc_btn_photo4 == true){
+			fc_btn_photo4.setVisibility(View.VISIBLE);
+		}else{
+			fc_btn_photo4.setVisibility(View.GONE);
+		}
+		if(_fc_btn_photo5 == true){
+			fc_btn_photo5.setVisibility(View.VISIBLE);
+		}else{
+			fc_btn_photo5.setVisibility(View.GONE);
+		}
+	}
+	/*
+	 * Show/hide top right button
+	 */
+	private void ShowHideTopRightBtn(boolean _option, boolean _share){
+		if(_option == true){
+			option.setVisibility(View.VISIBLE);
+		}else{
+			option.setVisibility(View.GONE);
+		}
+		if(_share == true){
+			share.setVisibility(View.VISIBLE);
+		}else{
+			share.setVisibility(View.GONE);
+		}
+	}
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		if(v.getId() == R.id.back){
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				back.setBackgroundColor(Color.parseColor("#2e9dbc"));
+				break;
+			case MotionEvent.ACTION_UP:
+				back.setBackgroundColor(Color.TRANSPARENT);
+				((MainActivity)getActivity()).hideKeyboard();
+				getFragmentManager().popBackStack();
+				break;
+			default:
+				break;
+			}
+		}else if(v.getId() == R.id.option){
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				option.setBackgroundColor(Color.parseColor("#2e9dbc"));
+				break;
+			case MotionEvent.ACTION_UP:
+				option.setBackgroundColor(Color.TRANSPARENT);
+				((MainActivity)getActivity()).showRightMenu();
+				break;
+			default:
+				break;
+			}
+		}
+		return true;
 	}
 	/*
 	 * Select image
@@ -490,7 +649,8 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 					Editor editor = prefs.edit();
 					if(main_photo.getTag().equals("blank")){
 						// edit photo from sharedpref
-						editor.putString("photo", data.getString("avatar"));
+						new ChangeUserAvatar().execute(photoUrl);
+						editor.putString("photo", photoUrl);
 						editor.commit();
 						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).fit().into(main_photo);
 						main_photo.setTag(photoUrl);
@@ -575,11 +735,14 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 				JSONObject obj = new JSONObject(resultString);
 				if(obj.getString("status").equalsIgnoreCase("success")){
 					JSONObject data = new JSONObject(obj.getString("data"));
-					JSONArray arr = data.getJSONArray("images");
-
+					String album = "";
+					if(!data.isNull("images")){
+						JSONArray albumArr = data.getJSONArray("images");
+						album = albumArr.toString();
+					}
 					Editor editor = prefs.edit();
 					// edit album from sharedpref
-					editor.putString("album", arr.toString()).commit();
+					editor.putString("album", album).commit();
 					Toast.makeText(getActivity(), "Remove image successfully!", Toast.LENGTH_SHORT).show();
 				}else{
 					Toast.makeText(getActivity(), obj.getString("message"), Toast.LENGTH_SHORT).show();
@@ -589,12 +752,42 @@ public class EditPhotoFragment extends Fragment implements OnClickListener {
 			}
 		}
 	}
+	/*
+	 * Change user avatar
+	 */
+	private class ChangeUserAvatar extends AsyncTask<String, String, Void>{
+		@Override
+		protected Void doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			InputStream inputStream = null;
+			try{
+				JSONObject obj = new JSONObject();
+				obj.put("user_id", userid);
+				obj.put("remember_token", token);
+				obj.put("avatar", params[0]);
+				
+				HttpClient httpClient = new DefaultHttpClient();
+				HttpPut httpput = new HttpPut(helpers.url+"change-avatar");
+				StringEntity se = new StringEntity(obj.toString());
+				httpput.setEntity(se);
+				httpput.setHeader("Accept", "application/json");
+				httpput.setHeader("Content-type", "application/json");
+				HttpResponse response = httpClient.execute(httpput);
+				inputStream = response.getEntity().getContent();
+				if(inputStream != null){
+					resultString = helpers.convertInputStreamToString(inputStream);
+					Log.d("changephoto", resultString);
+				}
+			}catch(Exception e){
+				Log.e("error", e.getMessage(), e);
+			}
+			return null;
+		}
+	}
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		((MainActivity)getActivity()).setElementTopNav(true, true, false, false);
-		((MainActivity)getActivity()).setTitle("edit photos");
-		((MainActivity)getActivity()).showTopNav(true);
+		((MainActivity)getActivity()).showTopNav(false);
 	}
 }

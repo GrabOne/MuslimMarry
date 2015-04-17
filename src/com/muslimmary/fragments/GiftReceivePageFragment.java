@@ -4,16 +4,19 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muslimmarry.R;
 import com.muslimmarry.activities.MainActivity;
 import com.muslimmarry.helpers.helpers;
+import com.squareup.picasso.Picasso;
 
 public class GiftReceivePageFragment extends Fragment implements OnClickListener {
 	
@@ -42,6 +45,20 @@ public class GiftReceivePageFragment extends Fragment implements OnClickListener
 		report_spam = (ImageView)rootView.findViewById(R.id.report_spam);
 		more = (ImageView)rootView.findViewById(R.id.more);
 		more.setTag(R.drawable.arrow_up);
+		TextView name = (TextView)rootView.findViewById(R.id.name);
+		TextView title1 = (TextView)rootView.findViewById(R.id.title1);
+		ImageView gift_received = (ImageView)rootView.findViewById(R.id.gift_received);
+		
+		// get bundle data
+		try{
+			String username_send = getArguments().getString("username_send");
+			String gift_url = getArguments().getString("gift");
+			title1.setText("A gift from " + username_send);
+			name.setText(username_send);
+			Picasso.with(getActivity()).load(gift_url).fit().into(gift_received);
+		}catch(NullPointerException e){
+			Log.e("error", e.getMessage(), e);
+		}
 		
 		// set background fo bottom nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
@@ -136,7 +153,7 @@ public class GiftReceivePageFragment extends Fragment implements OnClickListener
 			alertDialog.show();
 			break;
 		case R.id.sendgift:
-			((MainActivity)getActivity()).displayPopupSendGift(v);
+//			((MainActivity)getActivity()).displayPopupSendGift(v);
 			break;
 		case R.id.report_spam:
 			report_spam.setImageResource(R.drawable.spam_actived);

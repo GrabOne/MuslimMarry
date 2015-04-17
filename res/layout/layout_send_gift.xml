@@ -15,11 +15,11 @@
         android:layout_gravity="right" />
     
     <TextView
+        android:id="@+id/note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:text="Send Ionix-Laval a gift to show  her your interest "
         android:textSize="18sp"
         android:textColor="#2e2e2e"
         android:layout_marginTop="15dp"

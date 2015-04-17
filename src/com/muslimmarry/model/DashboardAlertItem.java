@@ -1,53 +1,79 @@
 package com.muslimmarry.model;
 
 public class DashboardAlertItem {
-	private int avatar;
-	private String name;
-	private String alert;
-	private String time;
-	private String state;
+	private String id;
+	private long time;
+	private int status;
+	private String gift;
+	private String user_id;
+	private String username_send;
+	private String photo;
 	
-	public DashboardAlertItem(int avatar, String name, String alert, String time, String state){
-		this.avatar = avatar;
-		this.name = name;
-		this.alert = alert;
+	public DashboardAlertItem(String id, long time, int status, String gift, String user_id, String username_send, String photo){
+		this.id = id;
 		this.time = time;
-		this.state = state;
+		this.status = status;
+		this.gift = gift;
+		this.user_id = user_id;
+		this.username_send = username_send;
+		this.photo = photo;
 	}
 	
-	public int getAvatar(){
-		return avatar;
+	// settor
+	public void setId(String id){
+		this.id = id;
 	}
 	
-	public void setAvatar(int avatar){
-		this.avatar = avatar;
+	public void setTime(long time){
+		this.time = time;
 	}
 	
-	public String getName(){
-		return name;
-	}
-	public void setName(String name){
-		this.name = name;
+	public void setStatus(int status){
+		this.status = status;
 	}
 	
-	public String getAlert(){
-		return alert;
-	}
-	public void setAlert(String alert){
-		this.alert = alert;
+	public void setGift(String gift){
+		this.gift = gift;
 	}
 	
-	public String getTime(){
+	public void setUserId(String user_id){
+		this.user_id = user_id;
+	}
+	
+	public void setUsernameSend(String username_send){
+		this.username_send = username_send;
+	}
+	
+	public void setPhoto(String photo){
+		this.photo = photo;
+	}
+	
+	// gettor
+	public String getId(){
+		return id;
+	}
+	
+	public long getTime(){
 		return time;
 	}
-	public void setTime(String time){
-		this.time = time;
+	
+	public int getStatus(){
+		return status;
 	}
 	
-	public String getState(){
-		return state;
+	public String getGift(){
+		return gift;
 	}
-	public void setState(String state){
-		this.state = state;
+	
+	public String getUserId(){
+		return user_id;
+	}
+	
+	public String getUsernameSend(){
+		return username_send;
+	}
+	
+	public String getPhoto(){
+		return photo;
 	}
 }

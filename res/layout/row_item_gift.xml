@@ -4,12 +4,13 @@
     android:layout_height="wrap_content" >
     
     <ImageView
-        android:layout_gravity="center_horizontal"
         android:id="@+id/gift_box"
         android:layout_width="45dp"
         android:layout_height="52dp"
         android:contentDescription="@string/image_desc"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerInside" />
     
     <ImageView
         android:id="@+id/check"

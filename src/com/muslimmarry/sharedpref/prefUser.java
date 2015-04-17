@@ -50,7 +50,9 @@ public class prefUser {
     public static final String KEY_CODE = "code";
     public static final String KEY_LOGIN_WITH = "login_with";
     public static final String KEY_SOCIAL_ID = "social_id";
-    public static final String KEY_IS_SOCIAL = "is_social";;
+    public static final String KEY_IS_SOCIAL = "is_social";
+    public static final String KEY_UNREAD = "unread";
+    public static final String KEY_GIFT_UNREAD = "gift_unread";
     
     public prefUser(Context context){
     	this._context = context;
@@ -63,7 +65,7 @@ public class prefUser {
      */
     public void createUserSession(String userid, String name, String username, String email, String age, String birthday, String gender,
     	String photo, String album, String token, String occupation, String height, String language, String country, String city, String lat, String lng,
-    	String code, String login_with, String social_id, String is_social){
+    	String code, String login_with, String social_id, String is_social, String unread, String gift_unread){
     	
     	editor.putBoolean(IS_LOGIN, true);
     	editor.putString(KEY_USERID, userid);
@@ -87,6 +89,8 @@ public class prefUser {
     	editor.putString(KEY_LOGIN_WITH, login_with);
     	editor.putString(KEY_SOCIAL_ID, social_id);
     	editor.putString(KEY_IS_SOCIAL, is_social);
+    	editor.putString(KEY_UNREAD, unread);
+    	editor.putString(KEY_GIFT_UNREAD, gift_unread);
     	editor.commit();
     }
     /*
@@ -115,6 +119,8 @@ public class prefUser {
     	user.put(KEY_LOGIN_WITH, pref.getString(KEY_LOGIN_WITH, KEY_LOGIN_WITH));
     	user.put(KEY_SOCIAL_ID, pref.getString(KEY_SOCIAL_ID, null));
     	user.put(KEY_IS_SOCIAL, pref.getString(KEY_IS_SOCIAL, null));
+    	user.put(KEY_UNREAD, pref.getString(KEY_UNREAD, null));
+    	user.put(KEY_GIFT_UNREAD, pref.getString(KEY_GIFT_UNREAD, null));
     	return user;
     }
     /*

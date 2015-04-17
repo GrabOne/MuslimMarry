@@ -1,7 +1,10 @@
 package com.muslimmarry.activities;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -11,9 +14,11 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -33,11 +38,15 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.muslimmarry.R;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.google.android.gms.plus.PlusShare;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.muslimmarry.adapters.NavDrawerAdapter;
@@ -49,11 +58,16 @@ import com.muslimmarry.sharedpref.prefUser;
 import com.muslimmary.fragments.AccountSettingFragment;
 import com.muslimmary.fragments.AppSettingFragment;
 import com.muslimmary.fragments.DashboardAlertFragment;
+import com.muslimmary.fragments.DashboardAlertFragment.SendDataToGiftReceivePage;
 import com.muslimmary.fragments.DashboardMessageFragment;
+import com.muslimmary.fragments.DashboardMessageFragment.SendDataToMessagingPage;
 import com.muslimmary.fragments.EditProfileFragment;
+import com.muslimmary.fragments.EditPhotoFragment.SendPhotoToShareFromEdit;
 import com.muslimmary.fragments.EditProfileFragment.SendDataToSharePhoto;
 import com.muslimmary.fragments.FavoriteFragment;
+import com.muslimmary.fragments.GiftReceivePageFragment;
 import com.muslimmary.fragments.InviteFragment;
+import com.muslimmary.fragments.MessagingPageFragment;
 import com.muslimmary.fragments.PaymentOptionFragment;
 import com.muslimmary.fragments.ProfileFragment;
 import com.muslimmary.fragments.SearchFilterFragment;
@@ -62,7 +76,8 @@ import com.muslimmary.fragments.SearchResultFragment;
 import com.muslimmary.fragments.SharePhotoFragment;
 import com.squareup.picasso.Picasso;
 
-public class MainActivity extends Activity implements SendDataToSearchResult, SendDataToSharePhoto, OnTouchListener {
+public class MainActivity extends Activity implements SendDataToSearchResult, SendDataToSharePhoto, SendPhotoToShareFromEdit, SendDataToGiftReceivePage,
+	SendDataToMessagingPage, OnTouchListener {
 	
 	RelativeLayout top_nav;
 	ImageView back;
@@ -70,6 +85,10 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 	TextView title;
 	ImageView muslim_icon;
 	ImageView gift_icon;
+	RelativeLayout notifi_mes_box;
+	TextView num_notifi_mes;
+	RelativeLayout notifi_gift_box;
+	TextView num_notifi_gift;
 	Fragment fragment = null;
 	SlidingMenu menu;
 	ListView navList;
@@ -79,7 +98,6 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 	ViewGroup bell;
 	ViewGroup find_user;
 	ViewGroup message;
-	ArrayList<SendGiftItem> mlst = new ArrayList<SendGiftItem>();
 	SendGiftAdapter adapter;
 	
 	int year;
@@ -89,12 +107,21 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
     static final int DATE_PICKER_ID = 1111; 
     
     prefUser user;
+    String userid = "";
+    String token = "";
+    String photo = "";
+    String username = "";
+    String gift = "";
     
     String resultString = "";
     
     final String[] data ={"edit profile","account","app settings", "billing", "favorites", "invite a friend", "contact us", "log out"};
 	
     TransparentProgressDialog pd;
+    
+    SharedPreferences prefs;
+    
+    Socket socket;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +140,10 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 		muslim_icon = (ImageView)findViewById(R.id.muslim_icon);
 		gift_icon = (ImageView)findViewById(R.id.gift_icon);
 		top_nav = (RelativeLayout)findViewById(R.id.top_nav);
+		notifi_mes_box = (RelativeLayout)findViewById(R.id.notifi_mes_box);
+		num_notifi_mes = (TextView)findViewById(R.id.num_notifi_mes);
+		notifi_gift_box = (RelativeLayout)findViewById(R.id.notifi_gift_box);
+		num_notifi_gift = (TextView)findViewById(R.id.num_notifi_gift);
 		
 		// set event for element
 		back.setOnTouchListener(this);
@@ -123,7 +154,7 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 		
 		// set background bottom nav elements
 		setBgGroupFindUser();
-		
+    	
 		// redirect to payment option
 		try{
 			if(getIntent().getExtras().getInt("flag") == 1){
@@ -161,9 +192,93 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 		// create user object
 		user = new prefUser(this);
 		HashMap<String, String> user_info = user.getUserDetail();
-		if(user_info.get(prefUser.KEY_PHOTO).length() > 0){
-			Picasso.with(this).load(user_info.get(prefUser.KEY_PHOTO)).fit().centerCrop().into(wallpaper);
+		userid = user_info.get(prefUser.KEY_USERID);
+		token = user_info.get(prefUser.KEY_TOKEN);
+		photo = user_info.get(prefUser.KEY_PHOTO);
+		if(user_info.get(prefUser.KEY_NAME).length() > 0){
+			username = user_info.get(prefUser.KEY_NAME);
+		}else{
+			username = user_info.get(prefUser.KEY_USERNAME);
 		}
+		if(photo.length() > 0){
+			Picasso.with(this).load(photo).fit().centerCrop().into(wallpaper);
+		}
+		
+		// get num notifi message
+		if(Integer.parseInt(user_info.get(prefUser.KEY_UNREAD)) > 0){
+			SetNumNotifiMes(true, user_info.get(prefUser.KEY_UNREAD));
+		}else{
+			SetNumNotifiMes(false, user_info.get(prefUser.KEY_UNREAD));
+		}
+		
+		// get num notifi gift
+		if(Integer.parseInt(user_info.get(prefUser.KEY_GIFT_UNREAD)) > 0){
+			SetNumNotifiGift(true, user_info.get(prefUser.KEY_GIFT_UNREAD));
+		}else{
+			SetNumNotifiGift(false, user_info.get(prefUser.KEY_GIFT_UNREAD));
+		}
+		
+		// create prefs object
+		prefs = getSharedPreferences("user_info_pref", 0);
+		
+		// connect socket
+		ConnSocket();
+		
+	}
+	/**
+	 * Connect socket
+	 */
+	private void ConnSocket(){
+		try{
+			IO.Options opts = new IO.Options();
+			opts.forceNew = true;
+			opts.reconnection = true;
+        	socket = IO.socket("http://muslimmarry.campcoders.com:7777/chat?user_id="+ userid +"&token=" + token, opts);
+        	socket.on("send_message", new Emitter.Listener() {
+				
+				@Override
+				public void call(Object... arg0) {
+					// TODO Auto-generated method stub
+					final JSONObject obj = (JSONObject)arg0[0];
+					Log.d("myTag", obj.toString());
+					runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							try{
+								// update num notifi message
+								int unread = GetNumNotifiMes() + obj.getInt("unread");
+								SetNumNotifiMes(true, String.valueOf(unread));
+								// update unread value
+								SharedPreferences.Editor editor = prefs.edit();
+								editor.putString("unread", String.valueOf(unread)).commit();
+							}catch(Exception e){
+								Log.e("error", e.getMessage(), e);
+							}
+						}
+					});
+				}
+			}).on("send_gift", new Emitter.Listener() {
+				
+				@Override
+				public void call(Object... arg0) {
+					// TODO Auto-generated method stub
+					runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							int unread = Integer.parseInt(num_notifi_gift.getText().toString()) + 1;
+							SetNumNotifiGift(true, String.valueOf(unread));
+						}
+					});
+				}
+			});
+        	socket.connect();
+        }catch(URISyntaxException e){
+        	Log.e("error", e.getMessage(), e);
+        }
 	}
 	/**
 	 * Set title
@@ -269,10 +384,12 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 	/*
 	 * popup send gift
 	 */
-	public void displayPopupSendGift(View anchorView){
+	public void displayPopupSendGift(View anchorView, final ArrayList<SendGiftItem> mlst, final String user_recei_name, final String user_recei_id){
 		View layout = getLayoutInflater().inflate(R.layout.layout_send_gift, null);
 		ImageView close = (ImageView)layout.findViewById(R.id.close);
 		Button sendgift = (Button)layout.findViewById(R.id.sendgift);
+		TextView note = (TextView)layout.findViewById(R.id.note);
+		note.setText("Send " + user_recei_name + " a gift to show your interest ");
 		new helpers(MainActivity.this).setFontTypeButton(sendgift);
 		close.setOnClickListener(new OnClickListener() {
 			
@@ -287,18 +404,100 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				pd = new TransparentProgressDialog(MainActivity.this, R.drawable.loading_spinner);
-				pd.show();
-				new Handler().postDelayed(new Runnable() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						pd.dismiss();
-						dim.setVisibility(View.GONE);
-						popup.dismiss();
+				int check = 0;
+				for(int i=0; i<mlst.size(); i++){
+					if(mlst.get(i).getState() == true){
+						gift = mlst.get(i).getImage();
+						check += 1;
 					}
-				}, 2000);
+				}
+				if(check == 0){
+					Toast.makeText(getApplicationContext(), "Please select at least a gift!", Toast.LENGTH_SHORT).show();
+				}else if(check > 1){
+					Toast.makeText(getApplicationContext(), "Please select only one a gift!", Toast.LENGTH_SHORT).show();
+				}else{
+					dim.setVisibility(View.GONE);
+					popup.dismiss();
+					try{
+						IO.Options opts = new IO.Options();
+						opts.forceNew = true;
+						opts.reconnection = true;
+			        	socket = IO.socket("http://muslimmarry.campcoders.com:7777/chat?user_id="+ userid +"&token=" + token, opts);
+			        	socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+							
+							@Override
+							public void call(Object... arg0) {
+								// TODO Auto-generated method stub
+								try{
+									JSONObject obj = new JSONObject();
+									obj.put("user_send", userid);
+									obj.put("user_recei", user_recei_id);
+									obj.put("image_url", gift);
+									obj.put("username", username);
+									obj.put("avatar", photo);
+									socket.emit("send_gift", obj);
+								}catch(Exception e){}
+							}
+						}).on("send_gift", new Emitter.Listener() {
+							
+							@Override
+							public void call(Object... arg0) {
+								// TODO Auto-generated method stub
+								runOnUiThread(new Runnable() {
+									
+									@Override
+									public void run() {
+										// TODO Auto-generated method stub
+										int unread = Integer.parseInt(num_notifi_gift.getText().toString()) + 1;
+										SetNumNotifiGift(true, String.valueOf(unread));
+									}
+								});
+							}
+						}).on("send_gift_success", new Emitter.Listener() {
+							
+							@Override
+							public void call(Object... arg0) {
+								// TODO Auto-generated method stub
+								runOnUiThread(new Runnable() {
+									
+									@Override
+									public void run() {
+										// TODO Auto-generated method stub
+										Toast.makeText(MainActivity.this, "Send gift successful!", Toast.LENGTH_SHORT).show();
+									}
+								});
+							}
+						}).on("send_message", new Emitter.Listener() {
+							
+							@Override
+							public void call(Object... arg0) {
+								// TODO Auto-generated method stub
+								final JSONObject obj = (JSONObject)arg0[0];
+								Log.d("myTag", obj.toString());
+								runOnUiThread(new Runnable() {
+									
+									@Override
+									public void run() {
+										// TODO Auto-generated method stub
+										try{
+											// update num notifi message
+											int unread = GetNumNotifiMes() + obj.getInt("unread");
+											SetNumNotifiMes(true, String.valueOf(unread));
+											// update unread value
+											SharedPreferences.Editor editor = prefs.edit();
+											editor.putString("unread", String.valueOf(unread)).commit();
+										}catch(Exception e){
+											Log.e("error", e.getMessage(), e);
+										}
+									}
+								});
+							}
+						});
+			        	socket.connect();
+					}catch(URISyntaxException e){
+						Log.e("error", e.getMessage(), e);
+					}
+				}
 			}
 		});
 		mGrid = (GridView)layout.findViewById(R.id.mGrid);
@@ -316,16 +515,6 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 				adapter.notifyDataSetChanged();
 			}
 		});
-		mlst.clear();
-		mlst.add(new SendGiftItem(R.drawable.gift_box_01,  false));
-		mlst.add(new SendGiftItem(R.drawable.gift_box_02,  false));
-		mlst.add(new SendGiftItem(R.drawable.gift_box_03,  false));
-		mlst.add(new SendGiftItem(R.drawable.gift_box_04,  false));
-		mlst.add(new SendGiftItem(R.drawable.gift_box_05,  false));
-		mlst.add(new SendGiftItem(R.drawable.gift_box_06,  false));
-		mlst.add(new SendGiftItem(R.drawable.gift_box_07,  false));
-		mlst.add(new SendGiftItem(R.drawable.gift_box_08,  false));
-		mlst.add(new SendGiftItem(R.drawable.gift_box_09,  false));
 		adapter = new SendGiftAdapter(getApplicationContext(), R.layout.row_item_gift, mlst);
 		mGrid.setAdapter(adapter);
 		
@@ -566,6 +755,82 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 	    FragmentTransaction fragmentTransaction = fm.beginTransaction();
 	    fragmentTransaction.replace(R.id.frag, fr);
 	    fragmentTransaction.addToBackStack(null).commit();
+	}
+	/*
+	 * Send image url from EditPhotoFragment to SharePhotoFragment
+	 */
+	@Override
+	public void SendPhotoToShare(String photo) {
+		// TODO Auto-generated method stub
+		SharePhotoFragment fr = new SharePhotoFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString("photo", photo);
+		fr.setArguments(bundle);
+		FragmentManager fm = getFragmentManager();
+	    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+	    fragmentTransaction.replace(R.id.frag, fr);
+	    fragmentTransaction.addToBackStack(null).commit();
+	}
+	/*
+	 * Send data to MessagingPage
+	 */
+	@Override
+	public void sendIdFromDashboardMessage(String id, String name) {
+		// TODO Auto-generated method stub
+		MessagingPageFragment fr = new MessagingPageFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString("friendId", id);
+		bundle.putString("name", name);
+		fr.setArguments(bundle);
+		FragmentManager fm = getFragmentManager();
+	    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+	    fragmentTransaction.replace(R.id.frag, fr);
+	    fragmentTransaction.addToBackStack(null).commit();
+	}
+	/*
+	 * Send data from DashboardAlertFragment to GiftReceivePageFragment
+	 */
+	@Override
+	public void SendDataToGiftReceivePageFragment(String userid_send, String username_send, String gift) {
+		// TODO Auto-generated method stub
+		GiftReceivePageFragment fr = new GiftReceivePageFragment();
+		Bundle bundle = new Bundle();
+		bundle.putString("userid_send", userid_send);
+		bundle.putString("username_send", username_send);
+		bundle.putString("gift", gift);
+		fr.setArguments(bundle);
+		FragmentManager fm = getFragmentManager();
+	    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+	    fragmentTransaction.replace(R.id.frag, fr);
+	    fragmentTransaction.addToBackStack(null).commit();
+	}
+	/*
+	 * get num notifi mes
+	 */
+	public int GetNumNotifiMes(){
+		return Integer.parseInt(num_notifi_mes.getText().toString());
+	}
+	/*
+	 * set num notifi mes
+	 */
+	public void SetNumNotifiMes(boolean flag, String num){
+		if(flag == true){
+			notifi_mes_box.setVisibility(View.VISIBLE);
+		}else{
+			notifi_mes_box.setVisibility(View.GONE);
+		}
+		num_notifi_mes.setText(String.valueOf(num));
+	}
+	/*
+	 * set num notifi gift
+	 */
+	public void SetNumNotifiGift(boolean flag, String num){
+		if(flag == true){
+			notifi_gift_box.setVisibility(View.VISIBLE);
+		}else{
+			notifi_gift_box.setVisibility(View.GONE);
+		}
+		num_notifi_gift.setText(String.valueOf(num));
 	}
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {

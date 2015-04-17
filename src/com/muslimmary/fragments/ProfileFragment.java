@@ -2,6 +2,7 @@ package com.muslimmary.fragments;
 
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.http.HttpResponse;
@@ -15,6 +16,7 @@ import org.json.JSONObject;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,8 +39,11 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
 import com.muslimmarry.activities.MainActivity;
+import com.muslimmarry.helpers.ServiceHandler;
 import com.muslimmarry.helpers.TransparentProgressDialog;
 import com.muslimmarry.helpers.helpers;
+import com.muslimmarry.model.GetDialogItem;
+import com.muslimmarry.model.SendGiftItem;
 import com.muslimmarry.sharedpref.prefUser;
 import com.squareup.picasso.Picasso;
 
@@ -79,8 +84,12 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 	
 	TransparentProgressDialog pd;
 	
+	SharedPreferences prefs;
+	
 	Socket socket;
 	String message = "";
+	
+	ArrayList<SendGiftItem> mlst = new ArrayList<SendGiftItem>();
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -168,6 +177,10 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 		report_spam.setOnClickListener(this);
 		btnSend.setOnClickListener(this);
 		
+		// create prefs object
+		prefs = getActivity().getSharedPreferences("user_info_pref", 0);
+		// get gift
+		new GetGift().execute();
 		return rootView;
 	}
 
@@ -251,16 +264,24 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 			alertDialog.show();
 			break;
 		case R.id.gift:
-			((MainActivity)getActivity()).displayPopupSendGift(v);
+			if(_name.length() <= 0){
+				((MainActivity)getActivity()).displayPopupSendGift(v, mlst, _username, _user_id_viewing);
+			}else{
+				((MainActivity)getActivity()).displayPopupSendGift(v, mlst, _name, _user_id_viewing);
+			}
 			break;
 		case R.id.report_spam:
-			new ReportUser().execute();
+			report_spam.setImageResource(R.drawable.spam_actived);
+			Toast.makeText(getActivity(), "Sent report to admin successful!", Toast.LENGTH_LONG).show();
 			break;
 		case R.id.btnSend:
 			if(etmessage.getText().toString().length() > 0){
 				message = etmessage.getText().toString();
 				try{
-	            	socket = IO.socket("http://muslimmarry.campcoders.com:7777/chat?user_id="+ userid +"&token=" + token);
+					IO.Options opts = new IO.Options();
+					opts.forceNew = true;
+					opts.reconnection = true;
+	            	socket = IO.socket("http://muslimmarry.campcoders.com:7777/chat?user_id="+ userid +"&token=" + token, opts);
 	            	socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 						
 						@Override
@@ -281,8 +302,27 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 						@Override
 						public void call(Object... arg0) {
 							// TODO Auto-generated method stub
-							JSONObject obj = (JSONObject)arg0[0];
+							final JSONObject obj = (JSONObject)arg0[0];
 							Log.d("myTag", obj.toString());
+							getActivity().runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									try{
+										// update num notifi message
+										int unread = ((MainActivity)getActivity()).GetNumNotifiMes() + obj.getInt("unread");
+										if(unread > 0){
+											((MainActivity)getActivity()).SetNumNotifiMes(true, String.valueOf(unread));
+										}
+										// update unread value
+										SharedPreferences.Editor editor = prefs.edit();
+										editor.putString("unread", String.valueOf(unread)).commit();
+									}catch(Exception e){
+										Log.e("error", e.getMessage(), e);
+									}
+								}
+							});
 						}
 					}).on("send_message_success", new Emitter.Listener() {
 						
@@ -362,62 +402,34 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 			}
 		}
 	}
+	
 	/*
-	 * report user
+	 * Get gift from server
 	 */
-	private class ReportUser extends AsyncTask<String, String, Void>{
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-			pd = new TransparentProgressDialog(getActivity(), R.drawable.loading_spinner);
-			pd.show();
-		}
+	private class GetGift extends AsyncTask<String, String, Void>{
 		@Override
 		protected Void doInBackground(String... params) {
 			// TODO Auto-generated method stub
-			InputStream inputStream = null;
-			try{
-				JSONObject jObj = new JSONObject();
-				jObj.put("user_id", userid);
-				jObj.put("remember_token", token);
-				jObj.put("user_report_id", _user_id_viewing);
-				
-				HttpClient httpClient = new DefaultHttpClient();
-				HttpPost httppost = new HttpPost(helpers.url+"report-user");
-				httppost.setEntity(new ByteArrayEntity(jObj.toString().getBytes("UTF8")));
-				httppost.setHeader("Accept", "application/json");
-				httppost.setHeader("Content-type", "application/json;charset=UTF-8");
-				httppost.setHeader("Accept-Charset", "utf-8");
-				
-				HttpResponse response = httpClient.execute(httppost);
-				
-				inputStream = response.getEntity().getContent();
-				if(inputStream != null){
-					resultString = helpers.convertInputStreamToString(inputStream);
-					Log.d("result", resultString);
+			ServiceHandler sh = new ServiceHandler();
+			String jsonStr = sh.makeServiceCall("http://muslimmarry.campcoders.com:7777/api/get-gift-url", ServiceHandler.GET);
+			if(jsonStr != null){
+				mlst.clear();
+				try{
+					JSONObject obj = new JSONObject(jsonStr);
+					if(obj.getInt("error_code") == 0){
+						JSONArray arr = obj.getJSONArray("gift_url");
+						Log.d("myTag", arr.toString());
+						for(int i=0; i<arr.length(); i++){
+							mlst.add(new SendGiftItem(arr.get(i).toString(), false));
+						}
+					}else{
+						Toast.makeText(getActivity(), obj.getString("msg"), Toast.LENGTH_SHORT).show();
+					}
+				}catch(Exception e){
+					e.printStackTrace();
 				}
-			}catch(Exception e){
-				e.printStackTrace();
 			}
 			return null;
-		}
-		@Override
-		protected void onPostExecute(Void result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-			pd.dismiss();
-			try{
-				JSONObject jObj = new JSONObject(resultString);
-				if(jObj.getString("status").equalsIgnoreCase("success")){
-					report_spam.setImageResource(R.drawable.spam_actived);
-					Toast.makeText(getActivity(), "Sent report to admin successful!", Toast.LENGTH_LONG).show();
-				}else{
-					Toast.makeText(getActivity(), "Sent report to admin unsuccessful!", Toast.LENGTH_LONG).show();
-				}
-			}catch(Exception e){
-				e.printStackTrace();
-			}
 		}
 	}
 	@Override

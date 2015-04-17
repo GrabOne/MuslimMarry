@@ -1,61 +1,89 @@
 package com.muslimmarry.model;
 
+
 public class DashBoardMessageItem {
-	private int avatar;
-	private String name;
-	private String mes_qty;
-	private String message;
-	private String time;
-	private String state;
-	public DashBoardMessageItem(int avatar, String name, String mes_qty, String message, String time, String state){
-		this.avatar = avatar;
-		this.name = name;
-		this.mes_qty = mes_qty;
-		this.message = message;
+	private String id;
+	private long time;
+	private int status;
+	private String content;
+	private String user_id;
+	private String username_send;
+	private String photo;
+	private int numMes; 
+	public DashBoardMessageItem(String id, long time, int status, String content, String user_id, String username_send, String photo, int numMes){
+		this.id = id;
 		this.time = time;
-		this.state = state;
+		this.status = status;
+		this.content = content;
+		this.user_id = user_id;
+		this.username_send = username_send;
+		this.photo = photo;
+		this.numMes = numMes;
 	}
 	
-	public int getAvatar(){
-		return avatar;
+	// settor
+	public void setId(String id){
+		this.id = id;
 	}
 	
-	public void setAvatar(int avatar){
-		this.avatar = avatar;
+	public void setTime(long time){
+		this.time = time;
 	}
 	
-	public String getName(){
-		return name;
-	}
-	public void setName(String name){
-		this.name = name;
+	public void setStatus(int status){
+		this.status = status;
 	}
 	
-	public String getMesQty(){
-		return mes_qty;
-	}
-	public void setMesQty(String mes_qty){
-		this.mes_qty = mes_qty;
+	public void setContent(String content){
+		this.content = content;
 	}
 	
-	public String getMessage(){
-		return message;
-	}
-	public void setMessage(String message){
-		this.message = message;
+	public void setUserId(String user_id){
+		this.user_id = user_id;
 	}
 	
-	public String getTime(){
+	public void setUsernameSend(String username_send){
+		this.username_send = username_send;
+	}
+	
+	public void setPhoto(String photo){
+		this.photo = photo;
+	}
+	
+	public void setNumMes(int numMes){
+		this.numMes = numMes;
+	}
+	
+	// gettor
+	public String getId(){
+		return id;
+	}
+	
+	public long getTime(){
 		return time;
 	}
-	public void setTime(String time){
-		this.time = time;
+	
+	public int getStatus(){
+		return status;
 	}
 	
-	public String getState(){
-		return state;
+	public String getContent(){
+		return content;
 	}
-	public void setState(String state){
-		this.state = state;
+	
+	public String getUserId(){
+		return user_id;
+	}
+	
+	public String getUsernameSend(){
+		return username_send;
+	}
+	
+	public String getPhoto(){
+		return photo;
+	}
+	
+	public int getNumMes(){
+		return numMes;
 	}
 }

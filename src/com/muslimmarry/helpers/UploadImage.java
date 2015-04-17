@@ -51,7 +51,7 @@ public class UploadImage {
                 s = s.append(sResponse);
             }
             JSONObject jsonReader = new JSONObject(s.toString());
-            Log.d("myTag", s.toString());
+            Log.d("upload", s.toString());
             try{
             	urlResult = jsonReader.getString("url");
             }catch(Exception e){

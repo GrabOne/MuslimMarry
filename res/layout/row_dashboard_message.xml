@@ -42,9 +42,10 @@
         android:layout_height="wrap_content"
         android:textColor="#999999"
         android:textSize="15sp"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="10dp"
+        android:singleLine="true" />
     
-    <TextView
+    <com.github.curioustechizen.ago.RelativeTimeTextView
         android:id="@+id/time"
         android:layout_toRightOf="@id/avatar"
         android:layout_below="@id/message"

@@ -93,10 +93,12 @@
                 android:contentDescription="@string/image_desc" />
             
             <RelativeLayout
+                android:id="@+id/notifi_gift_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:layout_marginLeft="63dp" >
+                android:layout_marginLeft="63dp"
+                android:visibility="gone" >
                 
                 <ImageView
                     android:layout_width="18dp"
@@ -106,9 +108,9 @@
                     android:layout_centerInParent="true" />
                 
                 <TextView
+                    android:id="@+id/num_notifi_gift"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3"
                     android:textColor="#ffffff"
                     android:textSize="11sp"
                     android:layout_centerInParent="true" />
@@ -148,10 +150,12 @@
                 android:contentDescription="@string/image_desc" />
             
             <RelativeLayout
+                android:id="@+id/notifi_mes_box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:layout_marginLeft="67dp" >
+                android:layout_marginLeft="67dp"
+                android:visibility="gone" >
                 
                 <ImageView
                     android:layout_width="18dp"
@@ -161,9 +165,9 @@
                     android:layout_centerInParent="true" />
                 
                 <TextView
+                    android:id="@+id/num_notifi_mes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="12"
                     android:textColor="#ffffff"
                     android:textSize="11sp"
                     android:layout_centerInParent="true" />

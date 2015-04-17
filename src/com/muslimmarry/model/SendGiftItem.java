@@ -1,18 +1,18 @@
 package com.muslimmarry.model;
 
 public class SendGiftItem {
-	int image;
+	String image;
 	boolean state;
-	public SendGiftItem(int image, boolean state){
+	public SendGiftItem(String image, boolean state){
 		this.image = image;
 		this.state = state;
 	}
 	
-	public int getImage(){
+	public String getImage(){
 		return image;
 	}
 	
-	public void setImage(int image){
+	public void setImage(String image){
 		this.image = image;
 	}
 	

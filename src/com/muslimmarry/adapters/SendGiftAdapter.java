@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.example.muslimmarry.R;
 import com.muslimmarry.model.SendGiftItem;
+import com.squareup.picasso.Picasso;
 
 
 public class SendGiftAdapter extends ArrayAdapter<SendGiftItem> {
@@ -42,7 +43,7 @@ public class SendGiftAdapter extends ArrayAdapter<SendGiftItem> {
 			viewHolder = (ViewHolder)convertView.getTag();
 		}
 		SendGiftItem item = mlst.get(position);
-		viewHolder.gift_box.setImageResource(item.getImage());
+		Picasso.with(mContext).load(item.getImage()).fit().into(viewHolder.gift_box);
 		if(mlst.get(position).getState() == true){
 			viewHolder.check.setVisibility(View.VISIBLE);
 			viewHolder.check.setImageResource(R.drawable.gift_check);

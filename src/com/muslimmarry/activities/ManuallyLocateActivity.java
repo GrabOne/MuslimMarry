@@ -358,6 +358,7 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 				inputStream = response.getEntity().getContent();
 				if(inputStream != null){
 					resultString = helpers.convertInputStreamToString(inputStream);
+					Log.d("result", resultString);
 				}
 			}catch(Exception e){
 				Log.e("error", e.getMessage(), e);
@@ -378,6 +379,16 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 					if(!locate.isNull("city")){
 						city = locate.getString("city");
 					}
+					int mes = 0;
+					if(!data.isNull("messages")){
+						JSONObject message = new JSONObject(data.getString("messages"));
+						mes = message.getInt("unread");
+					}
+					int gift = 0;
+					if(!data.isNull("gifts")){
+						JSONObject message = new JSONObject(data.getString("gifts"));
+						gift = message.getInt("unread");
+					}
 					String album = "";
 					if(!data.isNull("images")){
 						JSONArray albumArr = data.getJSONArray("images");
@@ -385,7 +396,8 @@ public class ManuallyLocateActivity extends Activity implements GoogleApiClient.
 					}
 					user.createUserSession(data.getString("_id"), "", data.getString("username"), data.getString("email"), data.getString("age"),
 							"", data.getString("gender"), data.getString("avatar"), album, data.getString("remember_token"), "", "", "", locate.getString("country"),
-							city, coordinates.getString("lat"), coordinates.getString("lng"), data.getString("promocode"), "", "", "false");
+							city, coordinates.getString("lat"), coordinates.getString("lng"), data.getString("promocode"), "", "", "false", String.valueOf(mes), 
+							String.valueOf(gift));
 					Intent i = new Intent(ManuallyLocateActivity.this, MainActivity.class);
 					startActivity(i);
 					new helpers(ManuallyLocateActivity.this).PushActivityRight();

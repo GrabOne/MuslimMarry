@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.muslimmarry.R;
+import com.github.curioustechizen.ago.RelativeTimeTextView;
 import com.muslimmarry.model.DashBoardMessageItem;
+import com.squareup.picasso.Picasso;
 
 public class DashBoardMessageAdapter extends ArrayAdapter<DashBoardMessageItem> {
 	
@@ -41,7 +43,7 @@ public class DashBoardMessageAdapter extends ArrayAdapter<DashBoardMessageItem> 
 			viewHolder.name = (TextView)rowView.findViewById(R.id.name);
 			viewHolder.mes_qty = (TextView)rowView.findViewById(R.id.mes_qty);
 			viewHolder.message = (TextView)rowView.findViewById(R.id.message);
-			viewHolder.time = (TextView)rowView.findViewById(R.id.time);
+			viewHolder.time = (RelativeTimeTextView)rowView.findViewById(R.id.time);
 			viewHolder.arrow = (ImageView)rowView.findViewById(R.id.arrow);
 			
 			rowView.setTag(viewHolder);
@@ -50,18 +52,22 @@ public class DashBoardMessageAdapter extends ArrayAdapter<DashBoardMessageItem> 
 		}
 		
 		DashBoardMessageItem item = mlst.get(position);
-		viewHolder.avatar.setImageResource(item.getAvatar());
-		viewHolder.name.setText(item.getName().toString());
-		viewHolder.mes_qty.setText(item.getMesQty().toString());
-		viewHolder.message.setText(item.getMessage().toString());
-		viewHolder.time.setText(item.getTime().toString());
+		if(item.getPhoto().length() > 0){
+			Picasso.with(mContext).load(item.getPhoto()).placeholder(R.drawable.avatar).fit().into(viewHolder.avatar);
+		}else{
+			viewHolder.avatar.setImageResource(R.drawable.avatar);
+		}
+		viewHolder.name.setText(item.getUsernameSend());
+		viewHolder.mes_qty.setText(item.getNumMes()+" messages");
+		viewHolder.message.setText(item.getContent());
+		viewHolder.time.setReferenceTime(item.getTime());
 		viewHolder.arrow.setImageResource(R.drawable.arrow_right);
 		
-		if(item.getMessage().length() > 35){
-			viewHolder.message.setText(item.getMessage().substring(0, 35) + "...");
+		if(item.getContent().length() > 35){
+			viewHolder.message.setText(item.getContent().substring(0, 35) + "...");
 		}
 		
-		if(item.getState().equals("unread")){
+		if(item.getStatus() == 0){
 			rowView.setBackgroundColor(Color.parseColor("#e3f4f8"));
 			viewHolder.name.setTextColor(Color.parseColor("#101010"));
 			viewHolder.name.setTypeface(null, Typeface.BOLD);
@@ -76,7 +82,7 @@ public class DashBoardMessageAdapter extends ArrayAdapter<DashBoardMessageItem> 
 		TextView name;
 		TextView mes_qty;
 		TextView message;
-		TextView time;
+		RelativeTimeTextView time;
 		ImageView arrow;
 	}
 	

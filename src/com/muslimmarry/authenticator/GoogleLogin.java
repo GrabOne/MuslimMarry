@@ -232,14 +232,24 @@ public class GoogleLogin implements ConnectionCallbacks, OnConnectionFailedListe
 					if(!locate.isNull("city")){
 						_city = locate.getString("city");
 					}
+					int mes = 0;
+					if(!data.isNull("messages")){
+						JSONObject message = new JSONObject(data.getString("messages"));
+						mes = message.getInt("unread");
+					}
+					int gift = 0;
+					if(!data.isNull("gifts")){
+						JSONObject message = new JSONObject(data.getString("gifts"));
+						gift = message.getInt("unread");
+					}
 					String album = "";
 					if(!data.isNull("images")){
 						JSONArray albumArr = data.getJSONArray("images");
 						album = albumArr.toString();
 					}
 					user.createUserSession(data.getString("_id"), new String(data.getString("nickname").getBytes("UTF-8"), "UTF-8"), "", new String(data.getString("email").getBytes("UTF-8"), "UTF-8"), data.getString("age"),
-							data.getString("birthday"), data.getString("gender"), data.getString("avatar"), album, data.getString("remember_token"), data.getString("occupation"), data.getString("height"), languageArr.toString(), locate.getString("country"),
-							_city, coordinates.getString("lat"), coordinates.getString("lng"), data.getString("promocode"), "gg", data.getString("google_id"), "true");
+							data.getString("birthday"), data.getString("gender"), data.getString("avatar"), album, data.getString("remember_token"), data.getString("occupation"), data.getString("height"), languageArr.toString(),
+							locate.getString("country"), _city, coordinates.getString("lat"), coordinates.getString("lng"), data.getString("promocode"), "gg", data.getString("google_id"), "true", String.valueOf(mes), String.valueOf(gift));
 					
 					SharedPreferences.Editor editor =mSharedPreferences.edit();
 	                editor.putBoolean(IS_GOOGLE_LOGIN, true);

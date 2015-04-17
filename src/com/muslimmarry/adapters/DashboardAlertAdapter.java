@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.muslimmarry.R;
+import com.github.curioustechizen.ago.RelativeTimeTextView;
 import com.muslimmarry.model.DashboardAlertItem;
+import com.squareup.picasso.Picasso;
 
 public class DashboardAlertAdapter extends ArrayAdapter<DashboardAlertItem> {
 	
@@ -40,7 +42,7 @@ public class DashboardAlertAdapter extends ArrayAdapter<DashboardAlertItem> {
 			viewHolder.avatar = (ImageView)rowView.findViewById(R.id.avatar);
 			viewHolder.name = (TextView)rowView.findViewById(R.id.name);
 			viewHolder.alert = (TextView)rowView.findViewById(R.id.alert);
-			viewHolder.time = (TextView)rowView.findViewById(R.id.time);
+			viewHolder.time = (RelativeTimeTextView)rowView.findViewById(R.id.time);
 			viewHolder.icon = (ImageView)rowView.findViewById(R.id.icon);
 			viewHolder.arrow = (ImageView)rowView.findViewById(R.id.arrow);
 			
@@ -50,13 +52,17 @@ public class DashboardAlertAdapter extends ArrayAdapter<DashboardAlertItem> {
 		}
 		
 		DashboardAlertItem item = mlst.get(position);
-		viewHolder.avatar.setImageResource(item.getAvatar());
-		viewHolder.name.setText(item.getName().toString());
-		viewHolder.alert.setText(item.getAlert().toString());
-		viewHolder.time.setText(item.getTime().toString());
+		if(item.getPhoto().length() > 0){
+			Picasso.with(mContext).load(item.getPhoto()).placeholder(R.drawable.avatar).fit().into(viewHolder.avatar);
+		}else{
+			viewHolder.avatar.setImageResource(R.drawable.avatar);
+		}
+		viewHolder.name.setText(item.getUsernameSend().toString());
+		viewHolder.alert.setText("Sent you a gift");
+		viewHolder.time.setReferenceTime(item.getTime());
 		viewHolder.icon.setImageResource(R.drawable.ic_gift);
 		viewHolder.arrow.setImageResource(R.drawable.arrow_right);
-		if(item.getState().equals("unread")){
+		if(item.getStatus() == 0){
 			rowView.setBackgroundColor(Color.parseColor("#e3f4f8"));
 			viewHolder.icon.setImageResource(R.drawable.gift_icon);
 			viewHolder.name.setTextColor(Color.parseColor("#101010"));
@@ -71,7 +77,7 @@ public class DashboardAlertAdapter extends ArrayAdapter<DashboardAlertItem> {
 		ImageView avatar;
 		TextView name;
 		TextView alert;
-		TextView time;
+		RelativeTimeTextView time;
 		ImageView icon;
 		ImageView arrow;
 	}

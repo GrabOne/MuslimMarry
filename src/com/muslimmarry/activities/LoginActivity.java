@@ -114,6 +114,16 @@ public class LoginActivity extends Activity implements OnTouchListener, OnClickL
 					if(!data.isNull("birthday")){
 						birthday = data.getString("birthday");
 					}
+					int mes = 0;
+					if(!data.isNull("messages")){
+						JSONObject message = new JSONObject(data.getString("messages"));
+						mes = message.getInt("unread");
+					}
+					int gift = 0;
+					if(!data.isNull("gifts")){
+						JSONObject message = new JSONObject(data.getString("gifts"));
+						gift = message.getInt("unread");
+					}
 					String album = "";
 					if(!data.isNull("images")){
 						JSONArray albumArr = data.getJSONArray("images");
@@ -123,7 +133,8 @@ public class LoginActivity extends Activity implements OnTouchListener, OnClickL
 					prefUser user = new prefUser(LoginActivity.this);
 					user.createUserSession(data.getString("_id"), new String(data.getString("nickname").getBytes("UTF-8"), "UTF-8"), data.getString("username"), data.getString("email"), data.getString("age"),
 							birthday, data.getString("gender"), data.getString("avatar"), album, data.getString("remember_token"), data.getString("occupation"), data.getString("height"), languageArr.toString(),
-							locate.getString("country"), locate.getString("city"), coordinates.getString("lat"), coordinates.getString("lng"), data.getString("promocode"), "", "", "false");
+							locate.getString("country"), locate.getString("city"), coordinates.getString("lat"), coordinates.getString("lng"), data.getString("promocode"), "", "", "false", String.valueOf(mes),
+							String.valueOf(gift));
 					Intent i = new Intent(LoginActivity.this, MainActivity.class);
 					startActivity(i);
 					new helpers(LoginActivity.this).PushActivityLeft();
