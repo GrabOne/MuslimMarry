@@ -1,6 +1,7 @@
 package com.muslimmary.fragments;
 
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,8 +19,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,17 +27,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.muslimmarry.R;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.muslimmarry.activities.MainActivity;
 import com.muslimmarry.adapters.DashboardAlertAdapter;
 import com.muslimmarry.helpers.helpers;
 import com.muslimmarry.model.DashboardAlertItem;
 import com.muslimmarry.sharedpref.prefUser;
-import com.muslimmary.fragments.EditPhotoFragment.SendPhotoToShareFromEdit;
 
 
 public class DashboardAlertFragment extends Fragment {
@@ -45,14 +49,21 @@ public class DashboardAlertFragment extends Fragment {
 	ListView mList;
 	ArrayList<DashboardAlertItem> mlst = new ArrayList<DashboardAlertItem>();
 	DashboardAlertAdapter adapter;
+	ProgressBar progressbar;
+	TextView msg;
 	
 	prefUser user;
 	String userid = "";
 	String token = "";
 	
-	String resultString;
+	String resultString = "";
 	
 	SendDataToGiftReceivePage mCallback;
+	
+	SharedPreferences prefs;
+	
+	Socket socket;
+	String gift_id = "";
 	
 	public interface SendDataToGiftReceivePage{
 		public void SendDataToGiftReceivePageFragment(String userid_send, String username_send, String gift);
@@ -76,12 +87,17 @@ public class DashboardAlertFragment extends Fragment {
 		helpers.setTouch(rootView);
 		
 		mList = (ListView)rootView.findViewById(R.id.mList);
+		progressbar = (ProgressBar)rootView.findViewById(R.id.progressbar);
+		msg = (TextView)rootView.findViewById(R.id.msg);
 		
 		// create user object
 		user = new prefUser(getActivity());
 		HashMap<String, String> user_info = user.getUserDetail();
 		userid = user_info.get(prefUser.KEY_USERID);
 		token = user_info.get(prefUser.KEY_TOKEN);
+		
+		// create sharedprefs object
+		prefs = getActivity().getSharedPreferences("user_info_pref", 0);
 		
 		// set background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupBell();
@@ -95,6 +111,8 @@ public class DashboardAlertFragment extends Fragment {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				// TODO Auto-generated method stub
+				gift_id = mlst.get(position).getId();
+				ReadNotifiReceiveGift();
 				mCallback.SendDataToGiftReceivePageFragment(mlst.get(position).getUserId(), mlst.get(position).getUsernameSend(), mlst.get(position).getGift());
 			}
 		});
@@ -102,9 +120,107 @@ public class DashboardAlertFragment extends Fragment {
 		return rootView;
 	}
 	/*
+	 * read notification receiving gifts
+	 */
+	private void ReadNotifiReceiveGift(){
+		try{
+			IO.Options opts = new IO.Options();
+			opts.forceNew = true;
+			opts.reconnection = true;
+	    	socket = IO.socket("http://muslimmarry.campcoders.com:7777/chat?user_id="+ userid +"&token=" + token, opts);
+	    	socket.on(socket.EVENT_CONNECT, new Emitter.Listener() {
+				
+				@Override
+				public void call(Object... arg0) {
+					// TODO Auto-generated method stub
+					try{
+						JSONObject obj = new JSONObject();
+						obj.put("user_view", userid);
+						obj.put("gift_id", gift_id);
+						socket.emit("view_gift", obj);
+					}catch(Exception e){
+						Log.e("error", e.getMessage(), e);
+					}
+					getActivity().runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							int unread = 0;
+							if(((MainActivity)getActivity()).GetNumNotifiGif() > 0){
+								unread = ((MainActivity)getActivity()).GetNumNotifiGif() - 1;
+							}
+							if(unread > 0){
+								((MainActivity)getActivity()).SetNumNotifiGift(true, String.valueOf(unread));
+							}else{
+								((MainActivity)getActivity()).SetNumNotifiGift(false, "0");
+							}
+							// update gift_unread value
+							SharedPreferences.Editor editor = prefs.edit();
+							editor.putString("gift_unread", String.valueOf(unread)).commit();
+						}
+					});
+				}
+			}).on("send_message", new Emitter.Listener() {
+				
+				@Override
+				public void call(Object... arg0) {
+					// TODO Auto-generated method stub
+					final JSONObject obj = (JSONObject)arg0[0];
+					Log.d("myTag", obj.toString());
+					getActivity().runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							try{
+								// update num notifi message
+								int unread = ((MainActivity)getActivity()).GetNumNotifiMes() + obj.getInt("unread");
+								((MainActivity)getActivity()).SetNumNotifiMes(true, String.valueOf(unread));
+								// update unread value
+								SharedPreferences.Editor editor = prefs.edit();
+								editor.putString("unread", String.valueOf(unread)).commit();
+							}catch(Exception e){
+								Log.e("error", e.getMessage(), e);
+							}
+						}
+					});
+				}
+			}).on("send_gift", new Emitter.Listener() {
+				
+				@Override
+				public void call(Object... arg0) {
+					// TODO Auto-generated method stub
+					getActivity().runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							int unread = ((MainActivity)getActivity()).GetNumNotifiGif() + 1;
+							((MainActivity)getActivity()).SetNumNotifiGift(true, String.valueOf(unread));
+							// update gift_unread value
+							SharedPreferences.Editor editor = prefs.edit();
+							editor.putString("gift_unread", String.valueOf(unread)).commit();
+						}
+					});
+				}
+			});
+	    	socket.connect();
+		}catch(URISyntaxException e){
+			Log.e("error", e.getMessage(), e);
+		}
+	}
+	
+	/*
 	 * Get notifi gift
 	 */
 	private class GetNotifiGift extends AsyncTask<String, String, Void>{
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			mList.setVisibility(View.GONE);
+		}
 		@Override
 		protected Void doInBackground(String... params) {
 			// TODO Auto-generated method stub
@@ -135,6 +251,8 @@ public class DashboardAlertFragment extends Fragment {
 		protected void onPostExecute(Void result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+			progressbar.setVisibility(View.GONE);
+			mList.setVisibility(View.VISIBLE);
 			try{
 				mlst.clear();
 				JSONObject obj = new JSONObject(resultString);
@@ -157,6 +275,9 @@ public class DashboardAlertFragment extends Fragment {
 								gift.getString("image_url"), gift.getString("user_send"), gift.getString("username"), gift.getString("avatar")));
 						adapter = new DashboardAlertAdapter(getActivity(), R.layout.row_dashboard_alert, mlst);
 						mList.setAdapter(adapter);
+					}
+					if(mlst.size() <= 0){
+						msg.setVisibility(View.VISIBLE);
 					}
 				}else{
 					Toast.makeText(getActivity(), obj.getString("msg"), Toast.LENGTH_SHORT).show();
@@ -187,6 +308,21 @@ public class DashboardAlertFragment extends Fragment {
 		}catch(Exception e){}
 		
 		return output.format(d);
+	}
+	/*
+	 * Read all message
+	 */
+	private void RealAllMessage(){
+		try{
+			IO.Options opts = new IO.Options();
+			opts.forceNew = true;
+			opts.reconnection = true;
+        	socket = IO.socket("http://muslimmarry.campcoders.com:7777/chat?user_id="+ userid +"&token=" + token, opts);
+        	
+        	socket.connect();
+        }catch(URISyntaxException e){
+        	Log.e("error", e.getMessage(), e);
+        }
 	}
 	@Override
 	public void onResume() {

@@ -6,11 +6,10 @@
     <ImageView
         android:id="@+id/gift_box"
         android:layout_width="45dp"
-        android:layout_height="52dp"
+        android:layout_height="45dp"
         android:contentDescription="@string/image_desc"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal"
-        android:scaleType="centerInside" />
+        android:scaleType="fitCenter" />
     
     <ImageView
         android:id="@+id/check"

@@ -254,7 +254,7 @@ public class EditProfileFragment extends Fragment implements OnClickListener {
 		
 		// display photo url
 		if(_photo.length() > 0){
-			Picasso.with(getActivity()).load(_photo).placeholder(R.drawable.avatar).fit().into(photo);
+			Picasso.with(getActivity()).load(_photo).placeholder(R.drawable.avatar).into(photo);
 			Picasso.with(getActivity()).load(_photo).fit().centerCrop().into(wallpaper);
 		}else{
 			photo.setImageResource(R.drawable.avatar);

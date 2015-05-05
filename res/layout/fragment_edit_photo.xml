@@ -103,6 +103,7 @@
 		             android:src="@drawable/delete_photo_icon"
 		             android:contentDescription="@string/image_desc" />
 		         <ImageView
+		             android:id="@+id/edit_icon_main_photo"
 		             android:layout_width="40dp"
 		             android:layout_height="40dp"
 		             android:src="@drawable/edit_photo_icon"
@@ -155,6 +156,7 @@
 			         android:src="@drawable/delete_photo_icon"
 			         android:contentDescription="@string/image_desc" />
 		         <ImageView
+		             android:id="@+id/edit_icon_photo1"
 		             android:layout_width="30dp"
 		             android:layout_height="30dp"
 		             android:src="@drawable/edit_photo_icon"
@@ -208,6 +210,7 @@
 		             android:src="@drawable/delete_photo_icon"
 		             android:contentDescription="@string/image_desc" />
 		         <ImageView
+		             android:id="@+id/edit_icon_photo2"
 		             android:layout_width="30dp"
 		             android:layout_height="30dp"
 		             android:src="@drawable/edit_photo_icon"
@@ -260,6 +263,7 @@
 		             android:src="@drawable/delete_photo_icon"
 		             android:contentDescription="@string/image_desc" />
 		         <ImageView
+		             android:id="@+id/edit_icon_photo3"
 		             android:layout_width="30dp"
 		             android:layout_height="30dp"
 		             android:src="@drawable/edit_photo_icon"
@@ -313,6 +317,7 @@
 		             android:src="@drawable/delete_photo_icon"
 		             android:contentDescription="@string/image_desc" />
 		         <ImageView
+		             android:id="@+id/edit_icon_photo4"
 		             android:layout_width="30dp"
 		             android:layout_height="30dp"
 		             android:src="@drawable/edit_photo_icon"
@@ -364,6 +369,7 @@
 		             android:src="@drawable/delete_photo_icon"
 		             android:contentDescription="@string/image_desc" />
 		         <ImageView
+		             android:id="@+id/edit_icon_photo5"
 		             android:layout_width="30dp"
 		             android:layout_height="30dp"
 		             android:src="@drawable/edit_photo_icon"

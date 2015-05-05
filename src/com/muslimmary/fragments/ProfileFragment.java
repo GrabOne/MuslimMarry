@@ -42,7 +42,6 @@ import com.muslimmarry.activities.MainActivity;
 import com.muslimmarry.helpers.ServiceHandler;
 import com.muslimmarry.helpers.TransparentProgressDialog;
 import com.muslimmarry.helpers.helpers;
-import com.muslimmarry.model.GetDialogItem;
 import com.muslimmarry.model.SendGiftItem;
 import com.muslimmarry.sharedpref.prefUser;
 import com.squareup.picasso.Picasso;
@@ -181,6 +180,7 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 		prefs = getActivity().getSharedPreferences("user_info_pref", 0);
 		// get gift
 		new GetGift().execute();
+		
 		return rootView;
 	}
 
@@ -331,6 +331,24 @@ public class ProfileFragment extends Fragment implements OnClickListener {
 							// TODO Auto-generated method stub
 							JSONObject obj = (JSONObject)arg0[0];
 							Log.d("myTag", obj.toString());
+						}
+					}).on("send_gift", new Emitter.Listener() {
+						
+						@Override
+						public void call(Object... arg0) {
+							// TODO Auto-generated method stub
+							getActivity().runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									int unread = ((MainActivity) getActivity()).GetNumNotifiGif() + 1;
+									((MainActivity) getActivity()).SetNumNotifiGift(true, String.valueOf(unread));
+									// update gift_unread value
+									SharedPreferences.Editor editor = prefs.edit();
+									editor.putString("gift_unread", String.valueOf(unread)).commit();
+								}
+							});
 						}
 					});
 	            	socket.connect();

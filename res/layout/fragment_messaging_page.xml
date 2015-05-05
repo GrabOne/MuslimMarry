@@ -38,30 +38,28 @@
             android:contentDescription="@string/image_desc"
             android:layout_marginTop="10dp" />
 
-        <LinearLayout
-            android:id="@+id/message_content"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_below="@id/back"
             android:orientation="vertical"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp" >
+            android:paddingRight="10dp"
+            android:layout_marginBottom="50dp" >
 
             <ListView
                 android:id="@+id/listMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:stackFromBottom="true"
-                android:transcriptMode="alwaysScroll"
                 android:divider="@null"
                 android:dividerHeight="0dp"
                 android:listSelector="@android:color/transparent"
                 android:cacheColorHint="@android:color/transparent"
-                android:isScrollContainer="false"
-                android:scrollbars="none" />
+                android:scrollbars="none"
+                android:stackFromBottom="true" />
 
-        </LinearLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
 
     <RelativeLayout

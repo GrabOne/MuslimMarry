@@ -161,7 +161,6 @@
 	                    android:id="@+id/minDistance"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
-	                    android:text="1"
 	                    android:textColor="#9a9a9a"
 	                    android:textSize="12sp"
 	                    android:layout_marginLeft="9dp" />
@@ -170,7 +169,6 @@
 	                    android:id="@+id/maxDistance"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
-	                    android:text="161"
 	                    android:textColor="#9a9a9a"
 	                    android:textSize="12sp"
 	                    android:layout_marginRight="10dp"
@@ -339,7 +337,6 @@
 	                    android:id="@+id/minHeight"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
-	                    android:text="1.30"
 	                    android:textColor="#9a9a9a"
 	                    android:textSize="12sp"
 	                    android:layout_marginLeft="8dp" />
@@ -348,7 +345,6 @@
 	                    android:id="@+id/maxHeight"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
-	                    android:text="2.30"
 	                    android:textColor="#9a9a9a"
 	                    android:textSize="12sp"
 	                    android:layout_marginRight="10dp"

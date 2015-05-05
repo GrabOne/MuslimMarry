@@ -53,7 +53,7 @@ public class DashboardAlertAdapter extends ArrayAdapter<DashboardAlertItem> {
 		
 		DashboardAlertItem item = mlst.get(position);
 		if(item.getPhoto().length() > 0){
-			Picasso.with(mContext).load(item.getPhoto()).placeholder(R.drawable.avatar).fit().into(viewHolder.avatar);
+			Picasso.with(mContext).load(item.getPhoto()).placeholder(R.drawable.avatar).into(viewHolder.avatar);
 		}else{
 			viewHolder.avatar.setImageResource(R.drawable.avatar);
 		}

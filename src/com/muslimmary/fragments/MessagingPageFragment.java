@@ -21,13 +21,15 @@ import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,7 +42,6 @@ import com.example.muslimmarry.R;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
-import com.google.android.gms.internal.mk;
 import com.muslimmarry.activities.MainActivity;
 import com.muslimmarry.adapters.MessagingPageAdapter;
 import com.muslimmarry.helpers.helpers;
@@ -54,9 +55,9 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
 	private MessagingPageAdapter adapter;
 	
 	ScrollView scroll;
-	ViewGroup message_content;
 	EditText etmessage;
 	Button btnSend;
+	SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView lvMsg;
     ImageView wallpaper;
     private ArrayList<MessageItem> comments = new ArrayList<MessageItem>();
@@ -88,9 +89,9 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
 		
 		TextView name = (TextView)rootView.findViewById(R.id.name);
 		wallpaper = (ImageView)rootView.findViewById(R.id.wallpaper);
-		message_content = (ViewGroup)rootView.findViewById(R.id.message_content);
 		etmessage = (EditText)rootView.findViewById(R.id.etmessage);
 		btnSend = (Button)rootView.findViewById(R.id.btnSend);
+		mSwipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_refresh_layout);
         lvMsg = (ListView) rootView.findViewById(R.id.listMessage);
         adapter = new MessagingPageAdapter(getActivity(), R.layout.row_chat_message, comments);
         lvMsg.setAdapter(adapter);
@@ -122,42 +123,32 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
 		if(user_info.get(prefUser.KEY_PHOTO).length() > 0){
 			Picasso.with(getActivity()).load(user_info.get(prefUser.KEY_PHOTO)).fit().centerCrop().into(wallpaper);
 		}
-		etmessage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    scrollToEndList();
+		// click edittext to read message
+		etmessage.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				if(MotionEvent.ACTION_UP == arg1.getAction()){
+					scrollToEndList();
                     RealAllMessage();
-                }
-            }
-        });
+				}
+				return false;
+			}
+		});
 		// get message to display
 		if(more == 0){
 			new GetMessages().execute(String.valueOf(skip), String.valueOf(limit));
 		}
 		// scroll to the top load message
-		lvMsg.setOnScrollListener(new OnScrollListener() {
+		mSwipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
 			
 			@Override
-			public void onScrollStateChanged(AbsListView arg0, int arg1) {
+			public void onRefresh() {
 				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				// TODO Auto-generated method stub
-				if (firstVisibleItem == 0) {
-	                // check if we reached the top or bottom of the list
-	                View v = lvMsg.getChildAt(0);
-	                int offset = (v == null) ? 0 : v.getTop();
-	                if (offset == 0) {
-	                	if(more == 1){
-//	                		new GetMessages().execute(String.valueOf(skip), String.valueOf(limit));
-	                	}
-	                    return;
-	                } 
-	            }   
+				if(more == 1){
+					new GetMessages().execute(String.valueOf(skip), String.valueOf(limit));
+				}
 			}
 		});
 		
@@ -208,6 +199,24 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
 						}
 					});
 				}
+			}).on("send_gift", new Emitter.Listener() {
+				
+				@Override
+				public void call(Object... arg0) {
+					// TODO Auto-generated method stub
+					getActivity().runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							int unread = ((MainActivity) getActivity()).GetNumNotifiGif() + 1;
+							((MainActivity) getActivity()).SetNumNotifiGift(true, String.valueOf(unread));
+							// update gift_unread value
+							SharedPreferences.Editor editor = prefs.edit();
+							editor.putString("gift_unread", String.valueOf(unread)).commit();
+						}
+					});
+				}
 			});
         	socket.connect();
         }catch(URISyntaxException e){
@@ -230,8 +239,8 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
 					// TODO Auto-generated method stub
 					try{
 						JSONObject obj = new JSONObject();
-						obj.put("user_send", userid);
-						obj.put("user_recei", friendId);
+						obj.put("user_send", friendId);
+						obj.put("user_recei", userid);
 						socket.emit("readAllMessage", obj);
 						getActivity().runOnUiThread(new Runnable() {
 							
@@ -287,6 +296,24 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
 						}
 					});
 				}
+			}).on("send_gift", new Emitter.Listener() {
+				
+				@Override
+				public void call(Object... arg0) {
+					// TODO Auto-generated method stub
+					getActivity().runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							int unread = ((MainActivity) getActivity()).GetNumNotifiGif() + 1;
+							((MainActivity) getActivity()).SetNumNotifiGift(true, String.valueOf(unread));
+							// update gift_unread value
+							SharedPreferences.Editor editor = prefs.edit();
+							editor.putString("gift_unread", String.valueOf(unread)).commit();
+						}
+					});
+				}
 			});
         	socket.connect();
         }catch(URISyntaxException e){
@@ -322,6 +349,7 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
                 // Them Item vao khung chat. Xac dinh left de hien thi doan chat cua tung nguoi
 				String time = GetCurrentTime("HH:mm");
                 addItems(false, etmessage.getText().toString(), time);
+                scrollToEndList();
                 try{
                 	message = etmessage.getText().toString();
                 	IO.Options opts = new IO.Options();
@@ -381,6 +409,24 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
 								}
 							});
 						}
+					}).on("send_gift", new Emitter.Listener() {
+						
+						@Override
+						public void call(Object... arg0) {
+							// TODO Auto-generated method stub
+							getActivity().runOnUiThread(new Runnable() {
+								
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									int unread = ((MainActivity) getActivity()).GetNumNotifiGif() + 1;
+									((MainActivity) getActivity()).SetNumNotifiGift(true, String.valueOf(unread));
+									// update gift_unread value
+									SharedPreferences.Editor editor = prefs.edit();
+									editor.putString("gift_unread", String.valueOf(unread)).commit();
+								}
+							});
+						}
 					});
 	            	socket.connect();
                 }catch(URISyntaxException e){
@@ -430,6 +476,7 @@ public class MessagingPageFragment extends Fragment implements OnClickListener {
 		protected void onPostExecute(Void result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+			mSwipeRefreshLayout.setRefreshing(false);
 			try{
 				JSONObject obj = new JSONObject(resultString);
 				if(obj.getInt("error_code") == 0){

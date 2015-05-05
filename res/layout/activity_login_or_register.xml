@@ -56,7 +56,7 @@
         android:layout_centerHorizontal="true"
         android:text="we’ll never publish without your permission"
         android:textColor="#ffffff"
-        android:textSize="10sp"
+        android:textSize="14sp"
         android:layout_marginTop="10dp" />
     
     <Button
@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:text="or"
         android:textColor="#ffffff"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true" />
     

@@ -78,6 +78,7 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 	ArrayList<GetDialogItem> jobsLst = new ArrayList<GetDialogItem>();
 	
 	DistanceIn mi;
+	int distance_in = 0;
 	
 	String userid = "";
 	String token = "";
@@ -152,9 +153,19 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 		if(mi.isCheckMi()){
 			titDistance.setText("DISTANCE (Mi)");
 			titHeight.setText("HEIGHT (Feet)");
+			minDistance.setText("1");
+			maxDistance.setText("100");
+			minHeight.setText("4");
+			maxHeight.setText("8");
+			distance_in = 1;
 		}else{
 			titDistance.setText("DISTANCE (KM)");
 			titHeight.setText("HEIGHT (CM)");
+			minDistance.setText("1");
+			maxDistance.setText("161");
+			minHeight.setText("130");
+			maxHeight.setText("230");
+			distance_in = 0;
 		}
 		
 		// set font for element
@@ -188,7 +199,7 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 		age_group.addView(seekBarAge);
 		
 		// seekbar distance
-		RangeSeekBar<Integer> seekBarDistance = new RangeSeekBar<Integer>(1, 161, getActivity());
+		RangeSeekBar<Integer> seekBarDistance = new RangeSeekBar<Integer>(Integer.parseInt(minDistance.getText().toString()), Integer.parseInt(maxDistance.getText().toString()), getActivity());
 		seekBarDistance.setNotifyWhileDragging(true);
 		seekBarDistance.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
 
@@ -205,21 +216,47 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 		distance_group.addView(seekBarDistance);
 		
 		// seekbar height
-		RangeSeekBar<Double> seekBarHeight = new RangeSeekBar<Double>(1.30, 2.30, getActivity());
-		seekBarHeight.setNotifyWhileDragging(true);
-		seekBarHeight.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Double>() {
+		if(distance_in == 1){
+			RangeSeekBar<Double> seekBarHeight = new RangeSeekBar<Double>(4.0, 8.0, getActivity());
+			seekBarHeight.setNotifyWhileDragging(true);
+			seekBarHeight.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Double>() {
 
-			@Override
-			public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar,
-					Double minValue, Double maxValue) {
-				// TODO Auto-generated method stub
-				minHeight.setText(""+Math.floor(minValue * 100) / 100);
-				maxHeight.setText(""+Math.floor(maxValue * 100) / 100);
-			}
-		});
-		ViewGroup height_group = (ViewGroup)rootView.findViewById(R.id.height_group);
-		seekBarHeight.setLayoutParams(params);
-		height_group.addView(seekBarHeight);
+				@Override
+				public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar,
+						Double minValue, Double maxValue) {
+					// TODO Auto-generated method stub
+					if(minValue == 4.0){
+						minHeight.setText("4");
+					}else{
+						minHeight.setText(""+Math.floor(minValue * 100) / 100);
+					}
+					if(maxValue == 8.0){
+						maxHeight.setText("8");
+					}else{
+						maxHeight.setText(""+Math.floor(maxValue * 100) / 100);
+					}
+				}
+			});
+			ViewGroup height_group = (ViewGroup)rootView.findViewById(R.id.height_group);
+			seekBarHeight.setLayoutParams(params);
+			height_group.addView(seekBarHeight);
+		}else{
+			RangeSeekBar<Integer> seekBarHeight = new RangeSeekBar<Integer>(130, 230, getActivity());
+			seekBarHeight.setNotifyWhileDragging(true);
+			seekBarHeight.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
+
+				@Override
+				public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar,
+						Integer minValue, Integer maxValue) {
+					// TODO Auto-generated method stub
+					minHeight.setText(""+minValue);
+					maxHeight.setText(""+maxValue);
+				}
+			});
+			ViewGroup height_group = (ViewGroup)rootView.findViewById(R.id.height_group);
+			seekBarHeight.setLayoutParams(params);
+			height_group.addView(seekBarHeight);
+		}
 		
 		return rootView;
 	}
@@ -351,9 +388,17 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 				if(minDistance.getText().toString().equalsIgnoreCase("1")){
 					distance.put("from", "0");
 				}else{
-					distance.put("from", minDistance.getText().toString());
+					if(distance_in == 1){
+						distance.put("from", minDistance.getText().toString());
+					}else{
+						distance.put("to", Double.parseDouble(minDistance.getText().toString())*0.621371192);
+					}
 				}
-				distance.put("to", maxDistance.getText().toString());
+				if(distance_in == 1){
+					distance.put("to", maxDistance.getText().toString());
+				}else{
+					distance.put("to", Double.parseDouble(maxDistance.getText().toString())*0.621371192);
+				}
 				jObj.put("distance", distance);
 				JSONArray speaks = new JSONArray();
 				for(int i=0; i <dataSpeaks.size(); i++){
@@ -366,8 +411,13 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 				}
 				jObj.put("occupations", occupations);
 				JSONObject height = new JSONObject();
-				height.put("from", minHeight.getText().toString());
-				height.put("to", maxHeight.getText().toString());
+				if(distance_in == 1){
+					height.put("from", Double.parseDouble(minHeight.getText().toString())*0.3048);
+					height.put("to", Double.parseDouble(maxHeight.getText().toString())*0.3048);
+				}else{
+					height.put("from", Double.parseDouble(minHeight.getText().toString())*0.01);
+					height.put("from", Double.parseDouble(maxHeight.getText().toString())*0.01);
+				}
 				jObj.put("height", height);
 				JSONObject coordinates = new JSONObject();
 				coordinates.put("lat", lat);
@@ -444,10 +494,10 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 		View convertView = inflater.inflate(R.layout.layout_my_dialog, null);
 		alertDialog.setView(convertView);
 		alertDialog.setTitle("Select Occupation!");
-		ListView lv = (ListView)convertView.findViewById(R.id.lv);
+		ListView lvl = (ListView)convertView.findViewById(R.id.lv);
 		MyDialogAdapter adapter = new MyDialogAdapter(getActivity(), jobsLst);
-		lv.setAdapter(adapter);
-		lv.setOnItemClickListener(new OnItemClickListener() {
+		lvl.setAdapter(adapter);
+		lvl.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -488,11 +538,6 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 			}
 			return null;
 		}
-		@Override
-		protected void onPostExecute(Void result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-		}
 	}
 	/*
 	 * get jobs
@@ -521,11 +566,6 @@ public class SearchFilterFragment extends Fragment implements OnClickListener {
 				}
 			}
 			return null;
-		}
-		@Override
-		protected void onPostExecute(Void result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
 		}
 	}
 	@Override

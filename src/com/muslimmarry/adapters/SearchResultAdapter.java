@@ -54,7 +54,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResultItem> {
 		}
 		SearchResultItem item = mlst.get(position);
 		if(item.getPhoto().length() > 0){
-			Picasso.with(mContext).load(item.getPhoto()).placeholder(R.drawable.avatar).fit().into(viewHolder.photo);
+			Picasso.with(mContext).load(item.getPhoto()).placeholder(R.drawable.avatar).into(viewHolder.photo);
 		}else{
 			viewHolder.photo.setImageResource(R.drawable.avatar);
 		}

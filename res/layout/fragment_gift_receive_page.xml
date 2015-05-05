@@ -26,12 +26,12 @@
 	        <ImageView
 	            android:id="@+id/gift_received"
 	            android:layout_below="@id/title1"
-	            android:layout_width="200dp"
-	            android:layout_height="200dp"
+	            android:layout_width="150dp"
+	            android:layout_height="150dp"
 	            android:contentDescription="@string/image_desc"
 	            android:layout_centerHorizontal="true"
 	            android:layout_marginTop="40dp"
-	            android:scaleType="centerInside" />
+	            android:scaleType="fitCenter" />
 	        
 	        <RelativeLayout
 		        android:layout_width="fill_parent"
@@ -145,7 +145,6 @@
 		                        android:layout_below="@+id/txtage"
 		                        android:layout_width="wrap_content"
 		                        android:layout_height="wrap_content"
-		                        android:text="28"
 		                        android:textColor="#101010"
 		                        android:textSize="12sp"
 		                        android:layout_marginTop="-4dp" />
@@ -164,7 +163,6 @@
 		                        android:layout_below="@+id/txtcity"
 		                        android:layout_width="wrap_content"
 		                        android:layout_height="wrap_content"
-		                        android:text="LEBANON"
 		                        android:textColor="#101010"
 		                        android:textSize="12sp"
 		                        android:layout_marginTop="-4dp" />
@@ -178,14 +176,15 @@
 		                        android:textColor="#9a9a9a"
 		                        android:textSize="12sp" />
 		                    
-		                    <TextView
-	                            android:layout_below="@+id/txtlanguage"
-		                        android:layout_width="wrap_content"
+		                    <LinearLayout
+		                        android:id="@+id/llLanguage"
+		                        android:layout_below="@+id/txtlanguage"
+		                        android:layout_width="match_parent"
 		                        android:layout_height="wrap_content"
-		                        android:text="ARABIC, ENGLISH"
-		                        android:textColor="#101010"
-		                        android:textSize="12sp"
-		                        android:layout_marginTop="-4dp" />
+		                        android:layout_marginTop="-4dp"
+		                        android:orientation="vertical" >
+		                        
+		                    </LinearLayout>
 		                    
 		                </RelativeLayout>
 		                
@@ -209,7 +208,6 @@
 		                        android:layout_below="@+id/txtheight"
 		                        android:layout_width="wrap_content"
 		                        android:layout_height="wrap_content"
-		                        android:text="1,75M"
 		                        android:textColor="#101010"
 		                        android:textSize="12sp"
 		                        android:layout_marginTop="-4dp" />
@@ -228,7 +226,6 @@
 		                        android:layout_below="@+id/txtoccupation"
 		                        android:layout_width="wrap_content"
 		                        android:layout_height="wrap_content"
-		                        android:text="SCIENTIST"
 		                        android:textColor="#101010"
 		                        android:textSize="12sp"
 		                        android:layout_marginTop="-4dp" />
@@ -271,13 +268,13 @@
 		                android:layout_width="230dp"
 		                android:layout_height="30dp"
 		                android:layout_centerVertical="true"
-		                android:hint="Send john687 a thank you message..."
 		                android:singleLine="true"
 		                android:textColorHint="#8f8f90"
 		                android:textSize="13sp"
 		                android:paddingTop="5dp"
 		                android:background="@android:color/transparent"
-		                android:layout_marginLeft="20dp" />
+		                android:layout_marginLeft="20dp"
+		                android:inputType="textNoSuggestions" />
 		            
 		            <Button
 		                android:id="@+id/btnSend"

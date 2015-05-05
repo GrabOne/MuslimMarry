@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,6 +40,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,7 +52,6 @@ import com.muslimmarry.helpers.UploadImage;
 import com.muslimmarry.helpers.helpers;
 import com.muslimmarry.model.AlbumItem;
 import com.muslimmarry.sharedpref.prefUser;
-import com.muslimmary.fragments.EditProfileFragment.SendDataToSharePhoto;
 import com.squareup.picasso.Picasso;
 
 public class EditPhotoFragment extends Fragment implements OnClickListener, OnTouchListener {
@@ -83,6 +84,13 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 	ImageView delete_icon_photo3;
 	ImageView delete_icon_photo4;
 	ImageView delete_icon_photo5;
+	ImageView edit_icon_main_photo;
+	ImageView edit_icon_photo1;
+	ImageView edit_icon_photo2;
+	ImageView edit_icon_photo3;
+	ImageView edit_icon_photo4;
+	ImageView edit_icon_photo5;
+	ProgressBar pb_main_photo;
 	
 	private static int RESULT_LOAD_IMAGE = 1;
 	private static final int CAMERA_REQUEST = 2;
@@ -97,11 +105,16 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 	String album = "";
 	String resultString = "";
 	
+	int flag_edit = 0;
+	int flag_photo = 0;
+	
 	SharedPreferences prefs;
 	
 	ArrayList<AlbumItem> albums = new ArrayList<AlbumItem>();
 	
 	SendPhotoToShareFromEdit mCallback;
+	
+	ProgressDialog pDialog;
 	
 	public interface SendPhotoToShareFromEdit{
 		public void SendPhotoToShare(String photo);
@@ -166,6 +179,15 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 		delete_icon_photo4 = (ImageView)rootView.findViewById(R.id.delete_icon_photo4);
 		delete_icon_photo5 = (ImageView)rootView.findViewById(R.id.delete_icon_photo5);
 		
+		edit_icon_main_photo = (ImageView)rootView.findViewById(R.id.edit_icon_main_photo);
+		edit_icon_photo1 = (ImageView)rootView.findViewById(R.id.edit_icon_photo1);
+		edit_icon_photo2 = (ImageView)rootView.findViewById(R.id.edit_icon_photo2);
+		edit_icon_photo3 = (ImageView)rootView.findViewById(R.id.edit_icon_photo3);
+		edit_icon_photo4 = (ImageView)rootView.findViewById(R.id.edit_icon_photo4);
+		edit_icon_photo5 = (ImageView)rootView.findViewById(R.id.edit_icon_photo5);
+		
+		pb_main_photo = (ProgressBar)rootView.findViewById(R.id.progressbar);
+		
 		// set background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupOriginal();
 		
@@ -177,7 +199,7 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 		photo = user_info.get(prefUser.KEY_PHOTO);
 		album = user_info.get(prefUser.KEY_ALBUM);
 		if(user_info.get(prefUser.KEY_PHOTO).length() > 0){
-			Picasso.with(getActivity()).load(photo).placeholder(R.drawable.avatar).fit().into(main_photo);
+			Picasso.with(getActivity()).load(photo).placeholder(R.drawable.avatar).into(main_photo);
 			main_photo.setTag(photo);
 		}
 		try{
@@ -195,39 +217,39 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 		// display album
 		if(albums.size() > 0){
 			if(albums.size() == 1){
-				Picasso.with(getActivity()).load(albums.get(0).getUrl()).placeholder(R.drawable.avatar).fit().into(photo1);
+				Picasso.with(getActivity()).load(albums.get(0).getUrl()).placeholder(R.drawable.avatar).into(photo1);
 				photo1.setTag(albums.get(0).getUrl());
 			}else if(albums.size() == 2){
-				Picasso.with(getActivity()).load(albums.get(0).getUrl()).placeholder(R.drawable.avatar).fit().into(photo1);
+				Picasso.with(getActivity()).load(albums.get(0).getUrl()).placeholder(R.drawable.avatar).into(photo1);
 				photo1.setTag(albums.get(0).getUrl());
-				Picasso.with(getActivity()).load(albums.get(1).getUrl()).placeholder(R.drawable.avatar).fit().into(photo2);
+				Picasso.with(getActivity()).load(albums.get(1).getUrl()).placeholder(R.drawable.avatar).into(photo2);
 				photo2.setTag(albums.get(1).getUrl());
 			}else if(albums.size() == 3){
-				Picasso.with(getActivity()).load(albums.get(0).getUrl()).placeholder(R.drawable.avatar).fit().into(photo1);
+				Picasso.with(getActivity()).load(albums.get(0).getUrl()).placeholder(R.drawable.avatar).into(photo1);
 				photo1.setTag(albums.get(0).getUrl());
-				Picasso.with(getActivity()).load(albums.get(1).getUrl()).placeholder(R.drawable.avatar).fit().into(photo2);
+				Picasso.with(getActivity()).load(albums.get(1).getUrl()).placeholder(R.drawable.avatar).into(photo2);
 				photo2.setTag(albums.get(1).getUrl());
-				Picasso.with(getActivity()).load(albums.get(2).getUrl()).placeholder(R.drawable.avatar).fit().into(photo3);
+				Picasso.with(getActivity()).load(albums.get(2).getUrl()).placeholder(R.drawable.avatar).into(photo3);
 				photo3.setTag(albums.get(2).getUrl());
 			}else if(albums.size() == 4){
-				Picasso.with(getActivity()).load(albums.get(0).getUrl()).placeholder(R.drawable.avatar).fit().into(photo1);
+				Picasso.with(getActivity()).load(albums.get(0).getUrl()).placeholder(R.drawable.avatar).into(photo1);
 				photo1.setTag(albums.get(0).getUrl());
-				Picasso.with(getActivity()).load(albums.get(1).getUrl()).placeholder(R.drawable.avatar).fit().into(photo2);
+				Picasso.with(getActivity()).load(albums.get(1).getUrl()).placeholder(R.drawable.avatar).into(photo2);
 				photo2.setTag(albums.get(1).getUrl());
-				Picasso.with(getActivity()).load(albums.get(2).getUrl()).placeholder(R.drawable.avatar).fit().into(photo3);
+				Picasso.with(getActivity()).load(albums.get(2).getUrl()).placeholder(R.drawable.avatar).into(photo3);
 				photo3.setTag(albums.get(2).getUrl());
-				Picasso.with(getActivity()).load(albums.get(3).getUrl()).placeholder(R.drawable.avatar).fit().into(photo4);
+				Picasso.with(getActivity()).load(albums.get(3).getUrl()).placeholder(R.drawable.avatar).into(photo4);
 				photo4.setTag(albums.get(3).getUrl());
 			}else if(albums.size() == 5){
-				Picasso.with(getActivity()).load(albums.get(0).getUrl()).placeholder(R.drawable.avatar).fit().into(photo1);
+				Picasso.with(getActivity()).load(albums.get(0).getUrl()).placeholder(R.drawable.avatar).into(photo1);
 				photo1.setTag(albums.get(0).getUrl());
-				Picasso.with(getActivity()).load(albums.get(1).getUrl()).placeholder(R.drawable.avatar).fit().into(photo2);
+				Picasso.with(getActivity()).load(albums.get(1).getUrl()).placeholder(R.drawable.avatar).into(photo2);
 				photo2.setTag(albums.get(1).getUrl());
-				Picasso.with(getActivity()).load(albums.get(2).getUrl()).placeholder(R.drawable.avatar).fit().into(photo3);
+				Picasso.with(getActivity()).load(albums.get(2).getUrl()).placeholder(R.drawable.avatar).into(photo3);
 				photo3.setTag(albums.get(2).getUrl());
-				Picasso.with(getActivity()).load(albums.get(3).getUrl()).placeholder(R.drawable.avatar).fit().into(photo4);
+				Picasso.with(getActivity()).load(albums.get(3).getUrl()).placeholder(R.drawable.avatar).into(photo4);
 				photo4.setTag(albums.get(3).getUrl());
-				Picasso.with(getActivity()).load(albums.get(4).getUrl()).placeholder(R.drawable.avatar).fit().into(photo5);
+				Picasso.with(getActivity()).load(albums.get(4).getUrl()).placeholder(R.drawable.avatar).into(photo5);
 				photo5.setTag(albums.get(4).getUrl());
 			}
 		}
@@ -248,6 +270,12 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 		delete_icon_photo3.setOnClickListener(this);
 		delete_icon_photo4.setOnClickListener(this);
 		delete_icon_photo5.setOnClickListener(this);
+		edit_icon_main_photo.setOnClickListener(this);
+		edit_icon_photo1.setOnClickListener(this);
+		edit_icon_photo2.setOnClickListener(this);
+		edit_icon_photo3.setOnClickListener(this);
+		edit_icon_photo4.setOnClickListener(this);
+		edit_icon_photo5.setOnClickListener(this);
 		share.setOnClickListener(this);
 		back.setOnTouchListener(this);
 		option.setOnTouchListener(this);
@@ -337,8 +365,7 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 			}
 			break;
 		case R.id.delete_icon_main_photo:
-			new RemoveImageFromCollection().execute(main_photo.getTag().toString());
-			new ChangeUserAvatar().execute("");
+			new RemoveAvatar().execute();
 			fc_btn_main_photo.setVisibility(View.GONE);
 			main_photo.setImageBitmap(null);
 			main_photo.setTag("blank");
@@ -375,6 +402,41 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 			photo5.setImageBitmap(null);
 			photo5.setTag("blank");
 			break;
+		case R.id.edit_icon_main_photo:
+			fc_btn_main_photo.setVisibility(View.GONE);
+			flag_edit = 1;
+			selectImage();
+			break;
+		case R.id.edit_icon_photo1:
+			fc_btn_photo1.setVisibility(View.GONE);
+			flag_photo = 1;
+			flag_edit = 2;
+			selectImage();
+			break;
+		case R.id.edit_icon_photo2:
+			fc_btn_photo2.setVisibility(View.GONE);
+			flag_photo = 2;
+			flag_edit = 2;
+			selectImage();
+			break;
+		case R.id.edit_icon_photo3:
+			fc_btn_photo3.setVisibility(View.GONE);
+			flag_photo = 3;
+			flag_edit = 2;
+			selectImage();
+			break;
+		case R.id.edit_icon_photo4:
+			fc_btn_photo4.setVisibility(View.GONE);
+			flag_photo = 4;
+			flag_edit = 2;
+			selectImage();
+			break;
+		case R.id.edit_icon_photo5:
+			fc_btn_photo5.setVisibility(View.GONE);
+			flag_photo = 5;
+			flag_edit = 2;
+			selectImage();
+			break;
 		case R.id.share:
 			String photoShare = "";
 			if(fc_btn_main_photo.getVisibility() == View.VISIBLE){
@@ -390,7 +452,11 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 			}else if(fc_btn_photo5.getVisibility() == View.VISIBLE){
 				photoShare = photo5.getTag().toString();
 			}
-			mCallback.SendPhotoToShare(photoShare);
+			if(photoShare.length() > 0){
+				mCallback.SendPhotoToShare(photoShare);
+			}else{
+				Toast.makeText(getActivity(), "Can't photo to share!", Toast.LENGTH_SHORT).show();
+			}
 			break;
 		default:
 			break;
@@ -588,7 +654,18 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 			try {
 				photoUrl = UploadImage.uploadImage(params[0]);
 				// add image to collection
-				new AddImageToCollection().execute();
+				if(flag_edit == 1){
+					new EditAvatar().execute(photoUrl);
+				}else if(flag_edit == 2){
+					new ChangeImageFromCollection().execute(photoUrl);
+				}else{
+					if(main_photo.getTag().equals("blank")){
+						new ChangeUserAvatar().execute(photoUrl);
+					}else{
+						new AddImageToCollection().execute();
+					}
+				}
+				flag_edit = 0;
 			} catch (Exception e) {
 				Log.d("error", e.getMessage(), e);
 			}
@@ -608,6 +685,7 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
+			pDialogShow("show");
 		}
 		@Override
 		protected Void doInBackground(String... params) {
@@ -629,7 +707,7 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 				inputStream = response.getEntity().getContent();
 				if(inputStream != null){
 					resultString = helpers.convertInputStreamToString(inputStream);
-					Log.d("result", resultString);
+					Log.d("addphoto", resultString);
 				}
 			}catch(Exception e){
 				Log.d("error", e.getMessage(), e);
@@ -640,6 +718,7 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 		protected void onPostExecute(Void result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
+			pDialogShow("hide");
 			try{
 				JSONObject obj = new JSONObject(resultString);
 				if(obj.getString("status").equalsIgnoreCase("success")){
@@ -649,38 +728,37 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 					Editor editor = prefs.edit();
 					if(main_photo.getTag().equals("blank")){
 						// edit photo from sharedpref
-						new ChangeUserAvatar().execute(photoUrl);
 						editor.putString("photo", photoUrl);
 						editor.commit();
-						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).fit().into(main_photo);
+						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).into(main_photo);
 						main_photo.setTag(photoUrl);
 					}else if(photo1.getTag().equals("blank")){
 						// edit album from sharedpref
 						editor.putString("album", arr.toString()).commit();
-						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).fit().into(photo1);
+						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).into(photo1);
 						photo1.setTag(photoUrl);
 					}else if(photo2.getTag().equals("blank")){
 						// edit album from sharedpref
 						editor.putString("album", arr.toString()).commit();
-						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).fit().into(photo2);
+						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).into(photo2);
 						photo2.setTag(photoUrl);
 					}else if(photo3.getTag().equals("blank")){
 						// edit album from sharedpref
 						editor.putString("album", arr.toString()).commit();
-						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).fit().into(photo3);
+						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).into(photo3);
 						photo3.setTag(photoUrl);
 					}else if(photo4.getTag().equals("blank")){
 						// edit album from sharedpref
 						editor.putString("album", arr.toString()).commit();
-						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).fit().into(photo4);
+						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).into(photo4);
 						photo4.setTag(photoUrl);
 					}else if(photo5.getTag().equals("blank")){
 						// edit album from sharedpref
 						editor.putString("album", arr.toString()).commit();
-						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).fit().into(photo5);
+						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).into(photo5);
 						photo5.setTag(photoUrl);
 					}
-					Toast.makeText(getActivity(), "Add image successfully!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "Add photo successfully!", Toast.LENGTH_SHORT).show();
 				}else{
 					Toast.makeText(getActivity(), obj.getString("message"), Toast.LENGTH_SHORT).show();
 				}
@@ -694,11 +772,6 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 	 */
 	private class RemoveImageFromCollection extends AsyncTask<String, String, Void>{
 		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-		}
-		@Override
 		protected Void doInBackground(String... params) {
 			// TODO Auto-generated method stub
 			InputStream inputStream = null;
@@ -707,6 +780,7 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 				obj.put("user_id", userid);
 				obj.put("remember_token", token);
 				obj.put("image_url", params[0]);
+				Log.d("obj", obj.toString());
 				
 				HttpClient httpClient = new DefaultHttpClient();
 				HttpDeleteWithBody httpdelete = new HttpDeleteWithBody(helpers.url+"remove-image-to-collection");
@@ -720,7 +794,7 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 				inputStream = response.getEntity().getContent();
 				if(inputStream != null){
 					resultString = helpers.convertInputStreamToString(inputStream);
-					Log.d("result", resultString);
+					Log.d("removephoto", resultString);
 				}
 			}catch(Exception e){
 				Log.e("error", e.getMessage(), e);
@@ -743,7 +817,7 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 					Editor editor = prefs.edit();
 					// edit album from sharedpref
 					editor.putString("album", album).commit();
-					Toast.makeText(getActivity(), "Remove image successfully!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "Remove photo successfully!", Toast.LENGTH_SHORT).show();
 				}else{
 					Toast.makeText(getActivity(), obj.getString("message"), Toast.LENGTH_SHORT).show();
 				}
@@ -756,6 +830,12 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 	 * Change user avatar
 	 */
 	private class ChangeUserAvatar extends AsyncTask<String, String, Void>{
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			pDialogShow("show");
+		}
 		@Override
 		protected Void doInBackground(String... params) {
 			// TODO Auto-generated method stub
@@ -783,6 +863,245 @@ public class EditPhotoFragment extends Fragment implements OnClickListener, OnTo
 			}
 			return null;
 		}
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			pDialogShow("hide");
+			try{
+				JSONObject obj = new JSONObject(resultString);
+				if(obj.getString("status").equalsIgnoreCase("success")){
+					Editor editor = prefs.edit();
+					if(main_photo.getTag().equals("blank")){
+						// edit photo from sharedpref
+						editor.putString("photo", photoUrl);
+						editor.commit();
+						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).into(main_photo);
+						main_photo.setTag(photoUrl);
+					}
+					Toast.makeText(getActivity(), "Add photo successfull!", Toast.LENGTH_SHORT).show();
+				}
+			}catch(Exception e){
+				Log.e("error", e.getMessage(), e);
+			}
+		}
+	}
+	/*
+	 * edit avatar
+	 */
+	private class EditAvatar extends AsyncTask<String, String, Void>{
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			pDialogShow("show");
+		}
+		@Override
+		protected Void doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			InputStream inputStream = null;
+			try{
+				JSONObject obj = new JSONObject();
+				obj.put("user_id", userid);
+				obj.put("remember_token", token);
+				obj.put("new_image", params[0]);
+				obj.put("source_image", main_photo.getTag());
+				
+				HttpClient httpClient = new DefaultHttpClient();
+				HttpPut httpput = new HttpPut(helpers.url+"edit-avatar");
+				StringEntity se = new StringEntity(obj.toString());
+				httpput.setEntity(se);
+				httpput.setHeader("Accept", "application/json");
+				httpput.setHeader("Content-type", "application/json");
+				HttpResponse response = httpClient.execute(httpput);
+				inputStream = response.getEntity().getContent();
+				if(inputStream != null){
+					resultString = helpers.convertInputStreamToString(inputStream);
+					Log.d("changephoto", resultString);
+				}
+			}catch(Exception e){
+				Log.e("error", e.getMessage(), e);
+			}
+			return null;
+		}
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			pDialogShow("hide");
+			try{
+				JSONObject obj = new JSONObject(resultString);
+				if(obj.getString("status").equalsIgnoreCase("success")){
+					JSONObject data = new JSONObject(obj.getString("data"));
+					JSONArray arr = data.getJSONArray("images");
+					Editor editor = prefs.edit();
+					Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).into(main_photo);
+					editor.putString("photo", photoUrl);
+					editor.putString("album", arr.toString());
+					editor.commit();
+					Toast.makeText(getActivity(), "Change photo successfull!", Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(getActivity(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+				}
+			}catch(Exception e){
+				Log.e("error", e.getMessage(), e);
+			}
+		}
+	}
+	/*
+	 * change an image from collection
+	 */
+	private class ChangeImageFromCollection extends AsyncTask<String, String, Void>{
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			pDialogShow("show");
+		}
+		@Override
+		protected Void doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			InputStream inputStream = null;
+			try{
+				JSONObject obj = new JSONObject();
+				obj.put("user_id", userid);
+				obj.put("remember_token", token);
+				obj.put("new_image", params[0]);
+				String source_image = "";
+				if(flag_photo == 1){
+					source_image = photo1.getTag().toString();
+				}else if(flag_photo == 2){
+					source_image = photo2.getTag().toString();
+				}else if(flag_photo == 3){
+					source_image = photo3.getTag().toString();
+				}else if(flag_photo == 4){
+					source_image = photo4.getTag().toString();
+				}else if(flag_photo == 5){
+					source_image = photo5.getTag().toString();
+				}
+				obj.put("source_image", source_image);
+				
+				HttpClient httpClient = new DefaultHttpClient();
+				HttpPut httpput = new HttpPut(helpers.url+"change-image");
+				StringEntity se = new StringEntity(obj.toString());
+				httpput.setEntity(se);
+				httpput.setHeader("Accept", "application/json");
+				httpput.setHeader("Content-type", "application/json");
+				HttpResponse response = httpClient.execute(httpput);
+				inputStream = response.getEntity().getContent();
+				if(inputStream != null){
+					resultString = helpers.convertInputStreamToString(inputStream);
+					Log.d("changephoto", resultString);
+				}
+			}catch(Exception e){
+				Log.e("error", e.getMessage(), e);
+			}
+			return null;
+		}
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			pDialogShow("hide");
+			try{
+				JSONObject obj = new JSONObject(resultString);
+				if(obj.getString("status").equalsIgnoreCase("success")){
+					JSONObject data = new JSONObject(obj.getString("data"));
+					JSONArray arr = data.getJSONArray("images");
+					if(flag_photo == 1){
+						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).into(photo1);
+					}else if(flag_photo == 2){
+						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).into(photo2);
+					}
+					else if(flag_photo == 3){
+						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).into(photo3);
+					}
+					else if(flag_photo == 4){
+						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).into(photo4);
+					}
+					else if(flag_photo == 5){
+						Picasso.with(getActivity()).load(photoUrl).placeholder(R.drawable.avatar).into(photo5);
+					}
+					Editor editor = prefs.edit();
+					editor.putString("album", arr.toString()).commit();
+					Toast.makeText(getActivity(), "Change photo successfull!", Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(getActivity(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+				}
+			}catch(Exception e){
+				Log.e("error", e.getMessage(), e);
+			}
+			flag_photo = 0;
+		}
+	}
+	/*
+	 * remove avatar
+	 */
+	private class RemoveAvatar extends AsyncTask<String, String, Void>{
+		@Override
+		protected Void doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			InputStream inputStream = null;
+			try{
+				JSONObject obj = new JSONObject();
+				obj.put("user_id", userid);
+				obj.put("remember_token", token);
+				
+				HttpClient httpClient = new DefaultHttpClient();
+				HttpDeleteWithBody httpdelete = new HttpDeleteWithBody(helpers.url+"remove-avatar");
+				StringEntity se = new StringEntity(obj.toString());
+				httpdelete.setEntity(se);
+				httpdelete.setHeader("Accept", "application/json");
+				httpdelete.setHeader("Content-type", "application/json");
+				
+				HttpResponse response = httpClient.execute(httpdelete);
+				
+				inputStream = response.getEntity().getContent();
+				if(inputStream != null){
+					resultString = helpers.convertInputStreamToString(inputStream);
+					Log.d("removephoto", resultString);
+				}
+			}catch(Exception e){
+				Log.e("error", e.getMessage(), e);
+			}
+			return null;
+		}
+		@Override
+		protected void onPostExecute(Void result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			try{
+				JSONObject obj = new JSONObject(resultString);
+				if(obj.getString("status").equalsIgnoreCase("success")){
+					JSONObject data = new JSONObject(obj.getString("data"));
+					JSONArray arr = data.getJSONArray("images");
+					Editor editor = prefs.edit();
+					editor.putString("album", arr.toString()).commit();
+					Toast.makeText(getActivity(), "Remove photo successfull!", Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(getActivity(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+				}
+			}catch(Exception e){
+				Log.e("error", e.getMessage(), e);
+			}
+		}
+	}
+	/*
+	 * show progress dialog
+	 */
+	public void pDialogShow(final String str){
+		getActivity().runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				if(str.equalsIgnoreCase("show")){
+					pDialog = ProgressDialog.show(getActivity(), "Please wait...", "Upload Image...", true);
+				}else{
+					pDialog.hide();
+				}
+			}
+		});
 	}
 	@Override
 	public void onResume() {

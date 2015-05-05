@@ -18,7 +18,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -38,10 +37,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.muslimmarry.R;
 import com.github.nkzawa.emitter.Emitter;
@@ -61,8 +60,8 @@ import com.muslimmary.fragments.DashboardAlertFragment;
 import com.muslimmary.fragments.DashboardAlertFragment.SendDataToGiftReceivePage;
 import com.muslimmary.fragments.DashboardMessageFragment;
 import com.muslimmary.fragments.DashboardMessageFragment.SendDataToMessagingPage;
-import com.muslimmary.fragments.EditProfileFragment;
 import com.muslimmary.fragments.EditPhotoFragment.SendPhotoToShareFromEdit;
+import com.muslimmary.fragments.EditProfileFragment;
 import com.muslimmary.fragments.EditProfileFragment.SendDataToSharePhoto;
 import com.muslimmary.fragments.FavoriteFragment;
 import com.muslimmary.fragments.GiftReceivePageFragment;
@@ -76,8 +75,8 @@ import com.muslimmary.fragments.SearchResultFragment;
 import com.muslimmary.fragments.SharePhotoFragment;
 import com.squareup.picasso.Picasso;
 
-public class MainActivity extends Activity implements SendDataToSearchResult, SendDataToSharePhoto, SendPhotoToShareFromEdit, SendDataToGiftReceivePage,
-	SendDataToMessagingPage, OnTouchListener {
+public class MainActivity extends Activity implements SendDataToSearchResult, SendDataToSharePhoto, SendPhotoToShareFromEdit,
+	SendDataToGiftReceivePage, SendDataToMessagingPage, OnTouchListener {
 	
 	RelativeLayout top_nav;
 	ImageView back;
@@ -269,8 +268,11 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							int unread = Integer.parseInt(num_notifi_gift.getText().toString()) + 1;
+							int unread = GetNumNotifiGif() + 1;
 							SetNumNotifiGift(true, String.valueOf(unread));
+							// update gift_unread value
+							SharedPreferences.Editor editor = prefs.edit();
+							editor.putString("gift_unread", String.valueOf(unread)).commit();
 						}
 					});
 				}
@@ -450,6 +452,9 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 										// TODO Auto-generated method stub
 										int unread = Integer.parseInt(num_notifi_gift.getText().toString()) + 1;
 										SetNumNotifiGift(true, String.valueOf(unread));
+										// update gift_unread value
+										SharedPreferences.Editor editor = prefs.edit();
+										editor.putString("gift_unread", String.valueOf(unread)).commit();
 									}
 								});
 							}
@@ -820,6 +825,12 @@ public class MainActivity extends Activity implements SendDataToSearchResult, Se
 			notifi_mes_box.setVisibility(View.GONE);
 		}
 		num_notifi_mes.setText(String.valueOf(num));
+	}
+	/*
+	 * get num notifi gift
+	 */
+	public int GetNumNotifiGif(){
+		return Integer.parseInt(num_notifi_gift.getText().toString());
 	}
 	/*
 	 * set num notifi gift

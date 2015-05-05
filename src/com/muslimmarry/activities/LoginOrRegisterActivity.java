@@ -36,9 +36,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.plus.Plus;
 import com.muslimmarry.authenticator.FacebookLogin;
-import com.muslimmarry.authenticator.GoogleLogin;
 import com.muslimmarry.authenticator.TwitterLogin;
 import com.muslimmarry.gps.GPSManager;
 import com.muslimmarry.helpers.helpers;
@@ -122,7 +120,7 @@ public class LoginOrRegisterActivity extends Activity implements OnClickListener
 	        for (Signature signature : info.signatures) {
 	            MessageDigest md = MessageDigest.getInstance("SHA");
 	            md.update(signature.toByteArray());
-	            Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+	            Log.d("myTag", Base64.encodeToString(md.digest(), Base64.DEFAULT));
 	        }
 	    } catch (NameNotFoundException e) {
 	    	e.printStackTrace();
@@ -134,9 +132,7 @@ public class LoginOrRegisterActivity extends Activity implements OnClickListener
 		mGoogleApiClient = new GoogleApiClient.Builder(this)
 		        .addConnectionCallbacks(this)
 		        .addOnConnectionFailedListener(this)
-		        .addApi(Plus.API, Plus.PlusOptions.builder().build())
 		        .addApi(LocationServices.API)
-		        .addScope(Plus.SCOPE_PLUS_LOGIN)
 		        .build();
 		
 		// Create the LocationRequest object
@@ -185,7 +181,7 @@ public class LoginOrRegisterActivity extends Activity implements OnClickListener
 			new TwitterLogin(LoginOrRegisterActivity.this, mSharedPreferences.getString("country", ""), mSharedPreferences.getString("city", ""), mSharedPreferences.getString("lat", ""), mSharedPreferences.getString("lng", "")).Login();
 			break;
 		case R.id.gg_ic:
-			new GoogleLogin(LoginOrRegisterActivity.this, country, city, String.valueOf(lat), String.valueOf(lng), mGoogleApiClient).Login();
+//			new GoogleLogin(LoginOrRegisterActivity.this, country, city, String.valueOf(lat), String.valueOf(lng), mGoogleApiClient).Login();
 			break;
 		default:
 			break;

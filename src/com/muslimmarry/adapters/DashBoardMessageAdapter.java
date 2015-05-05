@@ -53,7 +53,7 @@ public class DashBoardMessageAdapter extends ArrayAdapter<DashBoardMessageItem> 
 		
 		DashBoardMessageItem item = mlst.get(position);
 		if(item.getPhoto().length() > 0){
-			Picasso.with(mContext).load(item.getPhoto()).placeholder(R.drawable.avatar).fit().into(viewHolder.avatar);
+			Picasso.with(mContext).load(item.getPhoto()).placeholder(R.drawable.avatar).into(viewHolder.avatar);
 		}else{
 			viewHolder.avatar.setImageResource(R.drawable.avatar);
 		}
@@ -67,7 +67,7 @@ public class DashBoardMessageAdapter extends ArrayAdapter<DashBoardMessageItem> 
 			viewHolder.message.setText(item.getContent().substring(0, 35) + "...");
 		}
 		
-		if(item.getStatus() == 0){
+		if(item.getStatus() == 0 && item.getMyId().equalsIgnoreCase(item.getUseridRecei())){
 			rowView.setBackgroundColor(Color.parseColor("#e3f4f8"));
 			viewHolder.name.setTextColor(Color.parseColor("#101010"));
 			viewHolder.name.setTypeface(null, Typeface.BOLD);

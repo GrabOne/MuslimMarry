@@ -44,6 +44,7 @@ public class DashboardMessageFragment extends Fragment {
 	ArrayList<DashBoardMessageItem> mlst = new ArrayList<DashBoardMessageItem>();
 	DashBoardMessageAdapter adapter;
 	ProgressBar progressbar;
+	TextView msg;
 	
 	String resultString = "";
 	
@@ -78,6 +79,7 @@ public class DashboardMessageFragment extends Fragment {
 		
 		mList = (ListView)rootView.findViewById(R.id.mList);
 		progressbar = (ProgressBar)rootView.findViewById(R.id.progressbar);
+		msg = (TextView)rootView.findViewById(R.id.msg);
 		
 		// set background for bottom nav element
 		((MainActivity)getActivity()).setBgGroupMessage();
@@ -165,11 +167,14 @@ public class DashboardMessageFragment extends Fragment {
 						//in milliseconds
 						long diff = d2.getTime() - d1.getTime();
 						
-						mlst.add(new DashBoardMessageItem(message.getString("_id"), new Date().getTime()-diff, message.getInt("status"),
-								message.getString("content"), user.getString("id"), user.getString("nickname"), user.getString("avatar"),
+						mlst.add(new DashBoardMessageItem(message.getString("_id"), userid, new Date().getTime()-diff, message.getInt("status"),
+								message.getString("content"), user.getString("id"), user.getString("nickname"), message.getString("user_recei"), user.getString("avatar"),
 								inbox.getInt("numberMessages")));
 						adapter = new DashBoardMessageAdapter(getActivity(), R.layout.row_dashboard_message, mlst);
 						mList.setAdapter(adapter);
+					}
+					if(mlst.size() <= 0){
+						msg.setVisibility(View.VISIBLE);
 					}
 				}else{
 					Toast.makeText(getActivity(), obj.getString("msg"), Toast.LENGTH_SHORT).show();
